@@ -232,56 +232,26 @@
     transition: opacity 0.2s, transform 0.2s; transform: translateY(8px);
   }
   .opp-save-flash.show { opacity: 1; transform: translateY(0); }
-  /* ===== Gist Sync modal ===== */
-  .gist-fab {
+  /* ===== Live sync status badge ===== */
+  .sync-badge {
     position: fixed; bottom: 20px; left: 20px; z-index: 800;
-    background: var(--navy-dark); color: #fff; border: none;
-    padding: 10px 16px; border-radius: 24px; font-size: 12px; font-weight: 700;
-    cursor: pointer; box-shadow: 0 4px 14px rgba(6,26,58,0.3);
-    display: flex; align-items: center; gap: 8px; font-family: inherit;
-    transition: background 0.15s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #fff; color: var(--navy-dark); border: 1px solid var(--border);
+    padding: 8px 14px; border-radius: 24px; font-size: 12px; font-weight: 700;
+    box-shadow: 0 4px 14px rgba(6,26,58,0.18); font-family: inherit;
+    cursor: default; user-select: none;
   }
-  .gist-fab:hover { background: var(--navy-darkest); transform: translateY(-1px); }
-  .gist-fab .dot { width: 8px; height: 8px; border-radius: 50%; background: #cfd9e7; }
-  .gist-fab .dot.ok    { background: var(--green); box-shadow: 0 0 0 3px rgba(28,169,124,0.25); }
-  .gist-fab .dot.warn  { background: var(--amber); }
-  .gist-fab .dot.error { background: var(--red); }
-  .gist-modal-backdrop {
-    position: fixed; inset: 0; background: rgba(6,26,58,0.55); z-index: 900;
-    display: none; align-items: center; justify-content: center; padding: 20px;
+  .sync-badge .dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--muted);
+    transition: background 0.2s, box-shadow 0.2s;
   }
-  .gist-modal-backdrop.show { display: flex; }
-  .gist-modal {
-    background: #fff; border-radius: 12px; padding: 24px; max-width: 540px; width: 100%;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;
+  .sync-badge.live .dot    { background: var(--green); box-shadow: 0 0 0 3px rgba(28,169,124,0.25); animation: syncPulse 2.4s ease-in-out infinite; }
+  .sync-badge.syncing .dot { background: var(--amber); animation: syncPulse 0.8s ease-in-out infinite; }
+  .sync-badge.error .dot   { background: var(--red); }
+  @keyframes syncPulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%     { opacity: 0.5; transform: scale(1.2); }
   }
-  .gist-modal h3 { margin: 0 0 6px; color: var(--navy-darkest); font-size: 18px; }
-  .gist-modal p.desc { color: var(--muted); font-size: 12px; margin: 0 0 18px; line-height: 1.5; }
-  .gist-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
-  .gist-field label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--navy-dark); font-weight: 700; }
-  .gist-field input {
-    padding: 8px 10px; border: 1px solid var(--border); border-radius: 4px;
-    font: 13px monospace; color: var(--text); background: #fff;
-  }
-  .gist-field input:focus { outline: none; border-color: var(--cyan-bright); box-shadow: 0 0 0 3px rgba(0,191,255,0.15); }
-  .gist-field .help { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.4; }
-  .gist-field .help a { color: var(--navy-dark); text-decoration: underline; }
-  .gist-status {
-    padding: 10px 12px; border-radius: 6px; font-size: 12px; margin-bottom: 12px;
-    background: #f3f6fb; border-left: 3px solid var(--muted); color: var(--muted); display: none;
-  }
-  .gist-status.show { display: block; }
-  .gist-status.ok    { background: #e3f6ee; border-left-color: var(--green); color: #0e6b48; }
-  .gist-status.warn  { background: #fff5e0; border-left-color: var(--amber); color: #8a5a10; }
-  .gist-status.error { background: #fbeae9; border-left-color: var(--red); color: var(--red-dark); }
-  .gist-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-  .gist-actions .btn { flex: 1; min-width: 130px; }
-  .gist-meta {
-    font-size: 11px; color: var(--muted); margin-top: 14px; padding-top: 12px;
-    border-top: 1px solid var(--border); line-height: 1.5;
-  }
-  .gist-meta code { background: #f3f6fb; padding: 2px 5px; border-radius: 3px; font-size: 11px; }
-  .gist-toggle { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 12px; color: var(--text); cursor: pointer; }
   /* Hidden */
   .hidden { display:none !important; }
 
@@ -410,10 +380,6 @@
     </div>
     <button class="btn secondary" onclick="resetFilters('enterprise')">Reset</button>
     <button class="btn" onclick="exportCSV('enterprise')">Export CSV</button>
-    <button class="btn secondary" onclick="oppExport()" title="Download JSON backup of edits">⬇ Backup Opps</button>
-    <button class="btn secondary" onclick="oppImport()" title="Restore opportunities from a JSON backup">⬆ Restore Opps</button>
-    <button class="btn danger" onclick="oppResetAll('enterprise')" title="Reset all edits to originals">↺ Reset Opps</button>
-    <button class="btn secondary" onclick="gistOpenModal()" title="Configure GitHub Gist sync">🔗 Gist Sync</button>
   </div>
 
   <div class="table-wrap">
@@ -457,10 +423,6 @@
     </label>
     <button class="btn secondary" onclick="resetFilters('newaccts')">Reset</button>
     <button class="btn" onclick="exportCSV('newaccts')">Export CSV</button>
-    <button class="btn secondary" onclick="oppExport()" title="Download JSON backup of edits">⬇ Backup Opps</button>
-    <button class="btn secondary" onclick="oppImport()" title="Restore opportunities from a JSON backup">⬆ Restore Opps</button>
-    <button class="btn danger" onclick="oppResetAll('newaccts')" title="Reset all edits to originals">↺ Reset Opps</button>
-    <button class="btn secondary" onclick="gistOpenModal()" title="Configure GitHub Gist sync">🔗 Gist Sync</button>
   </div>
 
   <div class="table-wrap">
@@ -524,37 +486,9 @@
 </section>
 
 </main>
-<!-- ===== Gist Sync UI ===== -->
-<button id="gist-fab" class="gist-fab" onclick="gistOpenModal()" title="Configure GitHub Gist sync">
-  <span class="dot"></span><span>🔗</span><span class="label">Sync</span>
-</button>
-<div id="gist-modal" class="gist-modal-backdrop" onclick="if(event.target===this)gistCloseModal()">
-  <div class="gist-modal">
-    <h3>🔗 GitHub Gist Sync</h3>
-    <p class="desc">Save and load your opportunity edits to a private GitHub Gist so they sync across browsers and devices. Your token stays in this browser only — it is never sent anywhere except api.github.com.</p>
-    <div id="gist-status" class="gist-status"></div>
-    <div class="gist-field">
-      <label for="gist-token">Personal Access Token</label>
-      <input type="password" id="gist-token" placeholder="ghp_… or github_pat_…" autocomplete="off" spellcheck="false">
-      <div class="help">Create at <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener">github.com/settings/tokens</a> · scope needed: <code>gist</code> only.</div>
-    </div>
-    <div class="gist-field">
-      <label for="gist-id">Gist ID <span style="font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0">(optional)</span></label>
-      <input type="text" id="gist-id" placeholder="leave blank to create a new private gist on first push" autocomplete="off" spellcheck="false">
-      <div class="help">If blank, the first <strong>Push</strong> will create a new secret Gist named <code>4sight-opportunities.json</code> and remember its ID here.</div>
-    </div>
-    <label class="gist-toggle"><input type="checkbox" id="gist-auto"> Auto-sync to Gist on every change (debounced 1.5s)</label>
-    <div class="gist-actions">
-      <button class="btn secondary" onclick="gistTest()" title="Verify the token is valid">🧪 Test token</button>
-      <button class="btn" onclick="gistDoPush()" title="Upload local opportunities to the Gist">⬆ Push to Gist</button>
-      <button class="btn" onclick="gistDoPull()" title="Replace local opportunities with the Gist contents" style="background:var(--green)">⬇ Pull from Gist</button>
-      <button class="btn danger" onclick="gistClearConfig()">Clear config</button>
-      <button class="btn secondary" onclick="gistCloseModal()">Close</button>
-    </div>
-    <div class="gist-meta">
-      <strong>How it works:</strong> Click <em>Push</em> to upload your saved opportunities to a secret Gist. On another machine, paste the same token + Gist ID and click <em>Pull</em> to load them. Turn on <em>Auto-sync</em> to keep them updated automatically as you edit.
-    </div>
-  </div>
+<!-- Live sync status badge -->
+<div id="sync-badge" class="sync-badge" title="Live-synced to GitHub via Cloudflare Worker">
+  <span class="dot"></span><span class="label">Connecting…</span>
 </div>
 
 <footer>4Sight 4AI · Enterprise Account Mapping · Self-contained offline dashboard · No internet required</footer>
@@ -572,30 +506,69 @@ const STATE = {
 
 const PALETTE = ["#0a2e5e","#00bfff","#c8102e","#1ca97c","#e89c2c","#5db4f0","#8e0a1f","#123c78","#6b46c1","#a16207","#0e7490"];
 
-// ===== Storage =====
-const OPP_KEY = "fourSight_opps_v1";
-const GIST_KEY = "fourSight_gist_v1";
-let OPP_STORAGE_OK = true;
-let OPP_MEM = {};
-try { localStorage.setItem("__opp_probe__","1"); localStorage.removeItem("__opp_probe__"); }
-catch(e) { OPP_STORAGE_OK = false; }
-function oppLoad() {
-  if (!OPP_STORAGE_OK) return JSON.parse(JSON.stringify(OPP_MEM));
-  try { return JSON.parse(localStorage.getItem(OPP_KEY) || "{}"); } catch(e) { return {}; }
-}
+// ===== Cloudflare Worker backend =====
+const WORKER_URL = "https://enterpriseaccountmapping.hrjansen84.workers.dev";
+let OPP_STORE = {};          // in-memory mirror of opportunities.json
+let OPP_LOADED = false;      // has initial pull completed
+let _saveTimer = null;       // debounce timer for auto-push
+let _pollTimer = null;       // for periodic re-pull
+
+function oppLoad() { return JSON.parse(JSON.stringify(OPP_STORE)); }
 function oppSave(store) {
-  OPP_MEM = JSON.parse(JSON.stringify(store));
-  if (!OPP_STORAGE_OK) return;
-  try { localStorage.setItem(OPP_KEY, JSON.stringify(store)); } catch(e) { console.warn(e); }
+  OPP_STORE = JSON.parse(JSON.stringify(store));
+  scheduleWorkerPush();
 }
-function gistConfigLoad() {
-  if (!OPP_STORAGE_OK) return { token:"", id:"", auto:false, lastSync:"" };
-  try { return Object.assign({ token:"", id:"", auto:false, lastSync:"" }, JSON.parse(localStorage.getItem(GIST_KEY) || "{}")); }
-  catch(e) { return { token:"", id:"", auto:false, lastSync:"" }; }
+
+async function workerPull() {
+  setSyncStatus("syncing", "Loading…");
+  try {
+    const r = await fetch(WORKER_URL, { method: "GET", cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const text = await r.text();
+    const obj = text.trim() ? JSON.parse(text) : {};
+    const isFirstLoad = !OPP_LOADED;
+    OPP_STORE = obj || {};
+    OPP_LOADED = true;
+    if (!isFirstLoad) {
+      // Refresh tabs that show opp data
+      renderEnterprise();
+      renderNewAccts();
+    }
+    setSyncStatus("live", "Live");
+    return true;
+  } catch (e) {
+    console.warn("Worker pull failed", e);
+    setSyncStatus("error", "Offline");
+    return false;
+  }
 }
-function gistConfigSave(cfg) {
-  if (!OPP_STORAGE_OK) return;
-  try { localStorage.setItem(GIST_KEY, JSON.stringify(cfg)); } catch(e) {}
+async function workerPush() {
+  setSyncStatus("syncing", "Saving…");
+  try {
+    const r = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(OPP_STORE)
+    });
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    setSyncStatus("live", "Saved ✓");
+    setTimeout(() => setSyncStatus("live", "Live"), 1200);
+    return true;
+  } catch (e) {
+    console.warn("Worker push failed", e);
+    setSyncStatus("error", "Save failed");
+    return false;
+  }
+}
+function scheduleWorkerPush() {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(workerPush, 1200);
+}
+function setSyncStatus(state, label) {
+  const el = document.getElementById("sync-badge"); if (!el) return;
+  el.className = "sync-badge " + (state || "");
+  const lbl = el.querySelector(".label"); if (lbl) lbl.textContent = label || "Sync";
+  el.title = "Live-synced to GitHub via Cloudflare Worker • " + (label || "");
 }
 
 // ===== Items model =====
@@ -631,7 +604,6 @@ function oppSetItems(section, customer, items) {
   if (cleaned.length === 0) delete store[section][customer];
   else store[section][customer] = { items: cleaned };
   oppSave(store);
-  if (GIST_STATE.auto) gistAutoPush();
 }
 function oppDisplay(section, customer) {
   const items = oppGetItems(section, customer);
@@ -666,30 +638,7 @@ function oppFlash(msg) {
   clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove("show"), 1200);
 }
 
-// ===== Backup / Restore / Reset =====
-function oppExport() {
-  const blob = new Blob([JSON.stringify(oppLoad(), null, 2)], { type:"application/json" });
-  const url = URL.createObjectURL(blob); const a = document.createElement("a");
-  a.href = url; a.download = "4sight-opportunities-backup-"+new Date().toISOString().slice(0,10)+".json";
-  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-}
-function oppImport() {
-  const inp = document.createElement("input"); inp.type = "file"; inp.accept = "application/json,.json";
-  inp.onchange = ev => {
-    const f = ev.target.files[0]; if (!f) return; const r = new FileReader();
-    r.onload = () => { try { oppSave(JSON.parse(r.result)); renderEnterprise(); renderNewAccts(); oppFlash("Restored"); } catch(e) { alert("Invalid file: "+e.message); } };
-    r.readAsText(f);
-  };
-  inp.click();
-}
-function oppResetAll(section) {
-  const label = section === "enterprise" ? "Enterprise Customers" : "New Accounts";
-  if (!confirm("Reset ALL opportunity edits for "+label+" back to the original? This cannot be undone.")) return;
-  const store = oppLoad(); if (store[section]) { delete store[section]; oppSave(store); }
-  Object.keys(OPP_EDIT).forEach(k => { if (k.startsWith(section+"::")) delete OPP_EDIT[k]; });
-  if (section === "enterprise") renderEnterprise(); else renderNewAccts();
-  oppFlash("Reset");
-}
+// ===== Refresh single cell =====
 function oppRefreshCell(section, customer) {
   document.querySelectorAll('.opp-cell[data-section="'+section+'"]').forEach(cell => {
     if (cell.dataset.customer === customer) {
@@ -786,133 +735,6 @@ function oppCellHtml(section, customer) {
   return '<td class="opp-cell" data-section="'+section+'" data-customer="'+safeCust+'">'+
     '<div class="opp-items">'+itemsHtml+'</div>'+
     '<button type="button" class="opp-add-btn" onclick="oppAddItem(\''+section+'\', this)">+ Add Opportunity</button></td>';
-}
-
-// ===== GitHub Gist Sync =====
-const GIST_STATE = Object.assign({}, gistConfigLoad());
-const GIST_FILENAME = "4sight-opportunities.json";
-
-async function gistApi(method, url, body) {
-  const headers = {
-    "Accept": "application/vnd.github+json",
-    "X-GitHub-Api-Version": "2022-11-28",
-    "Authorization": "Bearer " + GIST_STATE.token
-  };
-  if (body) headers["Content-Type"] = "application/json";
-  const resp = await fetch(url, { method, headers, body: body ? JSON.stringify(body) : undefined });
-  if (!resp.ok) {
-    let err = ""; try { err = (await resp.json()).message || ""; } catch(e) {}
-    throw new Error(resp.status + " " + resp.statusText + (err ? " — " + err : ""));
-  }
-  return resp.json();
-}
-async function gistPush() {
-  if (!GIST_STATE.token) throw new Error("No token configured");
-  const content = JSON.stringify(oppLoad(), null, 2);
-  const body = { description: "4Sight 4AI Opportunities (auto-synced)", files: { [GIST_FILENAME]: { content } } };
-  let result;
-  if (GIST_STATE.id) {
-    result = await gistApi("PATCH", "https://api.github.com/gists/" + encodeURIComponent(GIST_STATE.id), body);
-  } else {
-    body.public = false; // secret gist
-    result = await gistApi("POST", "https://api.github.com/gists", body);
-    GIST_STATE.id = result.id;
-  }
-  GIST_STATE.lastSync = new Date().toISOString();
-  gistConfigSave(GIST_STATE);
-  gistRefreshFab();
-  return result;
-}
-async function gistPull() {
-  if (!GIST_STATE.token) throw new Error("No token configured");
-  if (!GIST_STATE.id)    throw new Error("No Gist ID configured");
-  const data = await gistApi("GET", "https://api.github.com/gists/" + encodeURIComponent(GIST_STATE.id));
-  const file = data.files && data.files[GIST_FILENAME];
-  if (!file) throw new Error('File "'+GIST_FILENAME+'" not found in Gist');
-  let content = file.content;
-  if (file.truncated && file.raw_url) {
-    const r = await fetch(file.raw_url); if (!r.ok) throw new Error("Could not fetch raw file");
-    content = await r.text();
-  }
-  const obj = JSON.parse(content);
-  oppSave(obj);
-  GIST_STATE.lastSync = new Date().toISOString();
-  gistConfigSave(GIST_STATE);
-  renderEnterprise(); renderNewAccts(); gistRefreshFab();
-}
-let _gistAutoTimer = null;
-function gistAutoPush() {
-  if (!GIST_STATE.auto || !GIST_STATE.token) return;
-  clearTimeout(_gistAutoTimer);
-  _gistAutoTimer = setTimeout(() => {
-    gistSetStatus("Syncing…", "warn");
-    gistPush().then(() => gistSetStatus("Auto-synced ✓ "+new Date().toLocaleTimeString(), "ok"))
-              .catch(e => gistSetStatus("Sync failed: "+e.message, "error"));
-  }, 1500);
-}
-function gistSetStatus(msg, cls) {
-  const el = document.getElementById("gist-status");
-  if (!el) return;
-  el.textContent = msg;
-  el.className = "gist-status show " + (cls || "");
-}
-function gistRefreshFab() {
-  const fab = document.getElementById("gist-fab"); if (!fab) return;
-  const dot = fab.querySelector(".dot");
-  const label = fab.querySelector(".label");
-  if (!GIST_STATE.token) { dot.className = "dot"; label.textContent = "Sync"; fab.title = "Configure GitHub Gist sync"; }
-  else if (!GIST_STATE.id) { dot.className = "dot warn"; label.textContent = "Sync (not pushed)"; fab.title = "Token configured but no Gist yet — open settings to push"; }
-  else { dot.className = "dot ok"; const t = GIST_STATE.lastSync ? new Date(GIST_STATE.lastSync).toLocaleString() : "never"; label.textContent = "Synced"; fab.title = "Gist sync active. Last sync: " + t; }
-}
-function gistOpenModal() {
-  document.getElementById("gist-token").value = GIST_STATE.token || "";
-  document.getElementById("gist-id").value = GIST_STATE.id || "";
-  document.getElementById("gist-auto").checked = !!GIST_STATE.auto;
-  const lastSync = GIST_STATE.lastSync ? new Date(GIST_STATE.lastSync).toLocaleString() : "never";
-  gistSetStatus("Ready. Last sync: " + lastSync, "");
-  document.getElementById("gist-modal").classList.add("show");
-}
-function gistCloseModal() { document.getElementById("gist-modal").classList.remove("show"); }
-function gistSaveConfig() {
-  GIST_STATE.token = document.getElementById("gist-token").value.trim();
-  GIST_STATE.id    = document.getElementById("gist-id").value.trim();
-  GIST_STATE.auto  = document.getElementById("gist-auto").checked;
-  gistConfigSave(GIST_STATE); gistRefreshFab();
-  gistSetStatus("Settings saved" + (GIST_STATE.auto ? " — auto-sync ON" : ""), "ok");
-}
-async function gistDoPush() {
-  gistSaveConfig();
-  if (!GIST_STATE.token) { gistSetStatus("Please paste a Personal Access Token first.", "error"); return; }
-  gistSetStatus("Pushing to GitHub…", "warn");
-  try { await gistPush(); gistSetStatus("Pushed ✓ — Gist ID: "+GIST_STATE.id, "ok"); document.getElementById("gist-id").value = GIST_STATE.id; }
-  catch(e) { gistSetStatus("Push failed: "+e.message, "error"); }
-}
-async function gistDoPull() {
-  gistSaveConfig();
-  if (!GIST_STATE.token || !GIST_STATE.id) { gistSetStatus("Token and Gist ID are both required to pull.", "error"); return; }
-  if (!confirm("Pull will REPLACE all locally-saved opportunities with the contents of the Gist. Continue?")) return;
-  gistSetStatus("Pulling from GitHub…", "warn");
-  try { await gistPull(); gistSetStatus("Pulled ✓ "+new Date().toLocaleTimeString(), "ok"); }
-  catch(e) { gistSetStatus("Pull failed: "+e.message, "error"); }
-}
-async function gistTest() {
-  gistSaveConfig();
-  if (!GIST_STATE.token) { gistSetStatus("Paste a token first.", "error"); return; }
-  gistSetStatus("Testing token…", "warn");
-  try {
-    const u = await gistApi("GET", "https://api.github.com/user");
-    gistSetStatus("Token OK — authenticated as "+u.login, "ok");
-  } catch(e) { gistSetStatus("Token test failed: "+e.message, "error"); }
-}
-function gistClearConfig() {
-  if (!confirm("Clear the saved GitHub token and Gist ID from this browser? Your opportunities stay; only the sync config is removed.")) return;
-  GIST_STATE.token = ""; GIST_STATE.id = ""; GIST_STATE.auto = false; GIST_STATE.lastSync = "";
-  gistConfigSave(GIST_STATE);
-  document.getElementById("gist-token").value = "";
-  document.getElementById("gist-id").value = "";
-  document.getElementById("gist-auto").checked = false;
-  gistRefreshFab();
-  gistSetStatus("Sync config cleared.", "ok");
 }
 
 function fmtNum(n) {
@@ -1420,16 +1242,26 @@ renderNewAccts();
 renderRevenue();
 switchTab('overview');
 
-// Initialize Gist sync indicator
-gistRefreshFab();
-
-// Storage availability warning
-if (!OPP_STORAGE_OK) {
-  const warn = document.createElement('div');
-  warn.style.cssText = "position:fixed;bottom:80px;left:20px;z-index:1000;background:#e89c2c;color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(232,156,44,0.45);max-width:380px;line-height:1.4;";
-  warn.innerHTML = "⚠ Your browser is blocking local storage. Edits work this session but won't persist. Use <b>⬇ Backup Opps</b> or <b>🔗 Gist Sync</b> to save them. <button style='float:right;background:none;border:none;color:#fff;cursor:pointer;font-size:16px;font-weight:700;margin-left:8px' onclick='this.parentNode.remove()'>×</button>";
-  document.body.appendChild(warn);
-}
+// ===== Live sync bootstrap =====
+// Pull on load, then poll every 30s so any changes made by other users appear here
+workerPull().then(() => {
+  // After initial pull, re-render the opp tabs so saved items show
+  renderEnterprise();
+  renderNewAccts();
+});
+// Periodically pull to pick up changes from other users (every 30s)
+_pollTimer = setInterval(() => {
+  // Only auto-pull when no one is currently editing
+  const editing = Object.keys(OPP_EDIT).length > 0;
+  if (!editing) workerPull();
+}, 30000);
+// Refresh when tab regains focus too
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    const editing = Object.keys(OPP_EDIT).length > 0;
+    if (!editing) workerPull();
+  }
+});
 </script>
 
 </body>
