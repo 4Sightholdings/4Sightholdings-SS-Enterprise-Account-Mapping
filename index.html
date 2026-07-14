@@ -232,6 +232,43 @@
     transition: opacity 0.2s, transform 0.2s; transform: translateY(8px);
   }
   .opp-save-flash.show { opacity: 1; transform: translateY(0); }
+  /* ===== Editable ATU AE ===== */
+  .atu-cell { position: relative; min-width: 150px; vertical-align: top; }
+  .atu-view { display: flex; align-items: flex-start; gap: 6px; }
+  .atu-name { font-size: 13px; color: var(--text); line-height: 1.4; word-break: break-word; }
+  .atu-name.edited { font-weight: 700; }
+  .atu-name.empty { color: #9aa6b8; font-style: italic; }
+  .atu-edit-btn {
+    border: 1px solid var(--border); background: #fff; color: var(--navy-dark);
+    padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700;
+    cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
+    line-height: 1.4; font-family: inherit; white-space: nowrap;
+    opacity: 0; transform: translateY(-2px); pointer-events: none;
+  }
+  tr:hover .atu-edit-btn { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .atu-edit-btn:hover { background: var(--navy-dark); color: #fff; border-color: var(--navy-dark); }
+  .atu-editing { display: flex; flex-direction: column; gap: 6px; }
+  .atu-input {
+    width: 100%; padding: 5px 7px; border: 1px solid var(--cyan-bright);
+    border-radius: 4px; font: 13px inherit; color: var(--text); background: #fff;
+    box-sizing: border-box; box-shadow: 0 0 0 2px rgba(0,191,255,0.15);
+  }
+  .atu-input:focus { outline: none; }
+  .atu-edit-actions { display: flex; gap: 6px; }
+  .atu-mini {
+    border: 1px solid var(--border); background: #fff; color: var(--navy-dark);
+    padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;
+    cursor: pointer; font-family: inherit; line-height: 1.4;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .atu-mini-save   { background: var(--green); color: #fff; border-color: var(--green); }
+  .atu-mini-save:hover   { background: #157a5a; border-color: #157a5a; }
+  .atu-mini-cancel:hover { background: #e3e8f0; }
+  .atu-revert {
+    background: none; border: none; color: var(--muted); font-size: 11px;
+    cursor: pointer; text-decoration: underline; padding: 0; margin-top: 2px; align-self: flex-start;
+  }
+  .atu-revert:hover { color: var(--red); }
   /* ===== Live sync status badge ===== */
   .sync-badge {
     position: fixed; bottom: 20px; left: 20px; z-index: 800;
@@ -529,8 +566,9 @@ async function workerPull() {
     const isFirstLoad = !OPP_LOADED;
     OPP_STORE = obj || {};
     OPP_LOADED = true;
+    if (typeof buildAtuDatalists === "function") buildAtuDatalists();
     if (!isFirstLoad) {
-      // Refresh tabs that show opp data
+      // Refresh tabs that show opp + ATU data
       renderEnterprise();
       renderNewAccts();
     }
@@ -608,6 +646,112 @@ function oppSetItems(section, customer, items) {
 function oppDisplay(section, customer) {
   const items = oppGetItems(section, customer);
   return items.map(it => { let s = it.text || ""; if (it.date) s += " [" + it.date + "]"; return s; }).join(" | ");
+}
+
+// ===== Editable ATU AE (stored under store._atu[section][customer]) =====
+const ATU_EDIT = {}; // { "section::customer": true } while editing
+function atuOriginal(section, customer) {
+  const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
+  const row = list.find(r => r.customer === customer);
+  return row ? (row.atu || "") : "";
+}
+function atuOverride(section, customer) {
+  const store = oppLoad();
+  if (store._atu && store._atu[section] && (customer in store._atu[section])) return store._atu[section][customer];
+  return null; // null = no override
+}
+function atuDisplay(section, customer) {
+  const ov = atuOverride(section, customer);
+  return ov !== null ? ov : atuOriginal(section, customer);
+}
+function atuSet(section, customer, value) {
+  const store = oppLoad();
+  if (!store._atu) store._atu = {};
+  if (!store._atu[section]) store._atu[section] = {};
+  const orig = atuOriginal(section, customer);
+  if ((value || "") === (orig || "")) {
+    delete store._atu[section][customer]; // same as original -> remove override
+  } else {
+    store._atu[section][customer] = value;
+  }
+  oppSave(store);
+}
+function atuRefreshCell(section, customer) {
+  document.querySelectorAll('.atu-cell[data-section="'+section+'"]').forEach(cell => {
+    if (cell.dataset.customer === customer) {
+      cell.innerHTML = atuCellInner(section, customer);
+    }
+  });
+}
+function atuEditStart(section, btn) {
+  const cell = btn.closest(".atu-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  ATU_EDIT[section + "::" + c] = true;
+  atuRefreshCell(section, c);
+  setTimeout(() => {
+    document.querySelectorAll('.atu-cell[data-section="'+section+'"]').forEach(cc => {
+      if (cc.dataset.customer === c) { const inp = cc.querySelector(".atu-input"); if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } }
+    });
+  }, 0);
+}
+function atuEditSave(section, btn) {
+  const cell = btn.closest(".atu-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  const inp = cell.querySelector(".atu-input");
+  const val = (inp ? inp.value : "").trim();
+  atuSet(section, c, val);
+  delete ATU_EDIT[section + "::" + c];
+  atuRefreshCell(section, c);
+  oppFlash("Saved ✓");
+}
+function atuEditCancel(section, btn) {
+  const cell = btn.closest(".atu-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  delete ATU_EDIT[section + "::" + c];
+  atuRefreshCell(section, c);
+}
+function atuRevert(section, btn) {
+  const cell = btn.closest(".atu-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  if (!confirm('Reset ATU AE for "' + c + '" back to the original?')) return;
+  atuSet(section, c, atuOriginal(section, c));
+  delete ATU_EDIT[section + "::" + c];
+  atuRefreshCell(section, c);
+  oppFlash("Reverted");
+}
+function atuKeydown(section, ev) {
+  if (ev.key === "Enter") { ev.preventDefault(); atuEditSave(section, ev.target); }
+  else if (ev.key === "Escape") { ev.preventDefault(); atuEditCancel(section, ev.target); }
+}
+// Renders the inner content of an ATU cell (view or edit mode)
+function atuCellInner(section, customer) {
+  const editing = ATU_EDIT[section + "::" + customer];
+  const val = atuDisplay(section, customer);
+  const isEdited = atuOverride(section, customer) !== null;
+  if (editing) {
+    const listId = "atu-list-" + section;
+    return '<div class="atu-editing">'
+      + '<input class="atu-input" list="' + listId + '" value="' + escHtml(val).replace(/"/g,'&quot;') + '" '
+      +   'placeholder="Type AE name…" onkeydown="atuKeydown(\'' + section + '\', event)">'
+      + '<div class="atu-edit-actions">'
+      +   '<button type="button" class="atu-mini atu-mini-save" onclick="atuEditSave(\'' + section + '\', this)">💾 Save</button>'
+      +   '<button type="button" class="atu-mini atu-mini-cancel" onclick="atuEditCancel(\'' + section + '\', this)">Cancel</button>'
+      + '</div></div>';
+  }
+  const nameHtml = (val && val.trim())
+    ? '<span class="atu-name' + (isEdited ? ' edited' : '') + '">' + escHtml(val) + '</span>'
+    : '<span class="atu-name empty">—</span>';
+  const revert = isEdited
+    ? '<button type="button" class="atu-revert" onclick="atuRevert(\'' + section + '\', this)" title="Reset to original">revert</button>'
+    : '';
+  return '<div class="atu-view">' + nameHtml
+    + '<button type="button" class="atu-edit-btn" onclick="atuEditStart(\'' + section + '\', this)">✏ Edit</button>'
+    + '</div>' + revert;
+}
+function atuCellHtml(section, customer) {
+  const safeCust = escHtml(customer).replace(/"/g, "&quot;");
+  return '<td class="atu-cell" data-section="' + section + '" data-customer="' + safeCust + '">'
+    + atuCellInner(section, customer) + '</td>';
 }
 
 // ===== Date helpers =====
@@ -781,6 +925,23 @@ function populateDropdowns() {
     const atuSel = document.getElementById('f-'+t+'-atu');
     DATA.filters.atu.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; atuSel.appendChild(o); });
   });
+  // Build AE autocomplete datalists for the editable ATU cells
+  buildAtuDatalists();
+}
+function buildAtuDatalists() {
+  // Merge the known AE list with any AEs already present in the data (incl. edits)
+  const names = new Set();
+  (DATA.filters.atu || []).forEach(a => { if (a && a.trim()) names.add(a.trim()); });
+  DATA.enterprise.forEach(e => { const v = atuDisplay('enterprise', e.customer); if (v && v.trim()) names.add(v.trim()); });
+  DATA.newAccts.forEach(e => { const v = atuDisplay('newaccts', e.customer); if (v && v.trim()) names.add(v.trim()); });
+  const sorted = Array.from(names).sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  const opts = sorted.map(n => '<option value="' + escHtml(n).replace(/"/g,'&quot;') + '">').join('');
+  ['enterprise','newaccts'].forEach(sec => {
+    const id = 'atu-list-' + sec;
+    let dl = document.getElementById(id);
+    if (!dl) { dl = document.createElement('datalist'); dl.id = id; document.body.appendChild(dl); }
+    dl.innerHTML = opts;
+  });
 }
 
 // ----- Filters -----
@@ -813,8 +974,8 @@ function filterNewAccts() {
   const q = s.search.toLowerCase();
   return DATA.newAccts.filter(e => {
     if (s.ind && e.industry !== s.ind) return false;
-    if (s.atu && e.atu !== s.atu) return false;
-    if (q && !(e.customer.toLowerCase().includes(q) || e.atu.toLowerCase().includes(q) || e.industry.toLowerCase().includes(q) || (oppDisplay('newaccts', e.customer)||'').toLowerCase().includes(q))) return false;
+    if (s.atu && atuDisplay('newaccts', e.customer) !== s.atu) return false;
+    if (q && !(e.customer.toLowerCase().includes(q) || (atuDisplay('newaccts', e.customer)||'').toLowerCase().includes(q) || e.industry.toLowerCase().includes(q) || (oppDisplay('newaccts', e.customer)||'').toLowerCase().includes(q))) return false;
     return true;
   });
 }
@@ -915,7 +1076,7 @@ function renderEnterprise() {
     <tr>
       <td><strong>${escHtml(e.customer)}</strong></td>
       <td>${e.industry ? `<span class="badge-ind">${escHtml(e.industry)}</span>` : '<span class="muted">—</span>'}</td>
-      <td>${plain(e.atu)}</td>
+      ${atuCellHtml('enterprise', e.customer)}
       <td>${e.redboard ? '<span class="badge-yes">Yes</span>' : '<span class="badge-no">No</span>'}</td>
       ${oppCellHtml('enterprise', e.customer)}
     </tr>`).join('') : '<tr><td colspan="5" class="empty">No customers match the current filters.</td></tr>';
@@ -949,7 +1110,7 @@ function renderNewAccts() {
     <tr>
       <td><strong>${escHtml(e.customer)}</strong></td>
       <td>${e.industry ? `<span class="badge-ind">${escHtml(e.industry)}</span>` : '<span class="muted">—</span>'}</td>
-      <td>${plain(e.atu)}</td>
+      ${atuCellHtml('newaccts', e.customer)}
       ${oppCellHtml('newaccts', e.customer)}
     </tr>`).join('') : '<tr><td colspan="4" class="empty">No prospects match the current filters.</td></tr>';
 
@@ -1075,7 +1236,7 @@ function exportCSV(tab) {
       const items = oppGetItems('enterprise', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      return [e.customer, e.industry, e.atu, e.redboard?'Yes':'No', txt, dts];
+      return [e.customer, e.industry, atuDisplay('enterprise', e.customer), e.redboard?'Yes':'No', txt, dts];
     });
     filename = 'enterprise-customers.csv';
   } else if (tab === 'newaccts') {
@@ -1085,7 +1246,7 @@ function exportCSV(tab) {
       const items = oppGetItems('newaccts', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      return [e.customer, e.industry, e.atu, txt, dts];
+      return [e.customer, e.industry, atuDisplay('newaccts', e.customer), txt, dts];
     });
     filename = 'new-accounts.csv';
   } else if (tab === 'revenue') {
