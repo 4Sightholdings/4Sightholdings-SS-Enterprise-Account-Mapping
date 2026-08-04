@@ -215,14 +215,7 @@
   .opp-edit-date:focus { outline: none; border-color: var(--cyan-bright); box-shadow: 0 0 0 2px rgba(0,191,255,0.15); }
   .opp-edit-clear { background: none; border: none; color: var(--muted); font-size: 11px; cursor: pointer; text-decoration: underline; padding: 2px; }
   .opp-edit-clear:hover { color: var(--red); }
-  .opp-edit-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
-  .opp-edit-flash {
-    animation: oppEditPulse .6s ease-out;
-  }
-  @keyframes oppEditPulse {
-    0%   { box-shadow: 0 0 0 0 rgba(0,191,255,.55); border-color: var(--cyan-bright); }
-    100% { box-shadow: 0 0 0 8px rgba(0,191,255,0); }
-  }
+  .opp-edit-actions { display: flex; gap: 6px; justify-content: flex-end; }
   .opp-add-btn {
     margin-top: 8px; width: 100%;
     background: #fff; color: var(--navy-dark); border: 1.5px dashed var(--border);
@@ -259,30 +252,41 @@
     0%,100% { opacity: 1; transform: scale(1); }
     50%     { opacity: 0.5; transform: scale(1.2); }
   }
-  /* ===== Inline editable fields (Customer / Industry / Individual / Redboard) ===== */
-  .ed-cell { position:relative; min-width:150px; vertical-align:top; }
-  .ed-view { display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; }
+  /* ===== Expandable editable cells ===== */
+  .ed-cell { position:relative; min-width:170px; vertical-align:top; }
+  .ed-view { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
   .ed-val { line-height:1.4; word-break:break-word; }
   .ed-val.edited { color:var(--green); font-weight:700; }
-  .ed-actions { display:flex; gap:4px; opacity:0; transform:translateY(-2px);
-                transition:opacity .15s, transform .15s; pointer-events:none; }
-  tr:hover .ed-actions { opacity:1; transform:translateY(0); pointer-events:auto; }
-  .ed-editing { display:flex; flex-direction:column; gap:6px; }
-  .ed-input, .ed-select { width:100%; padding:5px 7px; border:1px solid var(--cyan-bright); border-radius:4px;
-              font:13px inherit; color:var(--text); background:#fff; box-sizing:border-box;
-              box-shadow:0 0 0 2px rgba(0,191,255,.15); font-family:inherit; }
-  .ed-input:focus, .ed-select:focus { outline:none; }
-  .ed-btns { display:flex; gap:6px; }
-  .b { border:1px solid var(--border); background:#fff; color:var(--navy-dark); padding:3px 8px;
+  .ed-edit-btn {
+    border:1px solid var(--border); background:#fff; color:var(--navy-dark);
+    padding:3px 9px; border-radius:4px; font-size:11px; font-weight:700;
+    cursor:pointer; font-family:inherit; line-height:1.4; white-space:nowrap;
+    transition:background .15s,color .15s,border-color .15s,opacity .15s; opacity:.5;
+  }
+  tr:hover .ed-edit-btn { opacity:1; }
+  .ed-edit-btn:hover { background:var(--navy-dark); color:#fff; border-color:var(--navy-dark); opacity:1; }
+  .ed-editing {
+    display:flex; flex-direction:column; gap:8px;
+    background:#f3f9ff; border:1px solid var(--cyan-bright); border-radius:6px;
+    padding:8px; box-shadow:0 0 0 3px rgba(0,191,255,.12);
+    animation:edExpand .18s ease-out;
+  }
+  @keyframes edExpand { from{opacity:0;transform:translateY(-4px);} to{opacity:1;transform:translateY(0);} }
+  .ed-input, .ed-select {
+    width:100%; padding:6px 8px; border:1px solid var(--border); border-radius:4px;
+    font:13px inherit; color:var(--text); background:#fff; box-sizing:border-box; font-family:inherit;
+  }
+  .ed-input:focus, .ed-select:focus { outline:none; border-color:var(--cyan-bright); box-shadow:0 0 0 2px rgba(0,191,255,.18); }
+  .ed-btns { display:flex; gap:6px; flex-wrap:wrap; }
+  .b { border:1px solid var(--border); background:#fff; color:var(--navy-dark); padding:4px 9px;
        border-radius:4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit;
        line-height:1.4; white-space:nowrap; transition:background .15s,color .15s,border-color .15s; }
   .b:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); }
-  .b-edit:hover { background:var(--navy-dark); color:#fff; border-color:var(--navy-dark); }
   .b-save { background:var(--green); color:#fff; border-color:var(--green); }
   .b-save:hover { background:#157a5a; border-color:#157a5a; }
+  .b-cancel:hover { background:var(--amber); color:#fff; border-color:var(--amber); }
   .b-del:hover { background:var(--red); color:#fff; border-color:var(--red); }
-  .b-cancel:hover { background:#e3e8f0; }
-  /* ===== Redboard year switcher (in table header) ===== */
+  /* ===== Redboard year switcher ===== */
   .rb-head { display:flex; align-items:center; gap:6px; white-space:nowrap; }
   .rb-yr-btn { background:rgba(255,255,255,.16); color:#fff; border:none; border-radius:4px;
                width:20px; height:20px; font-size:12px; font-weight:800; cursor:pointer; line-height:1;
@@ -570,8 +574,8 @@
 <!-- ===== Attach File / Link modal ===== -->
 <div class="modal-bd" id="att-modal" onclick="if(event.target===this)attClose()">
   <div class="modal">
-    <h3>📎 Add Attachment</h3>
-    <div class="m-sub" id="att-for">for —</div>
+    <h3>&#128206; Add Attachment</h3>
+    <div class="m-sub" id="att-for">for &mdash;</div>
     <div class="fld">
       <label for="att-title">Display name</label>
       <input type="text" id="att-title" placeholder="e.g. Signed proposal, Scoping doc, Meeting notes" autocomplete="off">
@@ -579,18 +583,18 @@
     <div class="fld">
       <label for="att-url">Link (SharePoint / Teams / OneDrive / any URL)</label>
       <input type="url" id="att-url" placeholder="https://4sight.sharepoint.com/..." autocomplete="off" spellcheck="false">
-      <div class="help"><strong>Recommended</strong> — links keep the dashboard fast and respect existing M365 permissions.</div>
+      <div class="help"><strong>Recommended</strong> &mdash; links keep the dashboard fast and respect existing M365 permissions.</div>
     </div>
     <div class="divider">or</div>
     <div class="drop" onclick="document.getElementById('att-file').click()">
-      📁 <strong>Click to browse for a file</strong><br>
-      <span style="font-size:11px">Max 400 KB · larger files should be linked from SharePoint instead</span>
+      &#128193; <strong>Click to browse for a file</strong><br>
+      <span style="font-size:11px">Max 400 KB &middot; larger files should be linked from SharePoint instead</span>
     </div>
     <input type="file" id="att-file" style="display:none" onchange="attPickFile(this)">
     <div id="att-picked" style="font-size:12px;color:#1ca97c;font-weight:700;margin-top:8px"></div>
     <div class="m-actions">
       <button type="button" class="btn secondary" onclick="attClose()">Cancel</button>
-      <button type="button" class="btn" style="background:#1ca97c" onclick="attSave()">💾 Save Attachment</button>
+      <button type="button" class="btn" style="background:#1ca97c" onclick="attSave()">&#128190; Save Attachment</button>
     </div>
   </div>
 </div>
@@ -809,15 +813,6 @@ function oppClearDate(section, btn) {
   const ed = btn.closest(".opp-item-edit"); if (!ed) return;
   ed.querySelector(".opp-edit-date").value = "";
 }
-// "Edit" inside the edit form — jumps the cursor into the description field
-function oppFocusEdit(btn) {
-  const ed = btn.closest(".opp-item-edit"); if (!ed) return;
-  const ta = ed.querySelector(".opp-edit-text"); if (!ta) return;
-  ta.focus();
-  ta.setSelectionRange(ta.value.length, ta.value.length);
-  ta.classList.add("opp-edit-flash");
-  setTimeout(() => ta.classList.remove("opp-edit-flash"), 600);
-}
 
 // ===== Cell HTML =====
 function oppCellHtml(section, customer) {
@@ -842,8 +837,6 @@ function oppCellHtml(section, customer) {
     '<input type="date" class="opp-edit-date" value="'+escHtml(it.date || "")+'">'+
     '<button type="button" class="opp-edit-clear" onclick="oppClearDate(\''+section+'\', this)">clear</button></div>'+
     '<div class="opp-edit-actions">'+
-    '<button type="button" class="opp-btn opp-btn-edit" onclick="oppFocusEdit(this)">✏ Edit</button>'+
-    '<button type="button" class="opp-btn opp-btn-delete" onclick="oppDeleteItem(\''+section+'\', this, '+idx+')">🗑 Delete</button>'+
     '<button type="button" class="opp-btn opp-btn-cancel" onclick="oppCancelEdit(\''+section+'\', this)">Cancel</button>'+
     '<button type="button" class="opp-btn opp-btn-save" onclick="oppSaveItem(\''+section+'\', this, '+idx+')">💾 Save</button>'+
     '</div></div></div>';
@@ -859,13 +852,13 @@ function oppCellHtml(section, customer) {
     '<div class="opp-items">'+itemsHtml+'</div>'+
     '<div class="cell-actions">'+
       '<button type="button" class="opp-add-btn" onclick="oppAddItem(\''+section+'\', this)">+ Add Opportunity</button>'+
-      '<button type="button" class="opp-attach-btn" onclick="attOpen(\''+section+'\', this)">📎 Attach File / Link</button>'+
+      '<button type="button" class="opp-attach-btn" onclick="attOpen(\''+section+'\', this)">\uD83D\uDCCE Attach File / Link</button>'+
     '</div>'+
     attListHtml(section, customer) + '</td>';
 }
 
 // ===================================================================
-// ===== Inline editable fields: Customer / Industry / Individual =====
+// ===== Expandable editable fields: Customer / Industry / Individual
 // Stored in OPP_STORE._fields[section][customerKey] = {cust,ind,atu}
 // ===================================================================
 const FIELD_EDIT = {};
@@ -910,6 +903,7 @@ function fldRefreshCell(section, custKey, field) {
     if (cell.dataset.customer === custKey) cell.innerHTML = fldCellInner(section, custKey, field);
   });
 }
+// EXPAND — click Edit to reveal Save / Cancel / Delete
 function fldEditStart(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
   const c = cell.dataset.customer;
@@ -925,24 +919,18 @@ function fldEditSave(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
   const c = cell.dataset.customer;
   const el = cell.querySelector(".ed-input,.ed-select");
-  const val = (el ? el.value : "").trim();
-  fldSet(section, c, field, val);
+  fldSet(section, c, field, (el ? el.value : "").trim());
   delete FIELD_EDIT[fldKey(section, c, field)];
   fldRefreshCell(section, c, field);
   if (field === "atu") buildAtuDatalist();
-  oppFlash("Saved ✓");
+  oppFlash("Saved \u2713");
 }
+// COLLAPSE without saving
 function fldEditCancel(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
   const c = cell.dataset.customer;
   delete FIELD_EDIT[fldKey(section, c, field)];
   fldRefreshCell(section, c, field);
-}
-function fldQuickSave(section, btn, field) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  fldSet(section, c, field, fldDisplay(section, c, field));
-  oppFlash("Saved ✓");
 }
 function fldDelete(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
@@ -962,32 +950,32 @@ function fldCellInner(section, custKey, field) {
   const editing = FIELD_EDIT[fldKey(section, custKey, field)];
   const val = fldDisplay(section, custKey, field);
   const edited = fldIsEdited(section, custKey, field);
+  // ---- EXPANDED ----
   if (editing) {
     const listAttr = field === "atu" ? ' list="people-list"' : '';
-    const ph = field === "atu" ? ' placeholder="Type a name…"'
-             : field === "ind" ? ' placeholder="Industry…"' : ' placeholder="Customer name…"';
+    const ph = field === "atu" ? ' placeholder="Type a name\u2026"'
+             : field === "ind" ? ' placeholder="Industry\u2026"' : ' placeholder="Customer name\u2026"';
     return '<div class="ed-editing">'
       + '<input class="ed-input"' + listAttr + ph + ' value="' + escHtml(val).replace(/"/g,'&quot;') + '"'
       +   ' onkeydown="fldKeydown(\'' + section + '\', event, \'' + field + '\')">'
       + '<div class="ed-btns">'
-      +   '<button type="button" class="b b-save" onclick="fldEditSave(\'' + section + '\', this, \'' + field + '\')">💾 Save</button>'
-      +   '<button type="button" class="b b-cancel" onclick="fldEditCancel(\'' + section + '\', this, \'' + field + '\')">Cancel</button>'
+      +   '<button type="button" class="b b-save" onclick="fldEditSave(\'' + section + '\', this, \'' + field + '\')">\uD83D\uDCBE Save</button>'
+      +   '<button type="button" class="b b-cancel" onclick="fldEditCancel(\'' + section + '\', this, \'' + field + '\')">\u21A9 Cancel</button>'
+      +   '<button type="button" class="b b-del" onclick="fldDelete(\'' + section + '\', this, \'' + field + '\')">\uD83D\uDDD1 Delete</button>'
       + '</div></div>';
   }
+  // ---- COLLAPSED (Edit only) ----
   let shown;
   if (field === "ind") {
-    shown = val ? '<span class="badge-ind">' + escHtml(val) + '</span>' : '<span class="muted">—</span>';
+    shown = val ? '<span class="badge-ind">' + escHtml(val) + '</span>' : '<span class="muted">\u2014</span>';
   } else if (field === "cust") {
-    shown = '<span class="ed-val ' + (edited ? 'edited' : '') + '"><strong>' + (escHtml(val) || '—') + '</strong></span>';
+    shown = '<span class="ed-val ' + (edited ? 'edited' : '') + '"><strong>' + (escHtml(val) || '\u2014') + '</strong></span>';
   } else {
-    shown = val ? '<span class="ed-val ' + (edited ? 'edited' : '') + '">' + escHtml(val) + '</span>' : '<span class="muted">—</span>';
+    shown = val ? '<span class="ed-val ' + (edited ? 'edited' : '') + '">' + escHtml(val) + '</span>' : '<span class="muted">\u2014</span>';
   }
   return '<div class="ed-view">' + shown
-    + '<div class="ed-actions">'
-    +   '<button type="button" class="b b-edit" onclick="fldEditStart(\'' + section + '\', this, \'' + field + '\')">✏ Edit</button>'
-    +   '<button type="button" class="b b-save" onclick="fldQuickSave(\'' + section + '\', this, \'' + field + '\')">💾 Save</button>'
-    +   '<button type="button" class="b b-del"  onclick="fldDelete(\'' + section + '\', this, \'' + field + '\')">🗑 Delete</button>'
-    + '</div></div>';
+    + '<button type="button" class="ed-edit-btn" title="Edit" onclick="fldEditStart(\'' + section + '\', this, \'' + field + '\')">\u270F Edit</button>'
+    + '</div>';
 }
 function fldCellHtml(section, custKey, field) {
   const safe = escHtml(custKey).replace(/"/g, "&quot;");
@@ -1006,20 +994,13 @@ function buildAtuDatalist() {
 }
 
 // ===================================================================
-// ===== REDBOARD — per-year status with Edit/Save/Delete =====
-// Stored in OPP_STORE._rb[year][section][customer] = true|false
+// ===== REDBOARD (per-year, expandable) =====
 // ===================================================================
-const RB_BASE_YEAR = 2026;                 // year the original data represents
-let RB_YEAR = RB_BASE_YEAR;                // currently displayed year
+const RB_BASE_YEAR = 2026;
+let RB_YEAR = RB_BASE_YEAR;
 const RB_MIN_YEAR = 2024, RB_MAX_YEAR = 2035;
-const RB_EDIT = {};                        // { "section::customer": true }
+const RB_EDIT = {};
 
-function rbOriginal(section, custKey) {
-  if (RB_YEAR !== RB_BASE_YEAR) return false;   // only the base year has seed data
-  const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
-  const row = list.find(r => r.customer === custKey);
-  return row ? !!row.redboard : false;
-}
 function rbOverride(section, custKey, year) {
   const y = String(year || RB_YEAR);
   const store = oppLoad();
@@ -1050,10 +1031,7 @@ function rbSet(section, custKey, value, year) {
 function rbClear(section, custKey, year) {
   const y = String(year || RB_YEAR);
   const store = oppLoad();
-  if (store._rb && store._rb[y] && store._rb[y][section]) {
-    delete store._rb[y][section][custKey];
-    oppSave(store);
-  }
+  if (store._rb && store._rb[y] && store._rb[y][section]) { delete store._rb[y][section][custKey]; oppSave(store); }
 }
 function rbRefreshCell(section, custKey) {
   document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="rb"]').forEach(cell => {
@@ -1079,19 +1057,12 @@ function rbEditSave(section, btn) {
   delete RB_EDIT[section + "::" + c];
   rbRefreshCell(section, c);
   if (section === "enterprise") renderEnterpriseKpis();
-  oppFlash("Saved ✓");
+  oppFlash("Saved \u2713");
 }
 function rbEditCancel(section, btn) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
   delete RB_EDIT[section + "::" + cell.dataset.customer];
   rbRefreshCell(section, cell.dataset.customer);
-}
-function rbQuickSave(section, btn) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  rbSet(section, c, rbDisplay(section, c));
-  rbRefreshCell(section, c);
-  oppFlash("Saved ✓");
 }
 function rbDelete(section, btn) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
@@ -1114,25 +1085,22 @@ function rbCellInner(section, custKey) {
       +   '<option value="no"'  + (!val ? ' selected' : '') + '>No</option>'
       + '</select>'
       + '<div class="ed-btns">'
-      +   '<button type="button" class="b b-save" onclick="rbEditSave(\'' + section + '\', this)">💾 Save</button>'
-      +   '<button type="button" class="b b-cancel" onclick="rbEditCancel(\'' + section + '\', this)">Cancel</button>'
+      +   '<button type="button" class="b b-save" onclick="rbEditSave(\'' + section + '\', this)">\uD83D\uDCBE Save</button>'
+      +   '<button type="button" class="b b-cancel" onclick="rbEditCancel(\'' + section + '\', this)">\u21A9 Cancel</button>'
+      +   '<button type="button" class="b b-del" onclick="rbDelete(\'' + section + '\', this)">\uD83D\uDDD1 Delete</button>'
       + '</div></div>';
   }
   const badge = val ? '<span class="badge-yes">Yes</span>' : '<span class="badge-no">No</span>';
-  const mark  = edited ? ' <span style="color:var(--green);font-weight:800" title="Edited for ' + RB_YEAR + '">•</span>' : '';
+  const mark  = edited ? ' <span style="color:var(--green);font-weight:800" title="Edited for ' + RB_YEAR + '">\u2022</span>' : '';
   return '<div class="ed-view">' + badge + mark
-    + '<div class="ed-actions">'
-    +   '<button type="button" class="b b-edit" onclick="rbEditStart(\'' + section + '\', this)">✏ Edit</button>'
-    +   '<button type="button" class="b b-save" onclick="rbQuickSave(\'' + section + '\', this)">💾 Save</button>'
-    +   '<button type="button" class="b b-del"  onclick="rbDelete(\'' + section + '\', this)">🗑 Delete</button>'
-    + '</div></div>';
+    + '<button type="button" class="ed-edit-btn" title="Edit" onclick="rbEditStart(\'' + section + '\', this)">\u270F Edit</button>'
+    + '</div>';
 }
 function rbCellHtml(section, custKey) {
   const safe = escHtml(custKey).replace(/"/g, "&quot;");
   return '<td class="ed-cell" data-section="' + section + '" data-customer="' + safe + '" data-field="rb">'
     + rbCellInner(section, custKey) + '</td>';
 }
-// Year navigation
 function rbShiftYear(delta, ev) {
   if (ev) { ev.stopPropagation(); ev.preventDefault(); }
   const y = RB_YEAR + delta;
@@ -1146,14 +1114,13 @@ function rbHeadHtml() {
   return '<div class="rb-head">'
     + '<button type="button" class="rb-yr-btn" title="Previous year"'
     +   (RB_YEAR <= RB_MIN_YEAR ? ' disabled' : '')
-    +   ' onclick="rbShiftYear(-1, event)">‹</button>'
+    +   ' onclick="rbShiftYear(-1, event)">\u2039</button>'
     + '<span>Redboard</span><span class="rb-yr-val">' + RB_YEAR + '</span>'
     + '<button type="button" class="rb-yr-btn" title="Next year"'
     +   (RB_YEAR >= RB_MAX_YEAR ? ' disabled' : '')
-    +   ' onclick="rbShiftYear(1, event)">›</button>'
-    + '<span class="sort-ind">↕</span></div>';
+    +   ' onclick="rbShiftYear(1, event)">\u203A</button>'
+    + '<span class="sort-ind">\u2195</span></div>';
 }
-// Copy all statuses from the previous year into the current year
 function rbCopyFromPrevYear() {
   const prev = RB_YEAR - 1;
   if (prev < RB_MIN_YEAR) return;
@@ -1173,10 +1140,8 @@ function rbCopyFromPrevYear() {
 
 // ===================================================================
 // ===== Attachments =====
-// Stored in OPP_STORE._att[section][customer] = [{n,u,k,when}]
 // ===================================================================
 let _attTarget = null, _attPicked = null;
-
 function attGet(section, customer) {
   const store = oppLoad();
   const a = store._att && store._att[section] && store._att[section][customer];
@@ -1195,15 +1160,15 @@ function attListHtml(section, customer) {
   if (!list.length) return '';
   const safe = escHtml(customer).replace(/"/g,'&quot;');
   return '<div class="att-box" data-section="'+section+'" data-customer="'+safe+'">'
-    + '<div class="att-hdr">📎 Attachments (' + list.length + ')</div>'
+    + '<div class="att-hdr">\uD83D\uDCCE Attachments (' + list.length + ')</div>'
     + list.map((f, k) => {
         const isLink = f.k === 'link';
         return '<div class="att-row">'
-          + '<span class="att-icon">' + (isLink ? '🔗' : '📄') + '</span>'
+          + '<span class="att-icon">' + (isLink ? '\uD83D\uDD17' : '\uD83D\uDCC4') + '</span>'
           + '<a class="att-name" href="' + (isLink ? escHtml(f.u) : (f.u || '#')) + '" target="_blank" rel="noopener"'
           +   (isLink ? '' : ' download="' + escHtml(f.n).replace(/"/g,'&quot;') + '"') + '>' + escHtml(f.n) + '</a>'
           + '<span class="att-meta">' + escHtml(f.when || '') + '</span>'
-          + '<button type="button" class="att-del" title="Remove" onclick="attDelete(\'' + section + '\', this, ' + k + ')">×</button>'
+          + '<button type="button" class="att-del" title="Remove" onclick="attDelete(\'' + section + '\', this, ' + k + ')">\u00D7</button>'
           + '</div>';
       }).join('')
     + '</div>';
@@ -1232,8 +1197,7 @@ function attOpen(section, btn) {
 function attClose() { document.getElementById('att-modal').classList.remove('show'); }
 function attPickFile(inp) {
   const f = inp.files && inp.files[0]; if (!f) return;
-  const MAX = 400 * 1024;
-  if (f.size > MAX) {
+  if (f.size > 400 * 1024) {
     alert('"' + f.name + '" is ' + (f.size/1024).toFixed(0) + ' KB.\n\n'
       + 'Files larger than 400 KB are not supported because every attachment is stored in the shared '
       + 'sync file and would slow the dashboard for everyone.\n\n'
@@ -1243,7 +1207,7 @@ function attPickFile(inp) {
   const r = new FileReader();
   r.onload = () => {
     _attPicked = { name: f.name, dataUrl: r.result, size: f.size };
-    document.getElementById('att-picked').textContent = '✓ Selected: ' + f.name + ' (' + (f.size/1024).toFixed(0) + ' KB)';
+    document.getElementById('att-picked').textContent = '\u2713 Selected: ' + f.name + ' (' + (f.size/1024).toFixed(0) + ' KB)';
     const t = document.getElementById('att-title');
     if (!t.value.trim()) t.value = f.name;
   };
@@ -1259,10 +1223,10 @@ function attSave() {
   if (url) list.push({ n: title || url, u: url, k: 'link', when: when });
   else     list.push({ n: title || _attPicked.name, u: _attPicked.dataUrl, k: 'file', when: when });
   attSetList(_attTarget.section, _attTarget.customer, list);
-  const t = _attTarget;
+  const tg = _attTarget;
   attClose();
-  attRefreshCell(t.section, t.customer);
-  oppFlash('Attachment added ✓');
+  attRefreshCell(tg.section, tg.customer);
+  oppFlash('Attachment added \u2713');
 }
 function attDelete(section, btn, idx) {
   const box = btn.closest('.att-box'); if (!box) return;
@@ -1274,6 +1238,26 @@ function attDelete(section, btn, idx) {
   attSetList(section, customer, list);
   attRefreshCell(section, customer);
   oppFlash('Attachment removed');
+}
+// KPI helper + header sync
+function renderEnterpriseKpis(rows, total) {
+  if (!rows) { rows = filterEnterprise(); total = rows.length; }
+  const redboard = rows.filter(r => rbDisplay('enterprise', r.customer)).length;
+  const inds = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'ind')).filter(Boolean)).size;
+  const aes  = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'atu')).filter(Boolean)).size;
+  document.getElementById('enterprise-kpis').innerHTML =
+    '<div class="kpi"><div class="label">Customers</div><div class="value">' + fmtNum(total) + '</div></div>'
+  + '<div class="kpi alt"><div class="label">Redboard ' + RB_YEAR + '</div><div class="value">' + fmtNum(redboard) + '</div></div>'
+  + '<div class="kpi green"><div class="label">Industries</div><div class="value">' + fmtNum(inds) + '</div></div>'
+  + '<div class="kpi amber"><div class="label">Individuals</div><div class="value">' + fmtNum(aes) + '</div></div>';
+}
+function rbSyncHeader() {
+  const th = document.querySelector('#tbl-enterprise th[data-key="redboard"]');
+  if (th) th.innerHTML = rbHeadHtml();
+  const lbl = document.getElementById('rb-filter-label');
+  if (lbl) lbl.textContent = 'Redboard ' + RB_YEAR + ' only';
+  const cp = document.getElementById('rb-copy-btn');
+  if (cp) cp.textContent = '\u29C9 Copy ' + (RB_YEAR - 1) + ' \u2192 ' + RB_YEAR;
 }
 
 function fmtNum(n) {
@@ -1434,27 +1418,6 @@ function renderContacts() {
   updateSortIndicators('tbl-contacts', s.sortCol, s.sortDir);
   renderPager('pager-contacts', total, s.perPage, s.page, p => { STATE.contacts.page=p; renderContacts(); });
   document.getElementById('badge-contacts').textContent = total.toLocaleString();
-}
-
-function renderEnterpriseKpis(rows, total) {
-  if (!rows) { rows = filterEnterprise(); total = rows.length; }
-  const redboard = rows.filter(r => rbDisplay('enterprise', r.customer)).length;
-  const inds = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'ind')).filter(Boolean)).size;
-  const aes  = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'atu')).filter(Boolean)).size;
-  document.getElementById('enterprise-kpis').innerHTML =
-    '<div class="kpi"><div class="label">Customers</div><div class="value">' + fmtNum(total) + '</div></div>'
-  + '<div class="kpi alt"><div class="label">Redboard ' + RB_YEAR + '</div><div class="value">' + fmtNum(redboard) + '</div></div>'
-  + '<div class="kpi green"><div class="label">Industries</div><div class="value">' + fmtNum(inds) + '</div></div>'
-  + '<div class="kpi amber"><div class="label">Individuals</div><div class="value">' + fmtNum(aes) + '</div></div>';
-}
-// Keep the Redboard column header + filter label in sync with the selected year
-function rbSyncHeader() {
-  const th = document.querySelector('#tbl-enterprise th[data-key="redboard"]');
-  if (th) th.innerHTML = rbHeadHtml();
-  const lbl = document.getElementById('rb-filter-label');
-  if (lbl) lbl.textContent = 'Redboard ' + RB_YEAR + ' only';
-  const cp = document.getElementById('rb-copy-btn');
-  if (cp) cp.textContent = '⧉ Copy ' + (RB_YEAR - 1) + ' → ' + RB_YEAR;
 }
 
 function renderEnterprise() {
