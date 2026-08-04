@@ -232,43 +232,6 @@
     transition: opacity 0.2s, transform 0.2s; transform: translateY(8px);
   }
   .opp-save-flash.show { opacity: 1; transform: translateY(0); }
-  /* ===== Editable ATU AE ===== */
-  .atu-cell { position: relative; min-width: 150px; vertical-align: top; }
-  .atu-view { display: flex; align-items: flex-start; gap: 6px; }
-  .atu-name { font-size: 13px; color: var(--text); line-height: 1.4; word-break: break-word; }
-  .atu-name.edited { font-weight: 700; }
-  .atu-name.empty { color: #9aa6b8; font-style: italic; }
-  .atu-edit-btn {
-    border: 1px solid var(--border); background: #fff; color: var(--navy-dark);
-    padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700;
-    cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
-    line-height: 1.4; font-family: inherit; white-space: nowrap;
-    opacity: 0; transform: translateY(-2px); pointer-events: none;
-  }
-  tr:hover .atu-edit-btn { opacity: 1; transform: translateY(0); pointer-events: auto; }
-  .atu-edit-btn:hover { background: var(--navy-dark); color: #fff; border-color: var(--navy-dark); }
-  .atu-editing { display: flex; flex-direction: column; gap: 6px; }
-  .atu-input {
-    width: 100%; padding: 5px 7px; border: 1px solid var(--cyan-bright);
-    border-radius: 4px; font: 13px inherit; color: var(--text); background: #fff;
-    box-sizing: border-box; box-shadow: 0 0 0 2px rgba(0,191,255,0.15);
-  }
-  .atu-input:focus { outline: none; }
-  .atu-edit-actions { display: flex; gap: 6px; }
-  .atu-mini {
-    border: 1px solid var(--border); background: #fff; color: var(--navy-dark);
-    padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 700;
-    cursor: pointer; font-family: inherit; line-height: 1.4;
-    transition: background 0.15s, color 0.15s, border-color 0.15s;
-  }
-  .atu-mini-save   { background: var(--green); color: #fff; border-color: var(--green); }
-  .atu-mini-save:hover   { background: #157a5a; border-color: #157a5a; }
-  .atu-mini-cancel:hover { background: #e3e8f0; }
-  .atu-revert {
-    background: none; border: none; color: var(--muted); font-size: 11px;
-    cursor: pointer; text-decoration: underline; padding: 0; margin-top: 2px; align-self: flex-start;
-  }
-  .atu-revert:hover { color: var(--red); }
   /* ===== Live sync status badge ===== */
   .sync-badge {
     position: fixed; bottom: 20px; left: 20px; z-index: 800;
@@ -289,6 +252,67 @@
     0%,100% { opacity: 1; transform: scale(1); }
     50%     { opacity: 0.5; transform: scale(1.2); }
   }
+  /* ===== Inline editable fields (Customer / Industry / Individual) ===== */
+  .ed-cell { position:relative; min-width:170px; vertical-align:top; }
+  .ed-view { display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; }
+  .ed-val { line-height:1.4; word-break:break-word; }
+  .ed-val.edited { color:var(--green); font-weight:700; }
+  .ed-actions { display:flex; gap:4px; opacity:0; transform:translateY(-2px);
+                transition:opacity .15s, transform .15s; pointer-events:none; }
+  tr:hover .ed-actions { opacity:1; transform:translateY(0); pointer-events:auto; }
+  .ed-editing { display:flex; flex-direction:column; gap:6px; }
+  .ed-input { width:100%; padding:5px 7px; border:1px solid var(--cyan-bright); border-radius:4px;
+              font:13px inherit; color:var(--text); background:#fff; box-sizing:border-box;
+              box-shadow:0 0 0 2px rgba(0,191,255,.15); }
+  .ed-input:focus { outline:none; }
+  .ed-btns { display:flex; gap:6px; }
+  .b { border:1px solid var(--border); background:#fff; color:var(--navy-dark); padding:3px 8px;
+       border-radius:4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit;
+       line-height:1.4; white-space:nowrap; transition:background .15s,color .15s,border-color .15s; }
+  .b:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); }
+  .b-edit:hover { background:var(--navy-dark); color:#fff; border-color:var(--navy-dark); }
+  .b-save { background:var(--green); color:#fff; border-color:var(--green); }
+  .b-save:hover { background:#157a5a; border-color:#157a5a; }
+  .b-del:hover { background:var(--red); color:#fff; border-color:var(--red); }
+  .b-cancel:hover { background:#e3e8f0; }
+  /* ===== Attachments ===== */
+  .cell-actions { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+  .opp-attach-btn { width:100%; background:#fff; color:var(--navy-dark); border:1.5px dashed var(--border);
+                    padding:8px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;
+                    font-family:inherit; transition:background .15s,border-color .15s,color .15s; }
+  .opp-attach-btn:hover { background:#eef6ff; border-color:var(--navy-mid); border-style:solid; color:var(--navy-darkest); }
+  .att-box { margin-top:8px; padding:8px 10px; background:#f7fbff; border:1px solid #dbeafe; border-radius:6px; }
+  .att-hdr { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--navy-dark);
+             font-weight:700; margin-bottom:6px; }
+  .att-row { display:flex; align-items:center; gap:8px; background:#fff; border:1px solid #e3edf6;
+             border-radius:4px; padding:5px 8px; margin-bottom:4px; font-size:12px; }
+  .att-icon { font-size:14px; }
+  .att-name { flex:1; color:var(--navy-dark); font-weight:600; text-decoration:none; word-break:break-all; }
+  .att-name:hover { text-decoration:underline; color:var(--cyan-bright); }
+  .att-meta { color:var(--muted); font-size:10px; white-space:nowrap; }
+  .att-del { background:none; border:none; color:var(--muted); font-size:15px; cursor:pointer;
+             font-weight:700; line-height:1; padding:0 2px; }
+  .att-del:hover { color:var(--red); }
+  /* ===== Attach modal ===== */
+  .modal-bd { position:fixed; inset:0; background:rgba(6,26,58,.55); z-index:900;
+              display:none; align-items:center; justify-content:center; padding:20px; }
+  .modal-bd.show { display:flex; }
+  .modal { background:#fff; border-radius:12px; padding:22px; max-width:470px; width:100%;
+           box-shadow:0 20px 60px rgba(0,0,0,.3); max-height:90vh; overflow-y:auto; }
+  .modal h3 { margin:0 0 4px; color:var(--navy-darkest); font-size:17px; }
+  .modal .m-sub { color:var(--muted); font-size:12px; margin-bottom:16px; }
+  .fld { display:flex; flex-direction:column; gap:4px; margin-bottom:12px; }
+  .fld label { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--navy-dark); font-weight:700; }
+  .fld input { padding:8px 10px; border:1px solid var(--border); border-radius:4px; font:13px inherit; font-family:inherit; }
+  .fld input:focus { outline:none; border-color:var(--cyan-bright); box-shadow:0 0 0 3px rgba(0,191,255,.15); }
+  .fld .help { font-size:11px; color:var(--muted); line-height:1.4; }
+  .drop { border:2px dashed var(--border); border-radius:8px; padding:18px; text-align:center;
+          color:var(--muted); font-size:12px; cursor:pointer; transition:background .15s,border-color .15s; }
+  .drop:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); color:var(--navy-dark); }
+  .m-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap; }
+  .divider { display:flex; align-items:center; gap:10px; margin:14px 0; color:var(--muted);
+             font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
+  .divider::before,.divider::after { content:""; flex:1; height:1px; background:var(--border); }
   /* Hidden */
   .hidden { display:none !important; }
 
@@ -409,8 +433,8 @@
     <label>Industry
       <select id="f-enterprise-ind"><option value="">All industries</option></select>
     </label>
-    <label>ATU AE
-      <select id="f-enterprise-atu"><option value="">All AEs</option></select>
+    <label>Individual
+      <select id="f-enterprise-atu"><option value="">All Individuals</option></select>
     </label>
     <div class="toggles">
       <label class="toggle"><input type="checkbox" id="f-enterprise-redboard"><span class="slider"></span>Redboard 2026 only</label>
@@ -425,7 +449,7 @@
         <thead><tr>
           <th data-key="customer">Customer<span class="sort-ind">↕</span></th>
           <th data-key="industry">Industry<span class="sort-ind">↕</span></th>
-          <th data-key="atu">ATU AE<span class="sort-ind">↕</span></th>
+          <th data-key="atu">Individual<span class="sort-ind">↕</span></th>
           <th data-key="redboard">Redboard 2026<span class="sort-ind">↕</span></th>
           <th data-key="opps">4Sight Opportunities<span class="sort-ind">↕</span></th>
         </tr></thead>
@@ -441,7 +465,7 @@
   <div class="page-head">
     <div>
       <h2>New Enterprise Accounts</h2>
-      <div class="desc">91 net-new target prospects for the 2026 motion. Filter by industry or ATU AE to scope the outreach plan.</div>
+      <div class="desc">91 net-new target prospects for the 2026 motion. Filter by industry or Individual to scope the outreach plan.</div>
     </div>
     <div class="row-count" id="count-newaccts"></div>
   </div>
@@ -455,8 +479,8 @@
     <label>Industry
       <select id="f-newaccts-ind"><option value="">All industries</option></select>
     </label>
-    <label>ATU AE
-      <select id="f-newaccts-atu"><option value="">All AEs</option></select>
+    <label>Individual
+      <select id="f-newaccts-atu"><option value="">All Individuals</option></select>
     </label>
     <button class="btn secondary" onclick="resetFilters('newaccts')">Reset</button>
     <button class="btn" onclick="exportCSV('newaccts')">Export CSV</button>
@@ -468,7 +492,7 @@
         <thead><tr>
           <th data-key="customer">Customer<span class="sort-ind">↕</span></th>
           <th data-key="industry">Industry<span class="sort-ind">↕</span></th>
-          <th data-key="atu">ATU AE<span class="sort-ind">↕</span></th>
+          <th data-key="atu">Individual<span class="sort-ind">↕</span></th>
           <th data-key="opps">4Sight Opportunities<span class="sort-ind">↕</span></th>
         </tr></thead>
         <tbody></tbody>
@@ -524,6 +548,36 @@
 
 </main>
 <!-- Live sync status badge -->
+<!-- ===== Attach File / Link modal ===== -->
+<div class="modal-bd" id="att-modal" onclick="if(event.target===this)attClose()">
+  <div class="modal">
+    <h3>📎 Add Attachment</h3>
+    <div class="m-sub" id="att-for">for —</div>
+    <div class="fld">
+      <label for="att-title">Display name</label>
+      <input type="text" id="att-title" placeholder="e.g. Signed proposal, Scoping doc, Meeting notes" autocomplete="off">
+    </div>
+    <div class="fld">
+      <label for="att-url">Link (SharePoint / Teams / OneDrive / any URL)</label>
+      <input type="url" id="att-url" placeholder="https://4sight.sharepoint.com/..." autocomplete="off" spellcheck="false">
+      <div class="help"><strong>Recommended</strong> — links keep the dashboard fast and respect existing M365 permissions.</div>
+    </div>
+    <div class="divider">or</div>
+    <div class="drop" onclick="document.getElementById('att-file').click()">
+      📁 <strong>Click to browse for a file</strong><br>
+      <span style="font-size:11px">Max 400 KB · larger files should be linked from SharePoint instead</span>
+    </div>
+    <input type="file" id="att-file" style="display:none" onchange="attPickFile(this)">
+    <div id="att-picked" style="font-size:12px;color:#1ca97c;font-weight:700;margin-top:8px"></div>
+    <div class="m-actions">
+      <button type="button" class="btn secondary" onclick="attClose()">Cancel</button>
+      <button type="button" class="btn" style="background:#1ca97c" onclick="attSave()">💾 Save Attachment</button>
+    </div>
+  </div>
+</div>
+
+<datalist id="people-list"></datalist>
+
 <div id="sync-badge" class="sync-badge" title="Live-synced to GitHub via Cloudflare Worker">
   <span class="dot"></span><span class="label">Connecting…</span>
 </div>
@@ -566,9 +620,9 @@ async function workerPull() {
     const isFirstLoad = !OPP_LOADED;
     OPP_STORE = obj || {};
     OPP_LOADED = true;
-    if (typeof buildAtuDatalists === "function") buildAtuDatalists();
+    if (typeof buildAtuDatalist === "function") buildAtuDatalist();
     if (!isFirstLoad) {
-      // Refresh tabs that show opp + ATU data
+      // Refresh tabs that show opp / field / attachment data
       renderEnterprise();
       renderNewAccts();
     }
@@ -646,112 +700,6 @@ function oppSetItems(section, customer, items) {
 function oppDisplay(section, customer) {
   const items = oppGetItems(section, customer);
   return items.map(it => { let s = it.text || ""; if (it.date) s += " [" + it.date + "]"; return s; }).join(" | ");
-}
-
-// ===== Editable ATU AE (stored under store._atu[section][customer]) =====
-const ATU_EDIT = {}; // { "section::customer": true } while editing
-function atuOriginal(section, customer) {
-  const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
-  const row = list.find(r => r.customer === customer);
-  return row ? (row.atu || "") : "";
-}
-function atuOverride(section, customer) {
-  const store = oppLoad();
-  if (store._atu && store._atu[section] && (customer in store._atu[section])) return store._atu[section][customer];
-  return null; // null = no override
-}
-function atuDisplay(section, customer) {
-  const ov = atuOverride(section, customer);
-  return ov !== null ? ov : atuOriginal(section, customer);
-}
-function atuSet(section, customer, value) {
-  const store = oppLoad();
-  if (!store._atu) store._atu = {};
-  if (!store._atu[section]) store._atu[section] = {};
-  const orig = atuOriginal(section, customer);
-  if ((value || "") === (orig || "")) {
-    delete store._atu[section][customer]; // same as original -> remove override
-  } else {
-    store._atu[section][customer] = value;
-  }
-  oppSave(store);
-}
-function atuRefreshCell(section, customer) {
-  document.querySelectorAll('.atu-cell[data-section="'+section+'"]').forEach(cell => {
-    if (cell.dataset.customer === customer) {
-      cell.innerHTML = atuCellInner(section, customer);
-    }
-  });
-}
-function atuEditStart(section, btn) {
-  const cell = btn.closest(".atu-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  ATU_EDIT[section + "::" + c] = true;
-  atuRefreshCell(section, c);
-  setTimeout(() => {
-    document.querySelectorAll('.atu-cell[data-section="'+section+'"]').forEach(cc => {
-      if (cc.dataset.customer === c) { const inp = cc.querySelector(".atu-input"); if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); } }
-    });
-  }, 0);
-}
-function atuEditSave(section, btn) {
-  const cell = btn.closest(".atu-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  const inp = cell.querySelector(".atu-input");
-  const val = (inp ? inp.value : "").trim();
-  atuSet(section, c, val);
-  delete ATU_EDIT[section + "::" + c];
-  atuRefreshCell(section, c);
-  oppFlash("Saved ✓");
-}
-function atuEditCancel(section, btn) {
-  const cell = btn.closest(".atu-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  delete ATU_EDIT[section + "::" + c];
-  atuRefreshCell(section, c);
-}
-function atuRevert(section, btn) {
-  const cell = btn.closest(".atu-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  if (!confirm('Reset ATU AE for "' + c + '" back to the original?')) return;
-  atuSet(section, c, atuOriginal(section, c));
-  delete ATU_EDIT[section + "::" + c];
-  atuRefreshCell(section, c);
-  oppFlash("Reverted");
-}
-function atuKeydown(section, ev) {
-  if (ev.key === "Enter") { ev.preventDefault(); atuEditSave(section, ev.target); }
-  else if (ev.key === "Escape") { ev.preventDefault(); atuEditCancel(section, ev.target); }
-}
-// Renders the inner content of an ATU cell (view or edit mode)
-function atuCellInner(section, customer) {
-  const editing = ATU_EDIT[section + "::" + customer];
-  const val = atuDisplay(section, customer);
-  const isEdited = atuOverride(section, customer) !== null;
-  if (editing) {
-    const listId = "atu-list-" + section;
-    return '<div class="atu-editing">'
-      + '<input class="atu-input" list="' + listId + '" value="' + escHtml(val).replace(/"/g,'&quot;') + '" '
-      +   'placeholder="Type AE name…" onkeydown="atuKeydown(\'' + section + '\', event)">'
-      + '<div class="atu-edit-actions">'
-      +   '<button type="button" class="atu-mini atu-mini-save" onclick="atuEditSave(\'' + section + '\', this)">💾 Save</button>'
-      +   '<button type="button" class="atu-mini atu-mini-cancel" onclick="atuEditCancel(\'' + section + '\', this)">Cancel</button>'
-      + '</div></div>';
-  }
-  const nameHtml = (val && val.trim())
-    ? '<span class="atu-name' + (isEdited ? ' edited' : '') + '">' + escHtml(val) + '</span>'
-    : '<span class="atu-name empty">—</span>';
-  const revert = isEdited
-    ? '<button type="button" class="atu-revert" onclick="atuRevert(\'' + section + '\', this)" title="Reset to original">revert</button>'
-    : '';
-  return '<div class="atu-view">' + nameHtml
-    + '<button type="button" class="atu-edit-btn" onclick="atuEditStart(\'' + section + '\', this)">✏ Edit</button>'
-    + '</div>' + revert;
-}
-function atuCellHtml(section, customer) {
-  const safeCust = escHtml(customer).replace(/"/g, "&quot;");
-  return '<td class="atu-cell" data-section="' + section + '" data-customer="' + safeCust + '">'
-    + atuCellInner(section, customer) + '</td>';
 }
 
 // ===== Date helpers =====
@@ -878,7 +826,270 @@ function oppCellHtml(section, customer) {
   }
   return '<td class="opp-cell" data-section="'+section+'" data-customer="'+safeCust+'">'+
     '<div class="opp-items">'+itemsHtml+'</div>'+
-    '<button type="button" class="opp-add-btn" onclick="oppAddItem(\''+section+'\', this)">+ Add Opportunity</button></td>';
+    '<div class="cell-actions">'+
+      '<button type="button" class="opp-add-btn" onclick="oppAddItem(\''+section+'\', this)">+ Add Opportunity</button>'+
+      '<button type="button" class="opp-attach-btn" onclick="attOpen(\''+section+'\', this)">📎 Attach File / Link</button>'+
+    '</div>'+
+    attListHtml(section, customer) + '</td>';
+}
+
+// ===================================================================
+// ===== Inline editable fields: Customer / Industry / Individual =====
+// Stored in OPP_STORE._fields[section][originalCustomerKey] = {cust,ind,atu}
+// ===================================================================
+const FIELD_EDIT = {}; // { "section::customer::field": true }
+const FIELD_LABELS = { cust:"Customer name", ind:"Industry", atu:"Individual" };
+
+function fldOriginal(section, custKey, field) {
+  const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
+  const row = list.find(r => r.customer === custKey);
+  if (!row) return "";
+  if (field === "cust") return row.customer || "";
+  if (field === "ind")  return row.industry || "";
+  if (field === "atu")  return row.atu || "";
+  return "";
+}
+function fldOverride(section, custKey, field) {
+  const store = oppLoad();
+  const f = store._fields && store._fields[section] && store._fields[section][custKey];
+  if (f && (field in f)) return f[field];
+  return null;
+}
+function fldDisplay(section, custKey, field) {
+  const ov = fldOverride(section, custKey, field);
+  return ov !== null ? ov : fldOriginal(section, custKey, field);
+}
+function fldIsEdited(section, custKey, field) {
+  return fldOverride(section, custKey, field) !== null;
+}
+function fldSet(section, custKey, field, value) {
+  const store = oppLoad();
+  if (!store._fields) store._fields = {};
+  if (!store._fields[section]) store._fields[section] = {};
+  if (!store._fields[section][custKey]) store._fields[section][custKey] = {};
+  const orig = fldOriginal(section, custKey, field);
+  if ((value || "") === (orig || "")) {
+    delete store._fields[section][custKey][field];
+    if (Object.keys(store._fields[section][custKey]).length === 0) delete store._fields[section][custKey];
+  } else {
+    store._fields[section][custKey][field] = value;
+  }
+  oppSave(store);
+}
+function fldKey(section, custKey, field) { return section + "::" + custKey + "::" + field; }
+function fldRefreshCell(section, custKey, field) {
+  document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="'+field+'"]').forEach(cell => {
+    if (cell.dataset.customer === custKey) cell.innerHTML = fldCellInner(section, custKey, field);
+  });
+}
+function fldEditStart(section, btn, field) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const custKey = cell.dataset.customer;
+  FIELD_EDIT[fldKey(section, custKey, field)] = true;
+  fldRefreshCell(section, custKey, field);
+  setTimeout(() => {
+    document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="'+field+'"]').forEach(c => {
+      if (c.dataset.customer === custKey) { const inp = c.querySelector(".ed-input"); if (inp) { inp.focus(); inp.select(); } }
+    });
+  }, 0);
+}
+function fldEditSave(section, btn, field) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const custKey = cell.dataset.customer;
+  const inp = cell.querySelector(".ed-input");
+  const val = (inp ? inp.value : "").trim();
+  fldSet(section, custKey, field, val);
+  delete FIELD_EDIT[fldKey(section, custKey, field)];
+  fldRefreshCell(section, custKey, field);
+  if (field === "atu") buildAtuDatalist();
+  oppFlash("Saved ✓");
+}
+function fldEditCancel(section, btn, field) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const custKey = cell.dataset.customer;
+  delete FIELD_EDIT[fldKey(section, custKey, field)];
+  fldRefreshCell(section, custKey, field);
+}
+function fldQuickSave(section, btn, field) {
+  // Value already persisted; give explicit confirmation + force a push
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const custKey = cell.dataset.customer;
+  fldSet(section, custKey, field, fldDisplay(section, custKey, field));
+  oppFlash("Saved ✓");
+}
+function fldDelete(section, btn, field) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const custKey = cell.dataset.customer;
+  if (!confirm('Clear the ' + FIELD_LABELS[field] + ' for "' + custKey + '"?')) return;
+  fldSet(section, custKey, field, "");
+  delete FIELD_EDIT[fldKey(section, custKey, field)];
+  fldRefreshCell(section, custKey, field);
+  if (field === "atu") buildAtuDatalist();
+  oppFlash("Deleted");
+}
+function fldKeydown(section, ev, field) {
+  if (ev.key === "Enter") { ev.preventDefault(); fldEditSave(section, ev.target, field); }
+  else if (ev.key === "Escape") { ev.preventDefault(); fldEditCancel(section, ev.target, field); }
+}
+function fldCellInner(section, custKey, field) {
+  const editing = FIELD_EDIT[fldKey(section, custKey, field)];
+  const val = fldDisplay(section, custKey, field);
+  const edited = fldIsEdited(section, custKey, field);
+  if (editing) {
+    const listAttr = field === "atu" ? ' list="people-list"' : '';
+    const ph = field === "atu" ? ' placeholder="Type a name…"'
+             : field === "ind" ? ' placeholder="Industry…"' : ' placeholder="Customer name…"';
+    return '<div class="ed-editing">'
+      + '<input class="ed-input"' + listAttr + ph + ' value="' + escHtml(val).replace(/"/g,'&quot;') + '"'
+      +   ' onkeydown="fldKeydown(\'' + section + '\', event, \'' + field + '\')">'
+      + '<div class="ed-btns">'
+      +   '<button type="button" class="b b-save" onclick="fldEditSave(\'' + section + '\', this, \'' + field + '\')">💾 Save</button>'
+      +   '<button type="button" class="b b-cancel" onclick="fldEditCancel(\'' + section + '\', this, \'' + field + '\')">Cancel</button>'
+      + '</div></div>';
+  }
+  let shown;
+  if (field === "ind") {
+    shown = val ? '<span class="badge-ind">' + escHtml(val) + '</span>' : '<span class="muted">—</span>';
+  } else if (field === "cust") {
+    shown = '<span class="ed-val ' + (edited ? 'edited' : '') + '"><strong>' + (escHtml(val) || '—') + '</strong></span>';
+  } else {
+    shown = val ? '<span class="ed-val ' + (edited ? 'edited' : '') + '">' + escHtml(val) + '</span>' : '<span class="muted">—</span>';
+  }
+  return '<div class="ed-view">' + shown
+    + '<div class="ed-actions">'
+    +   '<button type="button" class="b b-edit" onclick="fldEditStart(\'' + section + '\', this, \'' + field + '\')">✏ Edit</button>'
+    +   '<button type="button" class="b b-save" onclick="fldQuickSave(\'' + section + '\', this, \'' + field + '\')">💾 Save</button>'
+    +   '<button type="button" class="b b-del"  onclick="fldDelete(\'' + section + '\', this, \'' + field + '\')">🗑 Delete</button>'
+    + '</div></div>';
+}
+function fldCellHtml(section, custKey, field) {
+  const safe = escHtml(custKey).replace(/"/g, "&quot;");
+  return '<td class="ed-cell" data-section="' + section + '" data-customer="' + safe + '" data-field="' + field + '">'
+    + fldCellInner(section, custKey, field) + '</td>';
+}
+// Autocomplete list of Individual names
+function buildAtuDatalist() {
+  const names = new Set();
+  (DATA.filters.atu || []).forEach(a => { if (a && a.trim()) names.add(a.trim()); });
+  DATA.enterprise.forEach(e => { const v = fldDisplay('enterprise', e.customer, 'atu'); if (v && v.trim()) names.add(v.trim()); });
+  DATA.newAccts.forEach(e => { const v = fldDisplay('newaccts', e.customer, 'atu'); if (v && v.trim()) names.add(v.trim()); });
+  const sorted = Array.from(names).sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  let dl = document.getElementById('people-list');
+  if (!dl) { dl = document.createElement('datalist'); dl.id = 'people-list'; document.body.appendChild(dl); }
+  dl.innerHTML = sorted.map(n => '<option value="' + escHtml(n).replace(/"/g,'&quot;') + '">').join('');
+}
+
+// ===================================================================
+// ===== Attachments =====
+// Stored in OPP_STORE._att[section][customer] = [{n,u,k,when}]
+// ===================================================================
+let _attTarget = null;   // {section, customer}
+let _attPicked = null;   // {name, dataUrl, size}
+
+function attGet(section, customer) {
+  const store = oppLoad();
+  const a = store._att && store._att[section] && store._att[section][customer];
+  return Array.isArray(a) ? a : [];
+}
+function attSetList(section, customer, list) {
+  const store = oppLoad();
+  if (!store._att) store._att = {};
+  if (!store._att[section]) store._att[section] = {};
+  if (!list || list.length === 0) delete store._att[section][customer];
+  else store._att[section][customer] = list;
+  oppSave(store);
+}
+function attListHtml(section, customer) {
+  const list = attGet(section, customer);
+  if (!list.length) return '';
+  const safe = escHtml(customer).replace(/"/g,'&quot;');
+  return '<div class="att-box" data-section="'+section+'" data-customer="'+safe+'">'
+    + '<div class="att-hdr">📎 Attachments (' + list.length + ')</div>'
+    + list.map((f, k) => {
+        const isLink = f.k === 'link';
+        const href = isLink ? escHtml(f.u) : (f.u || '#');
+        return '<div class="att-row">'
+          + '<span class="att-icon">' + (isLink ? '🔗' : '📄') + '</span>'
+          + '<a class="att-name" href="' + href + '" target="_blank" rel="noopener"'
+          +   (isLink ? '' : ' download="' + escHtml(f.n).replace(/"/g,'&quot;') + '"') + '>' + escHtml(f.n) + '</a>'
+          + '<span class="att-meta">' + escHtml(f.when || '') + '</span>'
+          + '<button type="button" class="att-del" title="Remove" onclick="attDelete(\'' + section + '\', this, ' + k + ')">×</button>'
+          + '</div>';
+      }).join('')
+    + '</div>';
+}
+function attRefreshCell(section, customer) {
+  document.querySelectorAll('.opp-cell[data-section="'+section+'"]').forEach(cell => {
+    if (cell.dataset.customer !== customer) return;
+    const existing = cell.querySelector('.att-box');
+    const html = attListHtml(section, customer);
+    if (existing) {
+      if (html) existing.outerHTML = html; else existing.remove();
+    } else if (html) {
+      cell.insertAdjacentHTML('beforeend', html);
+    }
+  });
+}
+function attOpen(section, btn) {
+  const cell = btn.closest('.opp-cell'); if (!cell) return;
+  _attTarget = { section: section, customer: cell.dataset.customer };
+  _attPicked = null;
+  document.getElementById('att-for').textContent = 'for ' + (_attTarget.customer || 'this account');
+  document.getElementById('att-title').value = '';
+  document.getElementById('att-url').value = '';
+  document.getElementById('att-picked').textContent = '';
+  document.getElementById('att-file').value = '';
+  document.getElementById('att-modal').classList.add('show');
+  setTimeout(() => document.getElementById('att-title').focus(), 50);
+}
+function attClose() { document.getElementById('att-modal').classList.remove('show'); }
+function attPickFile(inp) {
+  const f = inp.files && inp.files[0]; if (!f) return;
+  const MAX = 400 * 1024; // 400 KB guard — keeps the synced JSON small
+  if (f.size > MAX) {
+    alert('"' + f.name + '" is ' + (f.size/1024).toFixed(0) + ' KB.\n\n'
+      + 'Files larger than 400 KB are not supported because every attachment is stored in the shared '
+      + 'sync file and would slow the dashboard for everyone.\n\n'
+      + 'Please upload it to SharePoint/Teams and paste the link instead.');
+    inp.value = ''; return;
+  }
+  const r = new FileReader();
+  r.onload = () => {
+    _attPicked = { name: f.name, dataUrl: r.result, size: f.size };
+    document.getElementById('att-picked').textContent = '✓ Selected: ' + f.name + ' (' + (f.size/1024).toFixed(0) + ' KB)';
+    const t = document.getElementById('att-title');
+    if (!t.value.trim()) t.value = f.name;
+  };
+  r.readAsDataURL(f);
+}
+function attSave() {
+  if (!_attTarget) return;
+  const title = document.getElementById('att-title').value.trim();
+  const url   = document.getElementById('att-url').value.trim();
+  if (!url && !_attPicked) { alert('Please paste a link or choose a file.'); return; }
+  const when = new Date().toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' });
+  const list = attGet(_attTarget.section, _attTarget.customer);
+  if (url) {
+    list.push({ n: title || url, u: url, k: 'link', when: when });
+  } else {
+    list.push({ n: title || _attPicked.name, u: _attPicked.dataUrl, k: 'file', when: when });
+  }
+  attSetList(_attTarget.section, _attTarget.customer, list);
+  const t = _attTarget;
+  attClose();
+  attRefreshCell(t.section, t.customer);
+  oppFlash('Attachment added ✓');
+}
+function attDelete(section, btn, idx) {
+  const box = btn.closest('.att-box'); if (!box) return;
+  const customer = box.dataset.customer;
+  const list = attGet(section, customer);
+  if (!list[idx]) return;
+  if (!confirm('Remove "' + list[idx].n + '"?')) return;
+  list.splice(idx, 1);
+  attSetList(section, customer, list);
+  attRefreshCell(section, customer);
+  oppFlash('Attachment removed');
 }
 
 function fmtNum(n) {
@@ -925,23 +1136,6 @@ function populateDropdowns() {
     const atuSel = document.getElementById('f-'+t+'-atu');
     DATA.filters.atu.forEach(a => { const o=document.createElement('option'); o.value=a; o.textContent=a; atuSel.appendChild(o); });
   });
-  // Build AE autocomplete datalists for the editable ATU cells
-  buildAtuDatalists();
-}
-function buildAtuDatalists() {
-  // Merge the known AE list with any AEs already present in the data (incl. edits)
-  const names = new Set();
-  (DATA.filters.atu || []).forEach(a => { if (a && a.trim()) names.add(a.trim()); });
-  DATA.enterprise.forEach(e => { const v = atuDisplay('enterprise', e.customer); if (v && v.trim()) names.add(v.trim()); });
-  DATA.newAccts.forEach(e => { const v = atuDisplay('newaccts', e.customer); if (v && v.trim()) names.add(v.trim()); });
-  const sorted = Array.from(names).sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-  const opts = sorted.map(n => '<option value="' + escHtml(n).replace(/"/g,'&quot;') + '">').join('');
-  ['enterprise','newaccts'].forEach(sec => {
-    const id = 'atu-list-' + sec;
-    let dl = document.getElementById(id);
-    if (!dl) { dl = document.createElement('datalist'); dl.id = id; document.body.appendChild(dl); }
-    dl.innerHTML = opts;
-  });
 }
 
 // ----- Filters -----
@@ -962,10 +1156,13 @@ function filterEnterprise() {
   const s = STATE.enterprise;
   const q = s.search.toLowerCase();
   return DATA.enterprise.filter(e => {
-    if (s.ind && e.industry !== s.ind) return false;
-    if (s.atu && e.atu !== s.atu) return false;
+    const _c = fldDisplay('enterprise', e.customer, 'cust') || '';
+    const _i = fldDisplay('enterprise', e.customer, 'ind')  || '';
+    const _a = fldDisplay('enterprise', e.customer, 'atu')  || '';
+    if (s.ind && _i !== s.ind) return false;
+    if (s.atu && _a !== s.atu) return false;
     if (s.redboard && !e.redboard) return false;
-    if (q && !(e.customer.toLowerCase().includes(q) || e.atu.toLowerCase().includes(q) || e.industry.toLowerCase().includes(q) || (oppDisplay('enterprise', e.customer)||'').toLowerCase().includes(q))) return false;
+    if (q && !(_c.toLowerCase().includes(q) || _a.toLowerCase().includes(q) || _i.toLowerCase().includes(q) || (oppDisplay('enterprise', e.customer)||'').toLowerCase().includes(q))) return false;
     return true;
   });
 }
@@ -973,9 +1170,12 @@ function filterNewAccts() {
   const s = STATE.newaccts;
   const q = s.search.toLowerCase();
   return DATA.newAccts.filter(e => {
-    if (s.ind && e.industry !== s.ind) return false;
-    if (s.atu && atuDisplay('newaccts', e.customer) !== s.atu) return false;
-    if (q && !(e.customer.toLowerCase().includes(q) || (atuDisplay('newaccts', e.customer)||'').toLowerCase().includes(q) || e.industry.toLowerCase().includes(q) || (oppDisplay('newaccts', e.customer)||'').toLowerCase().includes(q))) return false;
+    const _c = fldDisplay('newaccts', e.customer, 'cust') || '';
+    const _i = fldDisplay('newaccts', e.customer, 'ind')  || '';
+    const _a = fldDisplay('newaccts', e.customer, 'atu')  || '';
+    if (s.ind && _i !== s.ind) return false;
+    if (s.atu && _a !== s.atu) return false;
+    if (q && !(_c.toLowerCase().includes(q) || _a.toLowerCase().includes(q) || _i.toLowerCase().includes(q) || (oppDisplay('newaccts', e.customer)||'').toLowerCase().includes(q))) return false;
     return true;
   });
 }
@@ -1066,7 +1266,7 @@ function renderEnterprise() {
     <div class="kpi"><div class="label">Customers</div><div class="value">${fmtNum(total)}</div></div>
     <div class="kpi alt"><div class="label">Redboard 2026</div><div class="value">${fmtNum(redboard)}</div></div>
     <div class="kpi green"><div class="label">Industries</div><div class="value">${fmtNum(inds)}</div></div>
-    <div class="kpi amber"><div class="label">ATU AEs</div><div class="value">${fmtNum(aes)}</div></div>
+    <div class="kpi amber"><div class="label">Individuals</div><div class="value">${fmtNum(aes)}</div></div>
   `;
 
   const start = (s.page-1)*s.perPage;
@@ -1074,9 +1274,9 @@ function renderEnterprise() {
   const tbody = document.querySelector('#tbl-enterprise tbody');
   tbody.innerHTML = page.length ? page.map(e => `
     <tr>
-      <td><strong>${escHtml(e.customer)}</strong></td>
-      <td>${e.industry ? `<span class="badge-ind">${escHtml(e.industry)}</span>` : '<span class="muted">—</span>'}</td>
-      ${atuCellHtml('enterprise', e.customer)}
+      ${fldCellHtml('enterprise', e.customer, 'cust')}
+      ${fldCellHtml('enterprise', e.customer, 'ind')}
+      ${fldCellHtml('enterprise', e.customer, 'atu')}
       <td>${e.redboard ? '<span class="badge-yes">Yes</span>' : '<span class="badge-no">No</span>'}</td>
       ${oppCellHtml('enterprise', e.customer)}
     </tr>`).join('') : '<tr><td colspan="5" class="empty">No customers match the current filters.</td></tr>';
@@ -1100,7 +1300,7 @@ function renderNewAccts() {
     <div class="kpi"><div class="label">Prospects</div><div class="value">${fmtNum(total)}</div></div>
     <div class="kpi green"><div class="label">With opportunities</div><div class="value">${fmtNum(withOpps)}</div></div>
     <div class="kpi"><div class="label">Industries</div><div class="value">${fmtNum(inds)}</div></div>
-    <div class="kpi amber"><div class="label">ATU AEs</div><div class="value">${fmtNum(aes)}</div></div>
+    <div class="kpi amber"><div class="label">Individuals</div><div class="value">${fmtNum(aes)}</div></div>
   `;
 
   const start = (s.page-1)*s.perPage;
@@ -1108,9 +1308,9 @@ function renderNewAccts() {
   const tbody = document.querySelector('#tbl-newaccts tbody');
   tbody.innerHTML = page.length ? page.map(e => `
     <tr>
-      <td><strong>${escHtml(e.customer)}</strong></td>
-      <td>${e.industry ? `<span class="badge-ind">${escHtml(e.industry)}</span>` : '<span class="muted">—</span>'}</td>
-      ${atuCellHtml('newaccts', e.customer)}
+      ${fldCellHtml('newaccts', e.customer, 'cust')}
+      ${fldCellHtml('newaccts', e.customer, 'ind')}
+      ${fldCellHtml('newaccts', e.customer, 'atu')}
       ${oppCellHtml('newaccts', e.customer)}
     </tr>`).join('') : '<tr><td colspan="4" class="empty">No prospects match the current filters.</td></tr>';
 
@@ -1231,22 +1431,24 @@ function exportCSV(tab) {
     filename = 'master-contacts.csv';
   } else if (tab === 'enterprise') {
     rows = sortRows(filterEnterprise(), STATE.enterprise.sortCol, STATE.enterprise.sortDir);
-    headers = ['Customer','Industry','ATU AE','Redboard 2026','Opportunities','Target Dates'];
+    headers = ['Customer','Industry','Individual','Redboard 2026','Opportunities','Target Dates','Attachments'];
     rows = rows.map(e => {
       const items = oppGetItems('enterprise', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      return [e.customer, e.industry, atuDisplay('enterprise', e.customer), e.redboard?'Yes':'No', txt, dts];
+      const atts = attGet('enterprise', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
+      return [fldDisplay('enterprise', e.customer, 'cust'), fldDisplay('enterprise', e.customer, 'ind'), fldDisplay('enterprise', e.customer, 'atu'), e.redboard?'Yes':'No', txt, dts, atts];
     });
     filename = 'enterprise-customers.csv';
   } else if (tab === 'newaccts') {
     rows = sortRows(filterNewAccts(), STATE.newaccts.sortCol, STATE.newaccts.sortDir);
-    headers = ['Customer','Industry','ATU AE','Opportunities','Target Dates'];
+    headers = ['Customer','Industry','Individual','Opportunities','Target Dates','Attachments'];
     rows = rows.map(e => {
       const items = oppGetItems('newaccts', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      return [e.customer, e.industry, atuDisplay('newaccts', e.customer), txt, dts];
+      const atts = attGet('newaccts', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
+      return [fldDisplay('newaccts', e.customer, 'cust'), fldDisplay('newaccts', e.customer, 'ind'), fldDisplay('newaccts', e.customer, 'atu'), txt, dts, atts];
     });
     filename = 'new-accounts.csv';
   } else if (tab === 'revenue') {
@@ -1407,19 +1609,22 @@ switchTab('overview');
 // Pull on load, then poll every 30s so any changes made by other users appear here
 workerPull().then(() => {
   // After initial pull, re-render the opp tabs so saved items show
+  buildAtuDatalist();
   renderEnterprise();
   renderNewAccts();
 });
 // Periodically pull to pick up changes from other users (every 30s)
 _pollTimer = setInterval(() => {
   // Only auto-pull when no one is currently editing
-  const editing = Object.keys(OPP_EDIT).length > 0;
+  const editing = Object.keys(OPP_EDIT).length > 0 || Object.keys(FIELD_EDIT).length > 0
+                  || document.getElementById('att-modal').classList.contains('show');
   if (!editing) workerPull();
 }, 30000);
 // Refresh when tab regains focus too
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
-    const editing = Object.keys(OPP_EDIT).length > 0;
+    const editing = Object.keys(OPP_EDIT).length > 0 || Object.keys(FIELD_EDIT).length > 0
+                    || document.getElementById('att-modal').classList.contains('show');
     if (!editing) workerPull();
   }
 });
