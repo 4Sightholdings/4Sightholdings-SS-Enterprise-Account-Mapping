@@ -215,7 +215,14 @@
   .opp-edit-date:focus { outline: none; border-color: var(--cyan-bright); box-shadow: 0 0 0 2px rgba(0,191,255,0.15); }
   .opp-edit-clear { background: none; border: none; color: var(--muted); font-size: 11px; cursor: pointer; text-decoration: underline; padding: 2px; }
   .opp-edit-clear:hover { color: var(--red); }
-  .opp-edit-actions { display: flex; gap: 6px; justify-content: flex-end; }
+  .opp-edit-actions { display: flex; gap: 6px; justify-content: flex-end; flex-wrap: wrap; }
+  .opp-edit-flash {
+    animation: oppEditPulse .6s ease-out;
+  }
+  @keyframes oppEditPulse {
+    0%   { box-shadow: 0 0 0 0 rgba(0,191,255,.55); border-color: var(--cyan-bright); }
+    100% { box-shadow: 0 0 0 8px rgba(0,191,255,0); }
+  }
   .opp-add-btn {
     margin-top: 8px; width: 100%;
     background: #fff; color: var(--navy-dark); border: 1.5px dashed var(--border);
@@ -252,8 +259,8 @@
     0%,100% { opacity: 1; transform: scale(1); }
     50%     { opacity: 0.5; transform: scale(1.2); }
   }
-  /* ===== Inline editable fields (Customer / Industry / Individual) ===== */
-  .ed-cell { position:relative; min-width:170px; vertical-align:top; }
+  /* ===== Inline editable fields (Customer / Industry / Individual / Redboard) ===== */
+  .ed-cell { position:relative; min-width:150px; vertical-align:top; }
   .ed-view { display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; }
   .ed-val { line-height:1.4; word-break:break-word; }
   .ed-val.edited { color:var(--green); font-weight:700; }
@@ -261,10 +268,10 @@
                 transition:opacity .15s, transform .15s; pointer-events:none; }
   tr:hover .ed-actions { opacity:1; transform:translateY(0); pointer-events:auto; }
   .ed-editing { display:flex; flex-direction:column; gap:6px; }
-  .ed-input { width:100%; padding:5px 7px; border:1px solid var(--cyan-bright); border-radius:4px;
+  .ed-input, .ed-select { width:100%; padding:5px 7px; border:1px solid var(--cyan-bright); border-radius:4px;
               font:13px inherit; color:var(--text); background:#fff; box-sizing:border-box;
-              box-shadow:0 0 0 2px rgba(0,191,255,.15); }
-  .ed-input:focus { outline:none; }
+              box-shadow:0 0 0 2px rgba(0,191,255,.15); font-family:inherit; }
+  .ed-input:focus, .ed-select:focus { outline:none; }
   .ed-btns { display:flex; gap:6px; }
   .b { border:1px solid var(--border); background:#fff; color:var(--navy-dark); padding:3px 8px;
        border-radius:4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit;
@@ -275,6 +282,17 @@
   .b-save:hover { background:#157a5a; border-color:#157a5a; }
   .b-del:hover { background:var(--red); color:#fff; border-color:var(--red); }
   .b-cancel:hover { background:#e3e8f0; }
+  /* ===== Redboard year switcher (in table header) ===== */
+  .rb-head { display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .rb-yr-btn { background:rgba(255,255,255,.16); color:#fff; border:none; border-radius:4px;
+               width:20px; height:20px; font-size:12px; font-weight:800; cursor:pointer; line-height:1;
+               display:inline-flex; align-items:center; justify-content:center; transition:background .15s; }
+  .rb-yr-btn:hover { background:var(--cyan-bright); color:var(--navy-darkest); }
+  .rb-yr-btn:disabled { opacity:.3; cursor:not-allowed; }
+  .rb-yr-val { min-width:34px; text-align:center; font-weight:800; color:var(--cyan-light); }
+  .rb-copy-btn { background:#fff; color:var(--navy-dark); border:1px solid var(--border); border-radius:6px;
+                 padding:6px 12px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .rb-copy-btn:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); }
   /* ===== Attachments ===== */
   .cell-actions { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
   .opp-attach-btn { width:100%; background:#fff; color:var(--navy-dark); border:1.5px dashed var(--border);
@@ -293,7 +311,7 @@
   .att-del { background:none; border:none; color:var(--muted); font-size:15px; cursor:pointer;
              font-weight:700; line-height:1; padding:0 2px; }
   .att-del:hover { color:var(--red); }
-  /* ===== Attach modal ===== */
+  /* ===== Modal ===== */
   .modal-bd { position:fixed; inset:0; background:rgba(6,26,58,.55); z-index:900;
               display:none; align-items:center; justify-content:center; padding:20px; }
   .modal-bd.show { display:flex; }
@@ -419,7 +437,7 @@
   <div class="page-head">
     <div>
       <h2>4Sight Enterprise Customers</h2>
-      <div class="desc">27 active enterprise accounts with ATU assignment, industry, redboard 2026 status, and cluster revenue.</div>
+      <div class="desc">27 active enterprise accounts with Individual assignment, industry, Redboard status by year, and cluster revenue.</div>
     </div>
     <div class="row-count" id="count-enterprise"></div>
   </div>
@@ -437,7 +455,8 @@
       <select id="f-enterprise-atu"><option value="">All Individuals</option></select>
     </label>
     <div class="toggles">
-      <label class="toggle"><input type="checkbox" id="f-enterprise-redboard"><span class="slider"></span>Redboard 2026 only</label>
+      <label class="toggle"><input type="checkbox" id="f-enterprise-redboard"><span class="slider"></span><span id="rb-filter-label">Redboard 2026 only</span></label>
+      <button type="button" class="rb-copy-btn" id="rb-copy-btn" onclick="rbCopyFromPrevYear()" title="Copy all Redboard statuses from the previous year into the year currently shown">⧉ Copy 2025 → 2026</button>
     </div>
     <button class="btn secondary" onclick="resetFilters('enterprise')">Reset</button>
     <button class="btn" onclick="exportCSV('enterprise')">Export CSV</button>
@@ -450,7 +469,7 @@
           <th data-key="customer">Customer<span class="sort-ind">↕</span></th>
           <th data-key="industry">Industry<span class="sort-ind">↕</span></th>
           <th data-key="atu">Individual<span class="sort-ind">↕</span></th>
-          <th data-key="redboard">Redboard 2026<span class="sort-ind">↕</span></th>
+          <th data-key="redboard">Redboard<span class="sort-ind">↕</span></th>
           <th data-key="opps">4Sight Opportunities<span class="sort-ind">↕</span></th>
         </tr></thead>
         <tbody></tbody>
@@ -621,8 +640,9 @@ async function workerPull() {
     OPP_STORE = obj || {};
     OPP_LOADED = true;
     if (typeof buildAtuDatalist === "function") buildAtuDatalist();
+    if (typeof rbSyncHeader === "function") rbSyncHeader();
     if (!isFirstLoad) {
-      // Refresh tabs that show opp / field / attachment data
+      // Refresh tabs that show opp data
       renderEnterprise();
       renderNewAccts();
     }
@@ -789,6 +809,15 @@ function oppClearDate(section, btn) {
   const ed = btn.closest(".opp-item-edit"); if (!ed) return;
   ed.querySelector(".opp-edit-date").value = "";
 }
+// "Edit" inside the edit form — jumps the cursor into the description field
+function oppFocusEdit(btn) {
+  const ed = btn.closest(".opp-item-edit"); if (!ed) return;
+  const ta = ed.querySelector(".opp-edit-text"); if (!ta) return;
+  ta.focus();
+  ta.setSelectionRange(ta.value.length, ta.value.length);
+  ta.classList.add("opp-edit-flash");
+  setTimeout(() => ta.classList.remove("opp-edit-flash"), 600);
+}
 
 // ===== Cell HTML =====
 function oppCellHtml(section, customer) {
@@ -813,6 +842,8 @@ function oppCellHtml(section, customer) {
     '<input type="date" class="opp-edit-date" value="'+escHtml(it.date || "")+'">'+
     '<button type="button" class="opp-edit-clear" onclick="oppClearDate(\''+section+'\', this)">clear</button></div>'+
     '<div class="opp-edit-actions">'+
+    '<button type="button" class="opp-btn opp-btn-edit" onclick="oppFocusEdit(this)">✏ Edit</button>'+
+    '<button type="button" class="opp-btn opp-btn-delete" onclick="oppDeleteItem(\''+section+'\', this, '+idx+')">🗑 Delete</button>'+
     '<button type="button" class="opp-btn opp-btn-cancel" onclick="oppCancelEdit(\''+section+'\', this)">Cancel</button>'+
     '<button type="button" class="opp-btn opp-btn-save" onclick="oppSaveItem(\''+section+'\', this, '+idx+')">💾 Save</button>'+
     '</div></div></div>';
@@ -835,9 +866,9 @@ function oppCellHtml(section, customer) {
 
 // ===================================================================
 // ===== Inline editable fields: Customer / Industry / Individual =====
-// Stored in OPP_STORE._fields[section][originalCustomerKey] = {cust,ind,atu}
+// Stored in OPP_STORE._fields[section][customerKey] = {cust,ind,atu}
 // ===================================================================
-const FIELD_EDIT = {}; // { "section::customer::field": true }
+const FIELD_EDIT = {};
 const FIELD_LABELS = { cust:"Customer name", ind:"Industry", atu:"Individual" };
 
 function fldOriginal(section, custKey, field) {
@@ -852,16 +883,13 @@ function fldOriginal(section, custKey, field) {
 function fldOverride(section, custKey, field) {
   const store = oppLoad();
   const f = store._fields && store._fields[section] && store._fields[section][custKey];
-  if (f && (field in f)) return f[field];
-  return null;
+  return (f && (field in f)) ? f[field] : null;
 }
 function fldDisplay(section, custKey, field) {
   const ov = fldOverride(section, custKey, field);
   return ov !== null ? ov : fldOriginal(section, custKey, field);
 }
-function fldIsEdited(section, custKey, field) {
-  return fldOverride(section, custKey, field) !== null;
-}
+function fldIsEdited(section, custKey, field) { return fldOverride(section, custKey, field) !== null; }
 function fldSet(section, custKey, field, value) {
   const store = oppLoad();
   if (!store._fields) store._fields = {};
@@ -884,46 +912,45 @@ function fldRefreshCell(section, custKey, field) {
 }
 function fldEditStart(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const custKey = cell.dataset.customer;
-  FIELD_EDIT[fldKey(section, custKey, field)] = true;
-  fldRefreshCell(section, custKey, field);
+  const c = cell.dataset.customer;
+  FIELD_EDIT[fldKey(section, c, field)] = true;
+  fldRefreshCell(section, c, field);
   setTimeout(() => {
-    document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="'+field+'"]').forEach(c => {
-      if (c.dataset.customer === custKey) { const inp = c.querySelector(".ed-input"); if (inp) { inp.focus(); inp.select(); } }
+    document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="'+field+'"]').forEach(cc => {
+      if (cc.dataset.customer === c) { const el = cc.querySelector(".ed-input,.ed-select"); if (el) { el.focus(); if (el.select) el.select(); } }
     });
   }, 0);
 }
 function fldEditSave(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const custKey = cell.dataset.customer;
-  const inp = cell.querySelector(".ed-input");
-  const val = (inp ? inp.value : "").trim();
-  fldSet(section, custKey, field, val);
-  delete FIELD_EDIT[fldKey(section, custKey, field)];
-  fldRefreshCell(section, custKey, field);
+  const c = cell.dataset.customer;
+  const el = cell.querySelector(".ed-input,.ed-select");
+  const val = (el ? el.value : "").trim();
+  fldSet(section, c, field, val);
+  delete FIELD_EDIT[fldKey(section, c, field)];
+  fldRefreshCell(section, c, field);
   if (field === "atu") buildAtuDatalist();
   oppFlash("Saved ✓");
 }
 function fldEditCancel(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const custKey = cell.dataset.customer;
-  delete FIELD_EDIT[fldKey(section, custKey, field)];
-  fldRefreshCell(section, custKey, field);
+  const c = cell.dataset.customer;
+  delete FIELD_EDIT[fldKey(section, c, field)];
+  fldRefreshCell(section, c, field);
 }
 function fldQuickSave(section, btn, field) {
-  // Value already persisted; give explicit confirmation + force a push
   const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const custKey = cell.dataset.customer;
-  fldSet(section, custKey, field, fldDisplay(section, custKey, field));
+  const c = cell.dataset.customer;
+  fldSet(section, c, field, fldDisplay(section, c, field));
   oppFlash("Saved ✓");
 }
 function fldDelete(section, btn, field) {
   const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const custKey = cell.dataset.customer;
-  if (!confirm('Clear the ' + FIELD_LABELS[field] + ' for "' + custKey + '"?')) return;
-  fldSet(section, custKey, field, "");
-  delete FIELD_EDIT[fldKey(section, custKey, field)];
-  fldRefreshCell(section, custKey, field);
+  const c = cell.dataset.customer;
+  if (!confirm('Clear the ' + FIELD_LABELS[field] + ' for "' + c + '"?')) return;
+  fldSet(section, c, field, "");
+  delete FIELD_EDIT[fldKey(section, c, field)];
+  fldRefreshCell(section, c, field);
   if (field === "atu") buildAtuDatalist();
   oppFlash("Deleted");
 }
@@ -967,7 +994,6 @@ function fldCellHtml(section, custKey, field) {
   return '<td class="ed-cell" data-section="' + section + '" data-customer="' + safe + '" data-field="' + field + '">'
     + fldCellInner(section, custKey, field) + '</td>';
 }
-// Autocomplete list of Individual names
 function buildAtuDatalist() {
   const names = new Set();
   (DATA.filters.atu || []).forEach(a => { if (a && a.trim()) names.add(a.trim()); });
@@ -980,11 +1006,176 @@ function buildAtuDatalist() {
 }
 
 // ===================================================================
+// ===== REDBOARD — per-year status with Edit/Save/Delete =====
+// Stored in OPP_STORE._rb[year][section][customer] = true|false
+// ===================================================================
+const RB_BASE_YEAR = 2026;                 // year the original data represents
+let RB_YEAR = RB_BASE_YEAR;                // currently displayed year
+const RB_MIN_YEAR = 2024, RB_MAX_YEAR = 2035;
+const RB_EDIT = {};                        // { "section::customer": true }
+
+function rbOriginal(section, custKey) {
+  if (RB_YEAR !== RB_BASE_YEAR) return false;   // only the base year has seed data
+  const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
+  const row = list.find(r => r.customer === custKey);
+  return row ? !!row.redboard : false;
+}
+function rbOverride(section, custKey, year) {
+  const y = String(year || RB_YEAR);
+  const store = oppLoad();
+  const s = store._rb && store._rb[y] && store._rb[y][section];
+  return (s && (custKey in s)) ? !!s[custKey] : null;
+}
+function rbDisplay(section, custKey, year) {
+  const y = year || RB_YEAR;
+  const ov = rbOverride(section, custKey, y);
+  if (ov !== null) return ov;
+  if (String(y) === String(RB_BASE_YEAR)) {
+    const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
+    const row = list.find(r => r.customer === custKey);
+    return row ? !!row.redboard : false;
+  }
+  return false;
+}
+function rbIsEdited(section, custKey) { return rbOverride(section, custKey, RB_YEAR) !== null; }
+function rbSet(section, custKey, value, year) {
+  const y = String(year || RB_YEAR);
+  const store = oppLoad();
+  if (!store._rb) store._rb = {};
+  if (!store._rb[y]) store._rb[y] = {};
+  if (!store._rb[y][section]) store._rb[y][section] = {};
+  store._rb[y][section][custKey] = !!value;
+  oppSave(store);
+}
+function rbClear(section, custKey, year) {
+  const y = String(year || RB_YEAR);
+  const store = oppLoad();
+  if (store._rb && store._rb[y] && store._rb[y][section]) {
+    delete store._rb[y][section][custKey];
+    oppSave(store);
+  }
+}
+function rbRefreshCell(section, custKey) {
+  document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="rb"]').forEach(cell => {
+    if (cell.dataset.customer === custKey) cell.innerHTML = rbCellInner(section, custKey);
+  });
+}
+function rbEditStart(section, btn) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  RB_EDIT[section + "::" + c] = true;
+  rbRefreshCell(section, c);
+  setTimeout(() => {
+    document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="rb"]').forEach(cc => {
+      if (cc.dataset.customer === c) { const el = cc.querySelector(".ed-select"); if (el) el.focus(); }
+    });
+  }, 0);
+}
+function rbEditSave(section, btn) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  const sel = cell.querySelector(".ed-select");
+  rbSet(section, c, sel && sel.value === "yes");
+  delete RB_EDIT[section + "::" + c];
+  rbRefreshCell(section, c);
+  if (section === "enterprise") renderEnterpriseKpis();
+  oppFlash("Saved ✓");
+}
+function rbEditCancel(section, btn) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  delete RB_EDIT[section + "::" + cell.dataset.customer];
+  rbRefreshCell(section, cell.dataset.customer);
+}
+function rbQuickSave(section, btn) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  rbSet(section, c, rbDisplay(section, c));
+  rbRefreshCell(section, c);
+  oppFlash("Saved ✓");
+}
+function rbDelete(section, btn) {
+  const cell = btn.closest(".ed-cell"); if (!cell) return;
+  const c = cell.dataset.customer;
+  if (!confirm('Reset Redboard ' + RB_YEAR + ' for "' + c + '" back to its default?')) return;
+  rbClear(section, c);
+  delete RB_EDIT[section + "::" + c];
+  rbRefreshCell(section, c);
+  if (section === "enterprise") renderEnterpriseKpis();
+  oppFlash("Reset");
+}
+function rbCellInner(section, custKey) {
+  const editing = RB_EDIT[section + "::" + custKey];
+  const val = rbDisplay(section, custKey);
+  const edited = rbIsEdited(section, custKey);
+  if (editing) {
+    return '<div class="ed-editing">'
+      + '<select class="ed-select">'
+      +   '<option value="yes"' + (val ? ' selected' : '') + '>Yes</option>'
+      +   '<option value="no"'  + (!val ? ' selected' : '') + '>No</option>'
+      + '</select>'
+      + '<div class="ed-btns">'
+      +   '<button type="button" class="b b-save" onclick="rbEditSave(\'' + section + '\', this)">💾 Save</button>'
+      +   '<button type="button" class="b b-cancel" onclick="rbEditCancel(\'' + section + '\', this)">Cancel</button>'
+      + '</div></div>';
+  }
+  const badge = val ? '<span class="badge-yes">Yes</span>' : '<span class="badge-no">No</span>';
+  const mark  = edited ? ' <span style="color:var(--green);font-weight:800" title="Edited for ' + RB_YEAR + '">•</span>' : '';
+  return '<div class="ed-view">' + badge + mark
+    + '<div class="ed-actions">'
+    +   '<button type="button" class="b b-edit" onclick="rbEditStart(\'' + section + '\', this)">✏ Edit</button>'
+    +   '<button type="button" class="b b-save" onclick="rbQuickSave(\'' + section + '\', this)">💾 Save</button>'
+    +   '<button type="button" class="b b-del"  onclick="rbDelete(\'' + section + '\', this)">🗑 Delete</button>'
+    + '</div></div>';
+}
+function rbCellHtml(section, custKey) {
+  const safe = escHtml(custKey).replace(/"/g, "&quot;");
+  return '<td class="ed-cell" data-section="' + section + '" data-customer="' + safe + '" data-field="rb">'
+    + rbCellInner(section, custKey) + '</td>';
+}
+// Year navigation
+function rbShiftYear(delta, ev) {
+  if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+  const y = RB_YEAR + delta;
+  if (y < RB_MIN_YEAR || y > RB_MAX_YEAR) return;
+  RB_YEAR = y;
+  Object.keys(RB_EDIT).forEach(k => delete RB_EDIT[k]);
+  renderEnterprise();
+  oppFlash("Redboard " + RB_YEAR);
+}
+function rbHeadHtml() {
+  return '<div class="rb-head">'
+    + '<button type="button" class="rb-yr-btn" title="Previous year"'
+    +   (RB_YEAR <= RB_MIN_YEAR ? ' disabled' : '')
+    +   ' onclick="rbShiftYear(-1, event)">‹</button>'
+    + '<span>Redboard</span><span class="rb-yr-val">' + RB_YEAR + '</span>'
+    + '<button type="button" class="rb-yr-btn" title="Next year"'
+    +   (RB_YEAR >= RB_MAX_YEAR ? ' disabled' : '')
+    +   ' onclick="rbShiftYear(1, event)">›</button>'
+    + '<span class="sort-ind">↕</span></div>';
+}
+// Copy all statuses from the previous year into the current year
+function rbCopyFromPrevYear() {
+  const prev = RB_YEAR - 1;
+  if (prev < RB_MIN_YEAR) return;
+  if (!confirm('Copy every Redboard status from ' + prev + ' into ' + RB_YEAR + '?\n\nThis overwrites the ' + RB_YEAR + ' values.')) return;
+  const store = oppLoad();
+  if (!store._rb) store._rb = {};
+  if (!store._rb[String(RB_YEAR)]) store._rb[String(RB_YEAR)] = {};
+  ['enterprise','newaccts'].forEach(sec => {
+    const list = sec === 'enterprise' ? DATA.enterprise : DATA.newAccts;
+    if (!store._rb[String(RB_YEAR)][sec]) store._rb[String(RB_YEAR)][sec] = {};
+    list.forEach(r => { store._rb[String(RB_YEAR)][sec][r.customer] = rbDisplay(sec, r.customer, prev); });
+  });
+  oppSave(store);
+  renderEnterprise();
+  oppFlash('Copied from ' + prev);
+}
+
+// ===================================================================
 // ===== Attachments =====
 // Stored in OPP_STORE._att[section][customer] = [{n,u,k,when}]
 // ===================================================================
-let _attTarget = null;   // {section, customer}
-let _attPicked = null;   // {name, dataUrl, size}
+let _attTarget = null, _attPicked = null;
 
 function attGet(section, customer) {
   const store = oppLoad();
@@ -1007,10 +1198,9 @@ function attListHtml(section, customer) {
     + '<div class="att-hdr">📎 Attachments (' + list.length + ')</div>'
     + list.map((f, k) => {
         const isLink = f.k === 'link';
-        const href = isLink ? escHtml(f.u) : (f.u || '#');
         return '<div class="att-row">'
           + '<span class="att-icon">' + (isLink ? '🔗' : '📄') + '</span>'
-          + '<a class="att-name" href="' + href + '" target="_blank" rel="noopener"'
+          + '<a class="att-name" href="' + (isLink ? escHtml(f.u) : (f.u || '#')) + '" target="_blank" rel="noopener"'
           +   (isLink ? '' : ' download="' + escHtml(f.n).replace(/"/g,'&quot;') + '"') + '>' + escHtml(f.n) + '</a>'
           + '<span class="att-meta">' + escHtml(f.when || '') + '</span>'
           + '<button type="button" class="att-del" title="Remove" onclick="attDelete(\'' + section + '\', this, ' + k + ')">×</button>'
@@ -1023,11 +1213,8 @@ function attRefreshCell(section, customer) {
     if (cell.dataset.customer !== customer) return;
     const existing = cell.querySelector('.att-box');
     const html = attListHtml(section, customer);
-    if (existing) {
-      if (html) existing.outerHTML = html; else existing.remove();
-    } else if (html) {
-      cell.insertAdjacentHTML('beforeend', html);
-    }
+    if (existing) { if (html) existing.outerHTML = html; else existing.remove(); }
+    else if (html) cell.insertAdjacentHTML('beforeend', html);
   });
 }
 function attOpen(section, btn) {
@@ -1045,7 +1232,7 @@ function attOpen(section, btn) {
 function attClose() { document.getElementById('att-modal').classList.remove('show'); }
 function attPickFile(inp) {
   const f = inp.files && inp.files[0]; if (!f) return;
-  const MAX = 400 * 1024; // 400 KB guard — keeps the synced JSON small
+  const MAX = 400 * 1024;
   if (f.size > MAX) {
     alert('"' + f.name + '" is ' + (f.size/1024).toFixed(0) + ' KB.\n\n'
       + 'Files larger than 400 KB are not supported because every attachment is stored in the shared '
@@ -1069,11 +1256,8 @@ function attSave() {
   if (!url && !_attPicked) { alert('Please paste a link or choose a file.'); return; }
   const when = new Date().toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' });
   const list = attGet(_attTarget.section, _attTarget.customer);
-  if (url) {
-    list.push({ n: title || url, u: url, k: 'link', when: when });
-  } else {
-    list.push({ n: title || _attPicked.name, u: _attPicked.dataUrl, k: 'file', when: when });
-  }
+  if (url) list.push({ n: title || url, u: url, k: 'link', when: when });
+  else     list.push({ n: title || _attPicked.name, u: _attPicked.dataUrl, k: 'file', when: when });
   attSetList(_attTarget.section, _attTarget.customer, list);
   const t = _attTarget;
   attClose();
@@ -1161,7 +1345,7 @@ function filterEnterprise() {
     const _a = fldDisplay('enterprise', e.customer, 'atu')  || '';
     if (s.ind && _i !== s.ind) return false;
     if (s.atu && _a !== s.atu) return false;
-    if (s.redboard && !e.redboard) return false;
+    if (s.redboard && !rbDisplay('enterprise', e.customer)) return false;
     if (q && !(_c.toLowerCase().includes(q) || _a.toLowerCase().includes(q) || _i.toLowerCase().includes(q) || (oppDisplay('enterprise', e.customer)||'').toLowerCase().includes(q))) return false;
     return true;
   });
@@ -1252,6 +1436,27 @@ function renderContacts() {
   document.getElementById('badge-contacts').textContent = total.toLocaleString();
 }
 
+function renderEnterpriseKpis(rows, total) {
+  if (!rows) { rows = filterEnterprise(); total = rows.length; }
+  const redboard = rows.filter(r => rbDisplay('enterprise', r.customer)).length;
+  const inds = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'ind')).filter(Boolean)).size;
+  const aes  = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'atu')).filter(Boolean)).size;
+  document.getElementById('enterprise-kpis').innerHTML =
+    '<div class="kpi"><div class="label">Customers</div><div class="value">' + fmtNum(total) + '</div></div>'
+  + '<div class="kpi alt"><div class="label">Redboard ' + RB_YEAR + '</div><div class="value">' + fmtNum(redboard) + '</div></div>'
+  + '<div class="kpi green"><div class="label">Industries</div><div class="value">' + fmtNum(inds) + '</div></div>'
+  + '<div class="kpi amber"><div class="label">Individuals</div><div class="value">' + fmtNum(aes) + '</div></div>';
+}
+// Keep the Redboard column header + filter label in sync with the selected year
+function rbSyncHeader() {
+  const th = document.querySelector('#tbl-enterprise th[data-key="redboard"]');
+  if (th) th.innerHTML = rbHeadHtml();
+  const lbl = document.getElementById('rb-filter-label');
+  if (lbl) lbl.textContent = 'Redboard ' + RB_YEAR + ' only';
+  const cp = document.getElementById('rb-copy-btn');
+  if (cp) cp.textContent = '⧉ Copy ' + (RB_YEAR - 1) + ' → ' + RB_YEAR;
+}
+
 function renderEnterprise() {
   const s = STATE.enterprise;
   let rows = filterEnterprise();
@@ -1259,15 +1464,7 @@ function renderEnterprise() {
   const total = rows.length;
   document.getElementById('count-enterprise').textContent = `Showing ${total.toLocaleString()} of ${DATA.enterprise.length.toLocaleString()}`;
 
-  const redboard = rows.filter(r => r.redboard).length;
-  const inds = new Set(rows.map(r => r.industry).filter(Boolean)).size;
-  const aes = new Set(rows.map(r => r.atu).filter(Boolean)).size;
-  document.getElementById('enterprise-kpis').innerHTML = `
-    <div class="kpi"><div class="label">Customers</div><div class="value">${fmtNum(total)}</div></div>
-    <div class="kpi alt"><div class="label">Redboard 2026</div><div class="value">${fmtNum(redboard)}</div></div>
-    <div class="kpi green"><div class="label">Industries</div><div class="value">${fmtNum(inds)}</div></div>
-    <div class="kpi amber"><div class="label">Individuals</div><div class="value">${fmtNum(aes)}</div></div>
-  `;
+  renderEnterpriseKpis(rows, total);
 
   const start = (s.page-1)*s.perPage;
   const page = rows.slice(start, start + s.perPage);
@@ -1277,10 +1474,11 @@ function renderEnterprise() {
       ${fldCellHtml('enterprise', e.customer, 'cust')}
       ${fldCellHtml('enterprise', e.customer, 'ind')}
       ${fldCellHtml('enterprise', e.customer, 'atu')}
-      <td>${e.redboard ? '<span class="badge-yes">Yes</span>' : '<span class="badge-no">No</span>'}</td>
+      ${rbCellHtml('enterprise', e.customer)}
       ${oppCellHtml('enterprise', e.customer)}
     </tr>`).join('') : '<tr><td colspan="5" class="empty">No customers match the current filters.</td></tr>';
 
+  rbSyncHeader();
   updateSortIndicators('tbl-enterprise', s.sortCol, s.sortDir);
   renderPager('pager-enterprise', total, s.perPage, s.page, p => { STATE.enterprise.page=p; renderEnterprise(); });
   document.getElementById('badge-enterprise').textContent = total.toLocaleString();
@@ -1431,13 +1629,14 @@ function exportCSV(tab) {
     filename = 'master-contacts.csv';
   } else if (tab === 'enterprise') {
     rows = sortRows(filterEnterprise(), STATE.enterprise.sortCol, STATE.enterprise.sortDir);
-    headers = ['Customer','Industry','Individual','Redboard 2026','Opportunities','Target Dates','Attachments'];
+    headers = ['Customer','Industry','Individual','Redboard ' + RB_YEAR,'Opportunities','Target Dates','Attachments'];
     rows = rows.map(e => {
       const items = oppGetItems('enterprise', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      const atts = attGet('enterprise', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
-      return [fldDisplay('enterprise', e.customer, 'cust'), fldDisplay('enterprise', e.customer, 'ind'), fldDisplay('enterprise', e.customer, 'atu'), e.redboard?'Yes':'No', txt, dts, atts];
+      const att = attGet('enterprise', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
+      return [fldDisplay('enterprise', e.customer, 'cust'), fldDisplay('enterprise', e.customer, 'ind'),
+              fldDisplay('enterprise', e.customer, 'atu'), rbDisplay('enterprise', e.customer)?'Yes':'No', txt, dts, att];
     });
     filename = 'enterprise-customers.csv';
   } else if (tab === 'newaccts') {
@@ -1447,8 +1646,9 @@ function exportCSV(tab) {
       const items = oppGetItems('newaccts', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      const atts = attGet('newaccts', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
-      return [fldDisplay('newaccts', e.customer, 'cust'), fldDisplay('newaccts', e.customer, 'ind'), fldDisplay('newaccts', e.customer, 'atu'), txt, dts, atts];
+      const att = attGet('newaccts', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
+      return [fldDisplay('newaccts', e.customer, 'cust'), fldDisplay('newaccts', e.customer, 'ind'),
+              fldDisplay('newaccts', e.customer, 'atu'), txt, dts, att];
     });
     filename = 'new-accounts.csv';
   } else if (tab === 'revenue') {
@@ -1608,8 +1808,9 @@ switchTab('overview');
 // ===== Live sync bootstrap =====
 // Pull on load, then poll every 30s so any changes made by other users appear here
 workerPull().then(() => {
-  // After initial pull, re-render the opp tabs so saved items show
   buildAtuDatalist();
+  rbSyncHeader();
+  // After initial pull, re-render the opp tabs so saved items show
   renderEnterprise();
   renderNewAccts();
 });
@@ -1617,6 +1818,7 @@ workerPull().then(() => {
 _pollTimer = setInterval(() => {
   // Only auto-pull when no one is currently editing
   const editing = Object.keys(OPP_EDIT).length > 0 || Object.keys(FIELD_EDIT).length > 0
+                  || Object.keys(RB_EDIT).length > 0
                   || document.getElementById('att-modal').classList.contains('show');
   if (!editing) workerPull();
 }, 30000);
@@ -1624,6 +1826,7 @@ _pollTimer = setInterval(() => {
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
     const editing = Object.keys(OPP_EDIT).length > 0 || Object.keys(FIELD_EDIT).length > 0
+                    || Object.keys(RB_EDIT).length > 0
                     || document.getElementById('att-modal').classList.contains('show');
     if (!editing) workerPull();
   }
