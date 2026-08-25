@@ -363,6 +363,14 @@
   .fy-tag.cred { background:#fbeae9; color:var(--red-dark); }
   .fy-tag.int  { background:#fff4e0; color:#8a5a10; }
   .fy26-legend .fy-tag { margin:0 2px; }
+  /* ===== Africa tab ===== */
+  #view-africa .note { background:#e8f7f1; border-left:4px solid var(--green); padding:12px 16px; border-radius:8px; font-size:12.5px; color:#0d6b4d; line-height:1.6; margin:14px 0; }
+  #tbl-africa td.af-num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
+  #tbl-africa .bar-cell { position:relative; }
+  #tbl-africa .mini-bar { position:absolute; left:0; top:50%; transform:translateY(-50%); height:16px; background:var(--cyan-pale); border-radius:3px; z-index:0; }
+  #tbl-africa .bar-cell span { position:relative; z-index:1; }
+  #tbl-africa tfoot td { background:#f8fafd; font-weight:800; border-top:2px solid var(--navy-darkest); color:var(--navy-darkest); }
+  .af-tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10.5px; font-weight:700; white-space:nowrap; background:#fff4e0; color:#8a5a10; margin-left:6px; }
   /* Hidden */
   .hidden { display:none !important; }
 
@@ -387,6 +395,7 @@
   <button class="tab" data-tab="newaccts">New Accounts <span class="badge" id="badge-newaccts"></span></button>
   <button class="tab" data-tab="revenue">Direct Revenue <span class="badge" id="badge-revenue"></span></button>
   <button class="tab" data-tab="fy26">Revenue FY26 <span class="badge" id="badge-fy26"></span></button>
+  <button class="tab" data-tab="africa">Africa <span class="badge" id="badge-africa"></span></button>
 </nav>
 
 <main>
@@ -662,6 +671,54 @@
 
   <div class="legend fy26-legend" id="fy26-legend"></div>
   <div class="note" id="fy26-note"></div>
+</section>
+
+<section class="view hidden" id="view-africa">
+  <div class="page-head">
+    <div>
+      <h2>Africa</h2>
+      <div class="desc">Revenue by customer across the Africa portfolio, from Sheet1 of the ARTran detail workbook (21 Aug 2026). Click a column header to sort, or use the search and filters below.</div>
+    </div>
+    <div class="row-count" id="count-africa"></div>
+  </div>
+
+  <div class="kpis" id="africa-kpis"></div>
+
+  <div class="filter-bar">
+    <label>Search<input type="text" id="f-africa-q" placeholder="Customer name..." oninput="renderAfrica()"></label>
+    <label>Revenue band
+      <select id="f-africa-band" onchange="renderAfrica()">
+        <option value="">Any value</option>
+        <option value="10000000">R10m +</option>
+        <option value="5000000">R5m +</option>
+        <option value="1000000">R1m +</option>
+        <option value="100000">R100k +</option>
+      </select>
+    </label>
+    <div class="toggles">
+      <label class="toggle"><input type="checkbox" id="f-africa-nonzero" checked><span class="slider"></span>Hide zero-revenue</label>
+      <label class="toggle"><input type="checkbox" id="f-africa-top" onchange="renderAfrica()"><span class="slider"></span>Top 20 only</label>
+    </div>
+    <button class="btn secondary" onclick="resetAfrica()">Reset</button>
+    <button class="btn" onclick="exportAfrica()">Export CSV</button>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-scroll">
+      <table id="tbl-africa">
+        <thead><tr>
+          <th data-ak="c" style="width:56%">Customer<span class="sort-ind">&#8597;</span></th>
+          <th data-ak="v" style="text-align:right">Revenue (R)<span class="sort-ind">&#9660;</span></th>
+          <th data-ak="pc" style="text-align:right">Share<span class="sort-ind">&#8597;</span></th>
+        </tr></thead>
+        <tbody></tbody>
+        <tfoot><tr id="africa-foot"></tr></tfoot>
+      </table>
+    </div>
+    <div class="pager" id="pager-africa"></div>
+  </div>
+
+  <div class="note" id="africa-note"></div>
 </section>
 
 </main>
@@ -1911,6 +1968,125 @@ document.addEventListener('DOMContentLoaded', () => {
   }));
 });
 
+// ═══════════════ AFRICA TAB (Sheet1) ═══════════════
+const AFRICA_RAW = [["Tharisa Minerals (Pty) Ltd",22781345.58],["Glencore Operations SA (Pty) Ltd",10751370.8],["Astron Energy (Pty) Ltd",9167402.0],["Telkom SA SOC Ltd",9079878.81],["Servest (Pty) Ltd",7419325.82],["WBHO Construction (Pty) Ltd",6932385.54],["Afrox Oxygen Limited",6563965.15],["Bidvest Prestige",5980621.85],["Microsoft SA (Pty) Ltd",5936699.0],["4Sight Systems (Pty) Ltd",5079528.17],["South African Reserve Bank",5048524.79],["Home of Living Brands (Pty) Ltd",4341162.25],["Onderstepoort Biological Products",4214473.59],["Bidvest Steiner",4010729.35],["Zeda Car Leasing",3314051.0],["Just Dynamics Software Solutions (Pty) Ltd",3183858.92],["Eduvos (Pty)Ltd/TA Eduvos",2436565.95],["African Bank Limited - HO",2278300.55],["New Media Lab Services (Pty) Ltd",2148812.1],["Automation Control Solution (Pty) Ltd",1939020.5],["The Freedom Park Trust",1763658.13],["Central Energy Fund (Pty) Ltd",1552291.78],["PriceWaterhouse Coopers",1538957.77],["First Garment Rental (Pty) Ltd",1492463.67],["South African National Petroleum Company",1400006.37],["IQbusiness",1259323.5],["Foursight Holdings (Pty) Ltd",1004391.99],["Human Sciences Research Council (HSRC)",939441.66],["Companies and Intellectual Property Commission",926041.09],["Cross-Border Road Transport Agency",885895.0],["Compendium Insurance Brokers (Pty) Ltd",860909.69],["Nokeng Fluorspar Mine (RF) (Pty) Ltd",801690.82],["National Student Financial Aid Scheme",725283.17],["Sage South Africa (Pty) Ltd (SAGE VIP REBATES)",689491.01],["Western TVET College",624170.75],["Technology Innovation Agency",484217.5],["South African Health Products Regulatory Authority (SAHPRA)",419804.7],["Mohato Projects (Pty) Ltd",347325.0],["KIC SA",286402.72],["Council on Higher Education",283568.77],["Gautrain Management Agency",220132.0],["Sun Slots Shared Services (Pty) Ltd",216141.44],["TiAuto Investments (Pty) Ltd",212571.52],["Bidvest - Bidair Cargo",210879.15],["Fais Ombud",205486.68],["Gauteng Partnership Fund",130021.0],["South African Weather Service",121592.45],["KwaZulu-Natal Tourism and Film Authority",98066.0],["Department of Public Works",94595.95],["Bidvest Services (Pty) Ltd ta Corporate Office SA",75529.5],["UAV and Drone Solutions (Pty) Ltd",66870.0],["Liberty Coal (Pty) Ltd",45935.0],["Engineering Council of South Africa",43837.2],["Bidvest Services (Pty) Ltd",27144.61],["National Economic Development and Labour Council t/a NEDLAC",24641.4],["Bidvest International Logistics",19800.0],["Process Automation (Pty) Ltd",9674.25],["Freitan Logistics (Pty) Ltd",9450.0],["Peresoft (Pty) Ltd",8633.88],["Film and Publication Board",8445.0],["Supplier Park Development Company SOC Ltd t/a AIDC",6250.0],["4Sight OT Optimisation (Pty) Ltd",2000.0],["4Sight OT Simulation (Pty) Ltd",2000.0],["Bokamoso Investment Fund (Pty) Ltd",1522.55],["Citadel Investment Services (Pty) Ltd",0.0],["Freda Rebecca Gold Mine Limited",0.0],["Financial Sector Conduct Authority",0.0],["Two Rivers Platinum (Pty) Ltd",0.0],["RTNP Technologies Pty Ltd",0.0],["Manupont 124 (Pty) Ltd",0.0],["Fast Food City Trading (Pty) Ltd",0.0],["Liquid Rock SARL",0.0],["Masthead (Pty) Ltd",0.0],["Mahela Boerdery (Edms) Bpk",0.0],["Eminos (Pty) Ltd",0.0],["Council for Medical Schemes",0.0],["Innovative Idea Solutions (Pty) Ltd",0.0],["Lenmed Health Management (Pty) Ltd",0.0],["Epiroc Zambia Limited",0.0],["Intercare Corporate Services (Pty) Ltd",0.0],["Hendler and Hart (Pty)  Ltd",0.0],["Law Society of South Africa",0.0],["Hammond Pole Incorporated",0.0],["Chartered Wealth Solutions",0.0],["Central Energy Fund (Pty)  Ltd",-16158.33]];
+const AF_ISINT = n => /\b(4sight|foursight|acctech)\b/i.test(n);
+const AFRICA_ROWS = AFRICA_RAW.map(([c, v]) => ({ c, v: v || 0, internal: AF_ISINT(c) }));
+const AFRICA_TOTAL = AFRICA_ROWS.reduce((s, r) => s + r.v, 0);
+const AFRICA_MAX   = Math.max(...AFRICA_ROWS.map(r => r.v));
+const AFRICA_INT   = AFRICA_ROWS.filter(r => r.internal);
+const AFR  = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+const AFRm = n => Math.abs(n) >= 1e6 ? 'R ' + (n/1e6).toFixed(1) + 'm'
+               : Math.abs(n) >= 1e3 ? 'R ' + (n/1e3).toFixed(0) + 'k' : AFR(n);
+let africaSortK = 'v', africaSortD = 'desc', africaPage = 1;
+const AFRICA_PER = 50;
+
+function resetAfrica(){
+  document.getElementById('f-africa-q').value = '';
+  document.getElementById('f-africa-band').value = '';
+  document.getElementById('f-africa-nonzero').checked = true;
+  document.getElementById('f-africa-top').checked = false;
+  africaSortK = 'v'; africaSortD = 'desc'; africaPage = 1; renderAfrica();
+}
+function africaFiltered(){
+  const q = document.getElementById('f-africa-q').value.toLowerCase().trim();
+  const band = +document.getElementById('f-africa-band').value || 0;
+  const nz = document.getElementById('f-africa-nonzero').checked;
+  let rows = AFRICA_ROWS.filter(r => {
+    if (nz && r.v === 0) return false;
+    if (q && !r.c.toLowerCase().includes(q)) return false;
+    if (band && r.v < band) return false;
+    return true;
+  });
+  rows.sort((a,b) => {
+    if (africaSortK === 'c'){
+      const av=a.c.toLowerCase(), bv=b.c.toLowerCase();
+      return africaSortD==='asc' ? (av<bv?-1:av>bv?1:0) : (av>bv?-1:av<bv?1:0);
+    }
+    return africaSortD==='asc' ? a.v-b.v : b.v-a.v;
+  });
+  if (document.getElementById('f-africa-top').checked) rows = rows.slice(0,20);
+  return rows;
+}
+function exportAfrica(){
+  const rows = africaFiltered();
+  const head = ['Customer','Revenue (R)','Share %','Internal'];
+  const body = rows.map(r => [r.c, r.v, (AFRICA_TOTAL? (r.v/AFRICA_TOTAL*100).toFixed(2)+'%':''), r.internal?'Yes':'No']);
+  const csv = [head, ...body].map(row => row.map(cell => {
+    const v = cell===null||cell===undefined ? '' : String(cell);
+    return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v;
+  }).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'africa-revenue.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+function renderAfrica(){
+  document.getElementById('badge-africa').textContent = AFRICA_ROWS.length.toLocaleString('en-ZA');
+  const active = AFRICA_ROWS.filter(r => r.v > 0);
+  const bySize = [...active].sort((a,b)=>b.v-a.v);
+  const share = n => bySize.slice(0,n).reduce((s,r)=>s+r.v,0)/AFRICA_TOTAL*100;
+  document.getElementById('africa-kpis').innerHTML =
+      '<div class="kpi green"><div class="label">Africa revenue</div><div class="value">'+AFRm(AFRICA_TOTAL)+'</div>'
+    + '<div class="delta">across '+active.length+' billing customers</div></div>'
+    + '<div class="kpi"><div class="label">Customers</div><div class="value">'+AFRICA_ROWS.length+'</div>'
+    + '<div class="delta">'+(AFRICA_ROWS.length-active.length)+' at zero this period</div></div>'
+    + '<div class="kpi amber"><div class="label">Top customer</div><div class="value">'+AFRm(bySize[0].v)+'</div>'
+    + '<div class="delta">'+(bySize[0].v/AFRICA_TOTAL*100).toFixed(1)+'% of total</div></div>'
+    + '<div class="kpi alt"><div class="label">Top-10 concentration</div><div class="value">'+share(10).toFixed(0)+'%</div>'
+    + '<div class="delta">top 5 = '+share(5).toFixed(0)+'%</div></div>';
+
+  const intVal = AFRICA_INT.reduce((s,r)=>s+r.v,0);
+  document.getElementById('africa-note').innerHTML =
+      '&#128202; <b>Africa portfolio.</b> '+AFRm(AFRICA_TOTAL)+' across '+active.length+' billing customers. '
+    + 'Largest is <b>'+escHtml(bySize[0].c)+'</b> at '+AFRm(bySize[0].v)+' ('+(bySize[0].v/AFRICA_TOTAL*100).toFixed(1)+'%). '
+    + 'Top 10 = <b>'+share(10).toFixed(1)+'%</b> &mdash; more concentrated than the direct book, so a handful of accounts drive most of it.'
+    + (AFRICA_INT.length ? ' &nbsp;&#9888;&#65039; '+AFRICA_INT.length+' 4Sight internal entities ('+AFRm(intVal)+') are included &mdash; exclude if reporting external revenue.' : '');
+
+  const rows = africaFiltered();
+  const sum = rows.reduce((s,r)=>s+r.v,0);
+  document.getElementById('count-africa').textContent =
+    'Showing ' + rows.length.toLocaleString('en-ZA') + ' of ' + AFRICA_ROWS.length.toLocaleString('en-ZA') + '  \u00B7  ' + AFRm(sum);
+
+  document.querySelectorAll('#tbl-africa th').forEach(th=>{
+    const on = th.dataset.ak === africaSortK;
+    const si = th.querySelector('.sort-ind');
+    if (si) si.textContent = on ? (africaSortD==='asc'?'\u25B2':'\u25BC') : '\u2195';
+  });
+
+  const pages = Math.max(1, Math.ceil(rows.length/AFRICA_PER));
+  if (africaPage > pages) africaPage = pages;
+  const slice = rows.slice((africaPage-1)*AFRICA_PER, africaPage*AFRICA_PER);
+  const tbody = document.querySelector('#tbl-africa tbody');
+  tbody.innerHTML = slice.length ? slice.map(r => {
+    const w = r.v > 0 ? (r.v/AFRICA_MAX*100) : 0;
+    return '<tr>'
+      + '<td>' + escHtml(r.c) + (r.internal ? ' <span class="af-tag">Internal</span>' : '') + '</td>'
+      + '<td class="af-num bar-cell">'
+        + (w>0 ? '<span class="mini-bar" style="width:'+w+'%"></span>' : '')
+        + '<span>' + AFR(r.v) + '</span></td>'
+      + '<td class="af-num">' + (AFRICA_TOTAL ? (r.v/AFRICA_TOTAL*100).toFixed(1)+'%' : '\u2014') + '</td>'
+      + '</tr>';
+  }).join('') : '<tr><td colspan="3" class="empty">No customers match the current filters.</td></tr>';
+
+  document.getElementById('africa-foot').innerHTML =
+      '<td>TOTAL &mdash; ' + rows.length.toLocaleString('en-ZA') + ' customers</td>'
+    + '<td class="af-num">' + AFR(sum) + '</td>'
+    + '<td class="af-num">' + (AFRICA_TOTAL ? (sum/AFRICA_TOTAL*100).toFixed(0)+'%' : '\u2014') + '</td>';
+
+  renderPager('pager-africa', rows.length, AFRICA_PER, africaPage, p => { africaPage=p; renderAfrica(); });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#tbl-africa th').forEach(th => th.addEventListener('click', () => {
+    const k = th.dataset.ak;
+    if (africaSortK === k) africaSortD = africaSortD==='asc' ? 'desc' : 'asc';
+    else { africaSortK = k; africaSortD = (k==='c') ? 'asc' : 'desc'; }
+    africaPage = 1; renderAfrica();
+  }));
+  const nz = document.getElementById('f-africa-nonzero');
+  if (nz) nz.addEventListener('change', () => { africaPage=1; renderAfrica(); });
+});
+
 function renderOverview() {
   const s = DATA.summary;
   document.getElementById('overview-kpis').innerHTML = `
@@ -1980,6 +2156,7 @@ function switchTab(tab) {
   if (tab==='newaccts') renderNewAccts();
   if (tab==='revenue') renderRevenue();
   if (tab==='fy26') renderFy26();
+  if (tab==='africa') renderAfrica();
 }
 
 // ----- Wire up -----
