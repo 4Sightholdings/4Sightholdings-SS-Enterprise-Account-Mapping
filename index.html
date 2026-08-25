@@ -252,117 +252,6 @@
     0%,100% { opacity: 1; transform: scale(1); }
     50%     { opacity: 0.5; transform: scale(1.2); }
   }
-  /* ===== Expandable editable cells ===== */
-  .ed-cell { position:relative; min-width:170px; vertical-align:top; }
-  .ed-view { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
-  .ed-val { line-height:1.4; word-break:break-word; }
-  .ed-val.edited { color:var(--green); font-weight:700; }
-  .ed-edit-btn {
-    border:1px solid var(--border); background:#fff; color:var(--navy-dark);
-    padding:3px 9px; border-radius:4px; font-size:11px; font-weight:700;
-    cursor:pointer; font-family:inherit; line-height:1.4; white-space:nowrap;
-    transition:background .15s,color .15s,border-color .15s,opacity .15s; opacity:.5;
-  }
-  tr:hover .ed-edit-btn { opacity:1; }
-  .ed-edit-btn:hover { background:var(--navy-dark); color:#fff; border-color:var(--navy-dark); opacity:1; }
-  .ed-editing {
-    display:flex; flex-direction:column; gap:8px;
-    background:#f3f9ff; border:1px solid var(--cyan-bright); border-radius:6px;
-    padding:8px; box-shadow:0 0 0 3px rgba(0,191,255,.12);
-    animation:edExpand .18s ease-out;
-  }
-  @keyframes edExpand { from{opacity:0;transform:translateY(-4px);} to{opacity:1;transform:translateY(0);} }
-  .ed-input, .ed-select {
-    width:100%; padding:6px 8px; border:1px solid var(--border); border-radius:4px;
-    font:13px inherit; color:var(--text); background:#fff; box-sizing:border-box; font-family:inherit;
-  }
-  .ed-input:focus, .ed-select:focus { outline:none; border-color:var(--cyan-bright); box-shadow:0 0 0 2px rgba(0,191,255,.18); }
-  .ed-btns { display:flex; gap:6px; flex-wrap:wrap; }
-  .b { border:1px solid var(--border); background:#fff; color:var(--navy-dark); padding:4px 9px;
-       border-radius:4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit;
-       line-height:1.4; white-space:nowrap; transition:background .15s,color .15s,border-color .15s; }
-  .b:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); }
-  .b-save { background:var(--green); color:#fff; border-color:var(--green); }
-  .b-save:hover { background:#157a5a; border-color:#157a5a; }
-  .b-cancel:hover { background:var(--amber); color:#fff; border-color:var(--amber); }
-  .b-del:hover { background:var(--red); color:#fff; border-color:var(--red); }
-  /* ===== Redboard year switcher ===== */
-  .rb-head { display:flex; align-items:center; gap:6px; white-space:nowrap; }
-  .rb-yr-btn { background:rgba(255,255,255,.16); color:#fff; border:none; border-radius:4px;
-               width:20px; height:20px; font-size:12px; font-weight:800; cursor:pointer; line-height:1;
-               display:inline-flex; align-items:center; justify-content:center; transition:background .15s; }
-  .rb-yr-btn:hover { background:var(--cyan-bright); color:var(--navy-darkest); }
-  .rb-yr-btn:disabled { opacity:.3; cursor:not-allowed; }
-  .rb-yr-val { min-width:34px; text-align:center; font-weight:800; color:var(--cyan-light); }
-  .rb-copy-btn { background:#fff; color:var(--navy-dark); border:1px solid var(--border); border-radius:6px;
-                 padding:6px 12px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; }
-  .rb-copy-btn:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); }
-  /* ===== Attachments ===== */
-  .cell-actions { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
-  .opp-attach-btn { width:100%; background:#fff; color:var(--navy-dark); border:1.5px dashed var(--border);
-                    padding:8px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;
-                    font-family:inherit; transition:background .15s,border-color .15s,color .15s; }
-  .opp-attach-btn:hover { background:#eef6ff; border-color:var(--navy-mid); border-style:solid; color:var(--navy-darkest); }
-  .att-box { margin-top:8px; padding:8px 10px; background:#f7fbff; border:1px solid #dbeafe; border-radius:6px; }
-  .att-hdr { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--navy-dark);
-             font-weight:700; margin-bottom:6px; }
-  .att-row { display:flex; align-items:center; gap:8px; background:#fff; border:1px solid #e3edf6;
-             border-radius:4px; padding:5px 8px; margin-bottom:4px; font-size:12px; }
-  .att-icon { font-size:14px; }
-  .att-name { flex:1; color:var(--navy-dark); font-weight:600; text-decoration:none; word-break:break-all; }
-  .att-name:hover { text-decoration:underline; color:var(--cyan-bright); }
-  .att-meta { color:var(--muted); font-size:10px; white-space:nowrap; }
-  .att-del { background:none; border:none; color:var(--muted); font-size:15px; cursor:pointer;
-             font-weight:700; line-height:1; padding:0 2px; }
-  .att-del:hover { color:var(--red); }
-  /* ===== Modal ===== */
-  .modal-bd { position:fixed; inset:0; background:rgba(6,26,58,.55); z-index:900;
-              display:none; align-items:center; justify-content:center; padding:20px; }
-  .modal-bd.show { display:flex; }
-  .modal { background:#fff; border-radius:12px; padding:22px; max-width:470px; width:100%;
-           box-shadow:0 20px 60px rgba(0,0,0,.3); max-height:90vh; overflow-y:auto; }
-  .modal h3 { margin:0 0 4px; color:var(--navy-darkest); font-size:17px; }
-  .modal .m-sub { color:var(--muted); font-size:12px; margin-bottom:16px; }
-  .fld { display:flex; flex-direction:column; gap:4px; margin-bottom:12px; }
-  .fld label { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--navy-dark); font-weight:700; }
-  .fld input { padding:8px 10px; border:1px solid var(--border); border-radius:4px; font:13px inherit; font-family:inherit; }
-  .fld input:focus { outline:none; border-color:var(--cyan-bright); box-shadow:0 0 0 3px rgba(0,191,255,.15); }
-  .fld .help { font-size:11px; color:var(--muted); line-height:1.4; }
-  .drop { border:2px dashed var(--border); border-radius:8px; padding:18px; text-align:center;
-          color:var(--muted); font-size:12px; cursor:pointer; transition:background .15s,border-color .15s; }
-  .drop:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); color:var(--navy-dark); }
-  .m-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; flex-wrap:wrap; }
-  .divider { display:flex; align-items:center; gap:10px; margin:14px 0; color:var(--muted);
-             font-size:11px; text-transform:uppercase; letter-spacing:.08em; }
-  .divider::before,.divider::after { content:""; flex:1; height:1px; background:var(--border); }
-  /* ===== Revenue FY26 tab ===== */
-  .fy26-sec { font-size:13px; text-transform:uppercase; letter-spacing:0.08em; color:var(--navy-dark); font-weight:700; margin:24px 0 12px; display:flex; align-items:center; gap:10px; }
-  .fy26-sec::after { content:""; flex:1; height:1px; background:var(--border); }
-  .fy26-insights { display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:14px; margin-bottom:6px; }
-  .fy26-ins { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--cyan-bright); border-radius:12px; padding:14px 16px; cursor:pointer; transition:box-shadow .15s, transform .15s; box-shadow:0 1px 3px rgba(6,26,58,0.04); }
-  .fy26-ins:hover { box-shadow:0 4px 14px rgba(6,26,58,0.12); transform:translateY(-1px); }
-  .fy26-ins.green { border-left-color:var(--green); }
-  .fy26-ins.alt { border-left-color:var(--red); }
-  .fy26-ins.amber { border-left-color:var(--amber); }
-  .fy26-ins .t { font-size:12.5px; font-weight:700; color:var(--navy-darkest); }
-  .fy26-ins .v { font-size:19px; font-weight:800; color:var(--navy-darkest); margin:6px 0; }
-  .fy26-ins .s { font-size:11.5px; color:var(--muted); line-height:1.5; }
-  .fy26-ins .go { font-size:11px; font-weight:700; color:var(--navy-dark); margin-top:8px; display:inline-block; }
-  .fy26-ins:hover .go { color:var(--cyan-bright); }
-  #view-fy26 .warn { background:#fbeae9; border-left:4px solid var(--red); padding:12px 16px; border-radius:8px; font-size:12.5px; color:var(--red-dark); line-height:1.6; margin:14px 0; }
-  #view-fy26 .note { background:#e8f7f1; border-left:4px solid var(--green); padding:12px 16px; border-radius:8px; font-size:12.5px; color:#0d6b4d; line-height:1.6; margin:14px 0; }
-  #tbl-fy26 td.fy-num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
-  #tbl-fy26 .bar-cell { position:relative; }
-  #tbl-fy26 .mini-bar { position:absolute; left:0; top:50%; transform:translateY(-50%); height:16px; background:var(--cyan-pale); border-radius:3px; z-index:0; }
-  #tbl-fy26 .bar-cell span { position:relative; z-index:1; }
-  #tbl-fy26 tfoot td { background:#f8fafd; font-weight:800; border-top:2px solid var(--navy-darkest); color:var(--navy-darkest); }
-  .fy-tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10.5px; font-weight:700; white-space:nowrap; }
-  .fy-tag.new  { background:#147a59; color:#fff; }
-  .fy-tag.act  { background:var(--cyan-pale); color:var(--navy-dark); }
-  .fy-tag.dorm { background:#e3e8f0; color:#4a5871; }
-  .fy-tag.cred { background:#fbeae9; color:var(--red-dark); }
-  .fy-tag.int  { background:#fff4e0; color:#8a5a10; }
-  .fy26-legend .fy-tag { margin:0 2px; }
   /* ===== Africa tab ===== */
   #view-africa .note { background:#e8f7f1; border-left:4px solid var(--green); padding:12px 16px; border-radius:8px; font-size:12.5px; color:#0d6b4d; line-height:1.6; margin:14px 0; }
   #tbl-africa td.af-num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
@@ -370,7 +259,19 @@
   #tbl-africa .mini-bar { position:absolute; left:0; top:50%; transform:translateY(-50%); height:16px; background:var(--cyan-pale); border-radius:3px; z-index:0; }
   #tbl-africa .bar-cell span { position:relative; z-index:1; }
   #tbl-africa tfoot td { background:#f8fafd; font-weight:800; border-top:2px solid var(--navy-darkest); color:var(--navy-darkest); }
+  #tbl-africa .af-val.edited { color:var(--green); font-weight:800; }
   .af-tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10.5px; font-weight:700; white-space:nowrap; background:#fff4e0; color:#8a5a10; margin-left:6px; }
+  .af-actions { display:flex; gap:5px; opacity:0; transition:opacity .15s; }
+  #tbl-africa tr:hover .af-actions { opacity:1; }
+  .af-input { width:130px; padding:5px 7px; border:1px solid var(--cyan-bright); border-radius:4px; font:13px inherit; text-align:right; box-shadow:0 0 0 2px rgba(0,191,255,.15); }
+  .af-input:focus { outline:none; }
+  .af-editing { display:flex; gap:6px; align-items:center; justify-content:flex-end; }
+  .afb { border:1px solid var(--border); background:#fff; color:var(--navy-dark); padding:4px 9px; border-radius:4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .afb:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); }
+  .afb-save { background:var(--green); color:#fff; border-color:var(--green); }
+  .afb-save:hover { background:#157a5a; }
+  .afb-del:hover { background:var(--red); color:#fff; border-color:var(--red); }
+  .afb-cancel:hover { background:var(--amber); color:#fff; border-color:var(--amber); }
   /* Hidden */
   .hidden { display:none !important; }
 
@@ -394,7 +295,6 @@
   <button class="tab" data-tab="enterprise">Enterprise Customers <span class="badge" id="badge-enterprise"></span></button>
   <button class="tab" data-tab="newaccts">New Accounts <span class="badge" id="badge-newaccts"></span></button>
   <button class="tab" data-tab="revenue">Direct Revenue <span class="badge" id="badge-revenue"></span></button>
-  <button class="tab" data-tab="fy26">Revenue FY26 <span class="badge" id="badge-fy26"></span></button>
   <button class="tab" data-tab="africa">Africa <span class="badge" id="badge-africa"></span></button>
 </nav>
 
@@ -479,7 +379,7 @@
   <div class="page-head">
     <div>
       <h2>4Sight Enterprise Customers</h2>
-      <div class="desc">27 active enterprise accounts with Individual assignment, industry, Redboard status by year, and cluster revenue.</div>
+      <div class="desc">27 active enterprise accounts with ATU assignment, industry, redboard 2026 status, and cluster revenue.</div>
     </div>
     <div class="row-count" id="count-enterprise"></div>
   </div>
@@ -493,12 +393,11 @@
     <label>Industry
       <select id="f-enterprise-ind"><option value="">All industries</option></select>
     </label>
-    <label>Individual
-      <select id="f-enterprise-atu"><option value="">All Individuals</option></select>
+    <label>ATU AE
+      <select id="f-enterprise-atu"><option value="">All AEs</option></select>
     </label>
     <div class="toggles">
-      <label class="toggle"><input type="checkbox" id="f-enterprise-redboard"><span class="slider"></span><span id="rb-filter-label">Redboard 2026 only</span></label>
-      <button type="button" class="rb-copy-btn" id="rb-copy-btn" onclick="rbCopyFromPrevYear()" title="Copy all Redboard statuses from the previous year into the year currently shown">⧉ Copy 2025 → 2026</button>
+      <label class="toggle"><input type="checkbox" id="f-enterprise-redboard"><span class="slider"></span>Redboard 2026 only</label>
     </div>
     <button class="btn secondary" onclick="resetFilters('enterprise')">Reset</button>
     <button class="btn" onclick="exportCSV('enterprise')">Export CSV</button>
@@ -510,8 +409,8 @@
         <thead><tr>
           <th data-key="customer">Customer<span class="sort-ind">↕</span></th>
           <th data-key="industry">Industry<span class="sort-ind">↕</span></th>
-          <th data-key="atu">Individual<span class="sort-ind">↕</span></th>
-          <th data-key="redboard">Redboard<span class="sort-ind">↕</span></th>
+          <th data-key="atu">ATU AE<span class="sort-ind">↕</span></th>
+          <th data-key="redboard">Redboard 2026<span class="sort-ind">↕</span></th>
           <th data-key="opps">4Sight Opportunities<span class="sort-ind">↕</span></th>
         </tr></thead>
         <tbody></tbody>
@@ -526,7 +425,7 @@
   <div class="page-head">
     <div>
       <h2>New Enterprise Accounts</h2>
-      <div class="desc">91 net-new target prospects for the 2026 motion. Filter by industry or Individual to scope the outreach plan.</div>
+      <div class="desc">91 net-new target prospects for the 2026 motion. Filter by industry or ATU AE to scope the outreach plan.</div>
     </div>
     <div class="row-count" id="count-newaccts"></div>
   </div>
@@ -540,8 +439,8 @@
     <label>Industry
       <select id="f-newaccts-ind"><option value="">All industries</option></select>
     </label>
-    <label>Individual
-      <select id="f-newaccts-atu"><option value="">All Individuals</option></select>
+    <label>ATU AE
+      <select id="f-newaccts-atu"><option value="">All AEs</option></select>
     </label>
     <button class="btn secondary" onclick="resetFilters('newaccts')">Reset</button>
     <button class="btn" onclick="exportCSV('newaccts')">Export CSV</button>
@@ -553,7 +452,7 @@
         <thead><tr>
           <th data-key="customer">Customer<span class="sort-ind">↕</span></th>
           <th data-key="industry">Industry<span class="sort-ind">↕</span></th>
-          <th data-key="atu">Individual<span class="sort-ind">↕</span></th>
+          <th data-key="atu">ATU AE<span class="sort-ind">↕</span></th>
           <th data-key="opps">4Sight Opportunities<span class="sort-ind">↕</span></th>
         </tr></thead>
         <tbody></tbody>
@@ -607,109 +506,40 @@
   </div>
 </section>
 
-<section class="view hidden" id="view-fy26">
-  <div class="page-head">
-    <div>
-      <h2>Revenue FY26</h2>
-      <div class="desc">FY26 billings per customer alongside lifetime revenue, so you can see who is actually transacting this year. Click a column header to sort, or use an insight card to filter instantly.</div>
-    </div>
-    <div class="row-count" id="count-fy26"></div>
-  </div>
-
-  <div class="kpis" id="fy26-kpis"></div>
-
-  <h3 class="fy26-sec">What the data shows</h3>
-  <div class="fy26-insights" id="fy26-insights"></div>
-
-  <div class="warn" id="fy26-conc"></div>
-
-  <div class="filter-bar">
-    <label>Search<input type="text" id="f-fy26-q" placeholder="Customer name..." oninput="renderFy26()"></label>
-    <label>FY26 band
-      <select id="f-fy26-band" onchange="renderFy26()">
-        <option value="">Any value</option>
-        <option value="10000000">R10m +</option>
-        <option value="5000000">R5m +</option>
-        <option value="1000000">R1m +</option>
-        <option value="100000">R100k +</option>
-      </select>
-    </label>
-    <label>Segment
-      <select id="f-fy26-seg" onchange="renderFy26()">
-        <option value="">All customers</option>
-        <option value="active">Billing in FY26</option>
-        <option value="dormant">Dormant in FY26</option>
-        <option value="new">New &amp; emerging</option>
-        <option value="internal">4Sight internal</option>
-        <option value="external">External only</option>
-        <option value="credit">Credits only</option>
-      </select>
-    </label>
-    <div class="toggles">
-      <label class="toggle"><input type="checkbox" id="f-fy26-top" onchange="renderFy26()"><span class="slider"></span>Top 50 only</label>
-    </div>
-    <button class="btn secondary" onclick="resetFy26()">Reset</button>
-    <button class="btn" onclick="exportFy26()">Export CSV</button>
-  </div>
-
-  <div class="table-wrap">
-    <div class="table-scroll">
-      <table id="tbl-fy26">
-        <thead><tr>
-          <th data-fk="c" style="width:36%">Customer<span class="sort-ind">&#8597;</span></th>
-          <th data-fk="tot" style="text-align:right">Lifetime revenue<span class="sort-ind">&#8597;</span></th>
-          <th data-fk="fy"  style="text-align:right">FY26 revenue<span class="sort-ind">&#9660;</span></th>
-          <th data-fk="pc"  style="text-align:right">FY26 % of lifetime<span class="sort-ind">&#8597;</span></th>
-          <th data-fk="seg" style="width:14%">Segment<span class="sort-ind">&#8597;</span></th>
-        </tr></thead>
-        <tbody></tbody>
-        <tfoot><tr id="fy26-foot"></tr></tfoot>
-      </table>
-    </div>
-    <div class="pager" id="pager-fy26"></div>
-  </div>
-
-  <div class="legend fy26-legend" id="fy26-legend"></div>
-  <div class="note" id="fy26-note"></div>
-</section>
-
 <section class="view hidden" id="view-africa">
   <div class="page-head">
     <div>
       <h2>Africa</h2>
-      <div class="desc">Revenue by customer across the Africa portfolio, from Sheet1 of the ARTran detail workbook (21 Aug 2026). Click a column header to sort, or use the search and filters below.</div>
+      <div class="desc">Revenue by customer across the Africa portfolio (Sheet1 of the ARTran detail workbook). Hover a row to reveal <b>Edit</b>; changes save to the shared sync file. Click a column header to sort.</div>
     </div>
     <div class="row-count" id="count-africa"></div>
   </div>
-
   <div class="kpis" id="africa-kpis"></div>
-
   <div class="filter-bar">
     <label>Search<input type="text" id="f-africa-q" placeholder="Customer name..." oninput="renderAfrica()"></label>
     <label>Revenue band
       <select id="f-africa-band" onchange="renderAfrica()">
         <option value="">Any value</option>
-        <option value="10000000">R10m +</option>
-        <option value="5000000">R5m +</option>
-        <option value="1000000">R1m +</option>
-        <option value="100000">R100k +</option>
+        <option value="10000000">R10m +</option><option value="5000000">R5m +</option>
+        <option value="1000000">R1m +</option><option value="100000">R100k +</option>
       </select>
     </label>
     <div class="toggles">
-      <label class="toggle"><input type="checkbox" id="f-africa-nonzero" checked><span class="slider"></span>Hide zero-revenue</label>
+      <label class="toggle"><input type="checkbox" id="f-africa-nonzero" checked onchange="renderAfrica()"><span class="slider"></span>Hide zero-revenue</label>
       <label class="toggle"><input type="checkbox" id="f-africa-top" onchange="renderAfrica()"><span class="slider"></span>Top 20 only</label>
     </div>
     <button class="btn secondary" onclick="resetAfrica()">Reset</button>
     <button class="btn" onclick="exportAfrica()">Export CSV</button>
+    <button class="btn" style="background:var(--green)" onclick="addAfricaRow()">+ Add customer</button>
   </div>
-
   <div class="table-wrap">
     <div class="table-scroll">
       <table id="tbl-africa">
         <thead><tr>
-          <th data-ak="c" style="width:56%">Customer<span class="sort-ind">&#8597;</span></th>
+          <th data-ak="c" style="width:52%">Customer<span class="sort-ind">&#8597;</span></th>
           <th data-ak="v" style="text-align:right">Revenue (R)<span class="sort-ind">&#9660;</span></th>
           <th data-ak="pc" style="text-align:right">Share<span class="sort-ind">&#8597;</span></th>
+          <th style="width:170px">Actions</th>
         </tr></thead>
         <tbody></tbody>
         <tfoot><tr id="africa-foot"></tr></tfoot>
@@ -717,42 +547,11 @@
     </div>
     <div class="pager" id="pager-africa"></div>
   </div>
-
   <div class="note" id="africa-note"></div>
 </section>
 
 </main>
 <!-- Live sync status badge -->
-<!-- ===== Attach File / Link modal ===== -->
-<div class="modal-bd" id="att-modal" onclick="if(event.target===this)attClose()">
-  <div class="modal">
-    <h3>&#128206; Add Attachment</h3>
-    <div class="m-sub" id="att-for">for &mdash;</div>
-    <div class="fld">
-      <label for="att-title">Display name</label>
-      <input type="text" id="att-title" placeholder="e.g. Signed proposal, Scoping doc, Meeting notes" autocomplete="off">
-    </div>
-    <div class="fld">
-      <label for="att-url">Link (SharePoint / Teams / OneDrive / any URL)</label>
-      <input type="url" id="att-url" placeholder="https://4sight.sharepoint.com/..." autocomplete="off" spellcheck="false">
-      <div class="help"><strong>Recommended</strong> &mdash; links keep the dashboard fast and respect existing M365 permissions.</div>
-    </div>
-    <div class="divider">or</div>
-    <div class="drop" onclick="document.getElementById('att-file').click()">
-      &#128193; <strong>Click to browse for a file</strong><br>
-      <span style="font-size:11px">Max 400 KB &middot; larger files should be linked from SharePoint instead</span>
-    </div>
-    <input type="file" id="att-file" style="display:none" onchange="attPickFile(this)">
-    <div id="att-picked" style="font-size:12px;color:#1ca97c;font-weight:700;margin-top:8px"></div>
-    <div class="m-actions">
-      <button type="button" class="btn secondary" onclick="attClose()">Cancel</button>
-      <button type="button" class="btn" style="background:#1ca97c" onclick="attSave()">&#128190; Save Attachment</button>
-    </div>
-  </div>
-</div>
-
-<datalist id="people-list"></datalist>
-
 <div id="sync-badge" class="sync-badge" title="Live-synced to GitHub via Cloudflare Worker">
   <span class="dot"></span><span class="label">Connecting…</span>
 </div>
@@ -795,8 +594,6 @@ async function workerPull() {
     const isFirstLoad = !OPP_LOADED;
     OPP_STORE = obj || {};
     OPP_LOADED = true;
-    if (typeof buildAtuDatalist === "function") buildAtuDatalist();
-    if (typeof rbSyncHeader === "function") rbSyncHeader();
     if (!isFirstLoad) {
       // Refresh tabs that show opp data
       renderEnterprise();
@@ -1002,414 +799,7 @@ function oppCellHtml(section, customer) {
   }
   return '<td class="opp-cell" data-section="'+section+'" data-customer="'+safeCust+'">'+
     '<div class="opp-items">'+itemsHtml+'</div>'+
-    '<div class="cell-actions">'+
-      '<button type="button" class="opp-add-btn" onclick="oppAddItem(\''+section+'\', this)">+ Add Opportunity</button>'+
-      '<button type="button" class="opp-attach-btn" onclick="attOpen(\''+section+'\', this)">\uD83D\uDCCE Attach File / Link</button>'+
-    '</div>'+
-    attListHtml(section, customer) + '</td>';
-}
-
-// ===================================================================
-// ===== Expandable editable fields: Customer / Industry / Individual
-// Stored in OPP_STORE._fields[section][customerKey] = {cust,ind,atu}
-// ===================================================================
-const FIELD_EDIT = {};
-const FIELD_LABELS = { cust:"Customer name", ind:"Industry", atu:"Individual" };
-
-function fldOriginal(section, custKey, field) {
-  const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
-  const row = list.find(r => r.customer === custKey);
-  if (!row) return "";
-  if (field === "cust") return row.customer || "";
-  if (field === "ind")  return row.industry || "";
-  if (field === "atu")  return row.atu || "";
-  return "";
-}
-function fldOverride(section, custKey, field) {
-  const store = oppLoad();
-  const f = store._fields && store._fields[section] && store._fields[section][custKey];
-  return (f && (field in f)) ? f[field] : null;
-}
-function fldDisplay(section, custKey, field) {
-  const ov = fldOverride(section, custKey, field);
-  return ov !== null ? ov : fldOriginal(section, custKey, field);
-}
-function fldIsEdited(section, custKey, field) { return fldOverride(section, custKey, field) !== null; }
-function fldSet(section, custKey, field, value) {
-  const store = oppLoad();
-  if (!store._fields) store._fields = {};
-  if (!store._fields[section]) store._fields[section] = {};
-  if (!store._fields[section][custKey]) store._fields[section][custKey] = {};
-  const orig = fldOriginal(section, custKey, field);
-  if ((value || "") === (orig || "")) {
-    delete store._fields[section][custKey][field];
-    if (Object.keys(store._fields[section][custKey]).length === 0) delete store._fields[section][custKey];
-  } else {
-    store._fields[section][custKey][field] = value;
-  }
-  oppSave(store);
-}
-function fldKey(section, custKey, field) { return section + "::" + custKey + "::" + field; }
-function fldRefreshCell(section, custKey, field) {
-  document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="'+field+'"]').forEach(cell => {
-    if (cell.dataset.customer === custKey) cell.innerHTML = fldCellInner(section, custKey, field);
-  });
-}
-// EXPAND — click Edit to reveal Save / Cancel / Delete
-function fldEditStart(section, btn, field) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  FIELD_EDIT[fldKey(section, c, field)] = true;
-  fldRefreshCell(section, c, field);
-  setTimeout(() => {
-    document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="'+field+'"]').forEach(cc => {
-      if (cc.dataset.customer === c) { const el = cc.querySelector(".ed-input,.ed-select"); if (el) { el.focus(); if (el.select) el.select(); } }
-    });
-  }, 0);
-}
-function fldEditSave(section, btn, field) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  const el = cell.querySelector(".ed-input,.ed-select");
-  fldSet(section, c, field, (el ? el.value : "").trim());
-  delete FIELD_EDIT[fldKey(section, c, field)];
-  fldRefreshCell(section, c, field);
-  if (field === "atu") buildAtuDatalist();
-  oppFlash("Saved \u2713");
-}
-// COLLAPSE without saving
-function fldEditCancel(section, btn, field) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  delete FIELD_EDIT[fldKey(section, c, field)];
-  fldRefreshCell(section, c, field);
-}
-function fldDelete(section, btn, field) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  if (!confirm('Clear the ' + FIELD_LABELS[field] + ' for "' + c + '"?')) return;
-  fldSet(section, c, field, "");
-  delete FIELD_EDIT[fldKey(section, c, field)];
-  fldRefreshCell(section, c, field);
-  if (field === "atu") buildAtuDatalist();
-  oppFlash("Deleted");
-}
-function fldKeydown(section, ev, field) {
-  if (ev.key === "Enter") { ev.preventDefault(); fldEditSave(section, ev.target, field); }
-  else if (ev.key === "Escape") { ev.preventDefault(); fldEditCancel(section, ev.target, field); }
-}
-function fldCellInner(section, custKey, field) {
-  const editing = FIELD_EDIT[fldKey(section, custKey, field)];
-  const val = fldDisplay(section, custKey, field);
-  const edited = fldIsEdited(section, custKey, field);
-  // ---- EXPANDED ----
-  if (editing) {
-    const listAttr = field === "atu" ? ' list="people-list"' : '';
-    const ph = field === "atu" ? ' placeholder="Type a name\u2026"'
-             : field === "ind" ? ' placeholder="Industry\u2026"' : ' placeholder="Customer name\u2026"';
-    return '<div class="ed-editing">'
-      + '<input class="ed-input"' + listAttr + ph + ' value="' + escHtml(val).replace(/"/g,'&quot;') + '"'
-      +   ' onkeydown="fldKeydown(\'' + section + '\', event, \'' + field + '\')">'
-      + '<div class="ed-btns">'
-      +   '<button type="button" class="b b-save" onclick="fldEditSave(\'' + section + '\', this, \'' + field + '\')">\uD83D\uDCBE Save</button>'
-      +   '<button type="button" class="b b-cancel" onclick="fldEditCancel(\'' + section + '\', this, \'' + field + '\')">\u21A9 Cancel</button>'
-      +   '<button type="button" class="b b-del" onclick="fldDelete(\'' + section + '\', this, \'' + field + '\')">\uD83D\uDDD1 Delete</button>'
-      + '</div></div>';
-  }
-  // ---- COLLAPSED (Edit only) ----
-  let shown;
-  if (field === "ind") {
-    shown = val ? '<span class="badge-ind">' + escHtml(val) + '</span>' : '<span class="muted">\u2014</span>';
-  } else if (field === "cust") {
-    shown = '<span class="ed-val ' + (edited ? 'edited' : '') + '"><strong>' + (escHtml(val) || '\u2014') + '</strong></span>';
-  } else {
-    shown = val ? '<span class="ed-val ' + (edited ? 'edited' : '') + '">' + escHtml(val) + '</span>' : '<span class="muted">\u2014</span>';
-  }
-  return '<div class="ed-view">' + shown
-    + '<button type="button" class="ed-edit-btn" title="Edit" onclick="fldEditStart(\'' + section + '\', this, \'' + field + '\')">\u270F Edit</button>'
-    + '</div>';
-}
-function fldCellHtml(section, custKey, field) {
-  const safe = escHtml(custKey).replace(/"/g, "&quot;");
-  return '<td class="ed-cell" data-section="' + section + '" data-customer="' + safe + '" data-field="' + field + '">'
-    + fldCellInner(section, custKey, field) + '</td>';
-}
-function buildAtuDatalist() {
-  const names = new Set();
-  (DATA.filters.atu || []).forEach(a => { if (a && a.trim()) names.add(a.trim()); });
-  DATA.enterprise.forEach(e => { const v = fldDisplay('enterprise', e.customer, 'atu'); if (v && v.trim()) names.add(v.trim()); });
-  DATA.newAccts.forEach(e => { const v = fldDisplay('newaccts', e.customer, 'atu'); if (v && v.trim()) names.add(v.trim()); });
-  const sorted = Array.from(names).sort((a,b) => a.toLowerCase().localeCompare(b.toLowerCase()));
-  let dl = document.getElementById('people-list');
-  if (!dl) { dl = document.createElement('datalist'); dl.id = 'people-list'; document.body.appendChild(dl); }
-  dl.innerHTML = sorted.map(n => '<option value="' + escHtml(n).replace(/"/g,'&quot;') + '">').join('');
-}
-
-// ===================================================================
-// ===== REDBOARD (per-year, expandable) =====
-// ===================================================================
-const RB_BASE_YEAR = 2026;
-let RB_YEAR = RB_BASE_YEAR;
-const RB_MIN_YEAR = 2024, RB_MAX_YEAR = 2035;
-const RB_EDIT = {};
-
-function rbOverride(section, custKey, year) {
-  const y = String(year || RB_YEAR);
-  const store = oppLoad();
-  const s = store._rb && store._rb[y] && store._rb[y][section];
-  return (s && (custKey in s)) ? !!s[custKey] : null;
-}
-function rbDisplay(section, custKey, year) {
-  const y = year || RB_YEAR;
-  const ov = rbOverride(section, custKey, y);
-  if (ov !== null) return ov;
-  if (String(y) === String(RB_BASE_YEAR)) {
-    const list = section === "enterprise" ? DATA.enterprise : DATA.newAccts;
-    const row = list.find(r => r.customer === custKey);
-    return row ? !!row.redboard : false;
-  }
-  return false;
-}
-function rbIsEdited(section, custKey) { return rbOverride(section, custKey, RB_YEAR) !== null; }
-function rbSet(section, custKey, value, year) {
-  const y = String(year || RB_YEAR);
-  const store = oppLoad();
-  if (!store._rb) store._rb = {};
-  if (!store._rb[y]) store._rb[y] = {};
-  if (!store._rb[y][section]) store._rb[y][section] = {};
-  store._rb[y][section][custKey] = !!value;
-  oppSave(store);
-}
-function rbClear(section, custKey, year) {
-  const y = String(year || RB_YEAR);
-  const store = oppLoad();
-  if (store._rb && store._rb[y] && store._rb[y][section]) { delete store._rb[y][section][custKey]; oppSave(store); }
-}
-function rbRefreshCell(section, custKey) {
-  document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="rb"]').forEach(cell => {
-    if (cell.dataset.customer === custKey) cell.innerHTML = rbCellInner(section, custKey);
-  });
-}
-function rbEditStart(section, btn) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  RB_EDIT[section + "::" + c] = true;
-  rbRefreshCell(section, c);
-  setTimeout(() => {
-    document.querySelectorAll('.ed-cell[data-section="'+section+'"][data-field="rb"]').forEach(cc => {
-      if (cc.dataset.customer === c) { const el = cc.querySelector(".ed-select"); if (el) el.focus(); }
-    });
-  }, 0);
-}
-function rbEditSave(section, btn) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  const sel = cell.querySelector(".ed-select");
-  rbSet(section, c, sel && sel.value === "yes");
-  delete RB_EDIT[section + "::" + c];
-  rbRefreshCell(section, c);
-  if (section === "enterprise") renderEnterpriseKpis();
-  oppFlash("Saved \u2713");
-}
-function rbEditCancel(section, btn) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  delete RB_EDIT[section + "::" + cell.dataset.customer];
-  rbRefreshCell(section, cell.dataset.customer);
-}
-function rbDelete(section, btn) {
-  const cell = btn.closest(".ed-cell"); if (!cell) return;
-  const c = cell.dataset.customer;
-  if (!confirm('Reset Redboard ' + RB_YEAR + ' for "' + c + '" back to its default?')) return;
-  rbClear(section, c);
-  delete RB_EDIT[section + "::" + c];
-  rbRefreshCell(section, c);
-  if (section === "enterprise") renderEnterpriseKpis();
-  oppFlash("Reset");
-}
-function rbCellInner(section, custKey) {
-  const editing = RB_EDIT[section + "::" + custKey];
-  const val = rbDisplay(section, custKey);
-  const edited = rbIsEdited(section, custKey);
-  if (editing) {
-    return '<div class="ed-editing">'
-      + '<select class="ed-select">'
-      +   '<option value="yes"' + (val ? ' selected' : '') + '>Yes</option>'
-      +   '<option value="no"'  + (!val ? ' selected' : '') + '>No</option>'
-      + '</select>'
-      + '<div class="ed-btns">'
-      +   '<button type="button" class="b b-save" onclick="rbEditSave(\'' + section + '\', this)">\uD83D\uDCBE Save</button>'
-      +   '<button type="button" class="b b-cancel" onclick="rbEditCancel(\'' + section + '\', this)">\u21A9 Cancel</button>'
-      +   '<button type="button" class="b b-del" onclick="rbDelete(\'' + section + '\', this)">\uD83D\uDDD1 Delete</button>'
-      + '</div></div>';
-  }
-  const badge = val ? '<span class="badge-yes">Yes</span>' : '<span class="badge-no">No</span>';
-  const mark  = edited ? ' <span style="color:var(--green);font-weight:800" title="Edited for ' + RB_YEAR + '">\u2022</span>' : '';
-  return '<div class="ed-view">' + badge + mark
-    + '<button type="button" class="ed-edit-btn" title="Edit" onclick="rbEditStart(\'' + section + '\', this)">\u270F Edit</button>'
-    + '</div>';
-}
-function rbCellHtml(section, custKey) {
-  const safe = escHtml(custKey).replace(/"/g, "&quot;");
-  return '<td class="ed-cell" data-section="' + section + '" data-customer="' + safe + '" data-field="rb">'
-    + rbCellInner(section, custKey) + '</td>';
-}
-function rbShiftYear(delta, ev) {
-  if (ev) { ev.stopPropagation(); ev.preventDefault(); }
-  const y = RB_YEAR + delta;
-  if (y < RB_MIN_YEAR || y > RB_MAX_YEAR) return;
-  RB_YEAR = y;
-  Object.keys(RB_EDIT).forEach(k => delete RB_EDIT[k]);
-  renderEnterprise();
-  oppFlash("Redboard " + RB_YEAR);
-}
-function rbHeadHtml() {
-  return '<div class="rb-head">'
-    + '<button type="button" class="rb-yr-btn" title="Previous year"'
-    +   (RB_YEAR <= RB_MIN_YEAR ? ' disabled' : '')
-    +   ' onclick="rbShiftYear(-1, event)">\u2039</button>'
-    + '<span>Redboard</span><span class="rb-yr-val">' + RB_YEAR + '</span>'
-    + '<button type="button" class="rb-yr-btn" title="Next year"'
-    +   (RB_YEAR >= RB_MAX_YEAR ? ' disabled' : '')
-    +   ' onclick="rbShiftYear(1, event)">\u203A</button>'
-    + '<span class="sort-ind">\u2195</span></div>';
-}
-function rbCopyFromPrevYear() {
-  const prev = RB_YEAR - 1;
-  if (prev < RB_MIN_YEAR) return;
-  if (!confirm('Copy every Redboard status from ' + prev + ' into ' + RB_YEAR + '?\n\nThis overwrites the ' + RB_YEAR + ' values.')) return;
-  const store = oppLoad();
-  if (!store._rb) store._rb = {};
-  if (!store._rb[String(RB_YEAR)]) store._rb[String(RB_YEAR)] = {};
-  ['enterprise','newaccts'].forEach(sec => {
-    const list = sec === 'enterprise' ? DATA.enterprise : DATA.newAccts;
-    if (!store._rb[String(RB_YEAR)][sec]) store._rb[String(RB_YEAR)][sec] = {};
-    list.forEach(r => { store._rb[String(RB_YEAR)][sec][r.customer] = rbDisplay(sec, r.customer, prev); });
-  });
-  oppSave(store);
-  renderEnterprise();
-  oppFlash('Copied from ' + prev);
-}
-
-// ===================================================================
-// ===== Attachments =====
-// ===================================================================
-let _attTarget = null, _attPicked = null;
-function attGet(section, customer) {
-  const store = oppLoad();
-  const a = store._att && store._att[section] && store._att[section][customer];
-  return Array.isArray(a) ? a : [];
-}
-function attSetList(section, customer, list) {
-  const store = oppLoad();
-  if (!store._att) store._att = {};
-  if (!store._att[section]) store._att[section] = {};
-  if (!list || list.length === 0) delete store._att[section][customer];
-  else store._att[section][customer] = list;
-  oppSave(store);
-}
-function attListHtml(section, customer) {
-  const list = attGet(section, customer);
-  if (!list.length) return '';
-  const safe = escHtml(customer).replace(/"/g,'&quot;');
-  return '<div class="att-box" data-section="'+section+'" data-customer="'+safe+'">'
-    + '<div class="att-hdr">\uD83D\uDCCE Attachments (' + list.length + ')</div>'
-    + list.map((f, k) => {
-        const isLink = f.k === 'link';
-        return '<div class="att-row">'
-          + '<span class="att-icon">' + (isLink ? '\uD83D\uDD17' : '\uD83D\uDCC4') + '</span>'
-          + '<a class="att-name" href="' + (isLink ? escHtml(f.u) : (f.u || '#')) + '" target="_blank" rel="noopener"'
-          +   (isLink ? '' : ' download="' + escHtml(f.n).replace(/"/g,'&quot;') + '"') + '>' + escHtml(f.n) + '</a>'
-          + '<span class="att-meta">' + escHtml(f.when || '') + '</span>'
-          + '<button type="button" class="att-del" title="Remove" onclick="attDelete(\'' + section + '\', this, ' + k + ')">\u00D7</button>'
-          + '</div>';
-      }).join('')
-    + '</div>';
-}
-function attRefreshCell(section, customer) {
-  document.querySelectorAll('.opp-cell[data-section="'+section+'"]').forEach(cell => {
-    if (cell.dataset.customer !== customer) return;
-    const existing = cell.querySelector('.att-box');
-    const html = attListHtml(section, customer);
-    if (existing) { if (html) existing.outerHTML = html; else existing.remove(); }
-    else if (html) cell.insertAdjacentHTML('beforeend', html);
-  });
-}
-function attOpen(section, btn) {
-  const cell = btn.closest('.opp-cell'); if (!cell) return;
-  _attTarget = { section: section, customer: cell.dataset.customer };
-  _attPicked = null;
-  document.getElementById('att-for').textContent = 'for ' + (_attTarget.customer || 'this account');
-  document.getElementById('att-title').value = '';
-  document.getElementById('att-url').value = '';
-  document.getElementById('att-picked').textContent = '';
-  document.getElementById('att-file').value = '';
-  document.getElementById('att-modal').classList.add('show');
-  setTimeout(() => document.getElementById('att-title').focus(), 50);
-}
-function attClose() { document.getElementById('att-modal').classList.remove('show'); }
-function attPickFile(inp) {
-  const f = inp.files && inp.files[0]; if (!f) return;
-  if (f.size > 400 * 1024) {
-    alert('"' + f.name + '" is ' + (f.size/1024).toFixed(0) + ' KB.\n\n'
-      + 'Files larger than 400 KB are not supported because every attachment is stored in the shared '
-      + 'sync file and would slow the dashboard for everyone.\n\n'
-      + 'Please upload it to SharePoint/Teams and paste the link instead.');
-    inp.value = ''; return;
-  }
-  const r = new FileReader();
-  r.onload = () => {
-    _attPicked = { name: f.name, dataUrl: r.result, size: f.size };
-    document.getElementById('att-picked').textContent = '\u2713 Selected: ' + f.name + ' (' + (f.size/1024).toFixed(0) + ' KB)';
-    const t = document.getElementById('att-title');
-    if (!t.value.trim()) t.value = f.name;
-  };
-  r.readAsDataURL(f);
-}
-function attSave() {
-  if (!_attTarget) return;
-  const title = document.getElementById('att-title').value.trim();
-  const url   = document.getElementById('att-url').value.trim();
-  if (!url && !_attPicked) { alert('Please paste a link or choose a file.'); return; }
-  const when = new Date().toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' });
-  const list = attGet(_attTarget.section, _attTarget.customer);
-  if (url) list.push({ n: title || url, u: url, k: 'link', when: when });
-  else     list.push({ n: title || _attPicked.name, u: _attPicked.dataUrl, k: 'file', when: when });
-  attSetList(_attTarget.section, _attTarget.customer, list);
-  const tg = _attTarget;
-  attClose();
-  attRefreshCell(tg.section, tg.customer);
-  oppFlash('Attachment added \u2713');
-}
-function attDelete(section, btn, idx) {
-  const box = btn.closest('.att-box'); if (!box) return;
-  const customer = box.dataset.customer;
-  const list = attGet(section, customer);
-  if (!list[idx]) return;
-  if (!confirm('Remove "' + list[idx].n + '"?')) return;
-  list.splice(idx, 1);
-  attSetList(section, customer, list);
-  attRefreshCell(section, customer);
-  oppFlash('Attachment removed');
-}
-// KPI helper + header sync
-function renderEnterpriseKpis(rows, total) {
-  if (!rows) { rows = filterEnterprise(); total = rows.length; }
-  const redboard = rows.filter(r => rbDisplay('enterprise', r.customer)).length;
-  const inds = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'ind')).filter(Boolean)).size;
-  const aes  = new Set(rows.map(r => fldDisplay('enterprise', r.customer, 'atu')).filter(Boolean)).size;
-  document.getElementById('enterprise-kpis').innerHTML =
-    '<div class="kpi"><div class="label">Customers</div><div class="value">' + fmtNum(total) + '</div></div>'
-  + '<div class="kpi alt"><div class="label">Redboard ' + RB_YEAR + '</div><div class="value">' + fmtNum(redboard) + '</div></div>'
-  + '<div class="kpi green"><div class="label">Industries</div><div class="value">' + fmtNum(inds) + '</div></div>'
-  + '<div class="kpi amber"><div class="label">Individuals</div><div class="value">' + fmtNum(aes) + '</div></div>';
-}
-function rbSyncHeader() {
-  const th = document.querySelector('#tbl-enterprise th[data-key="redboard"]');
-  if (th) th.innerHTML = rbHeadHtml();
-  const lbl = document.getElementById('rb-filter-label');
-  if (lbl) lbl.textContent = 'Redboard ' + RB_YEAR + ' only';
-  const cp = document.getElementById('rb-copy-btn');
-  if (cp) cp.textContent = '\u29C9 Copy ' + (RB_YEAR - 1) + ' \u2192 ' + RB_YEAR;
+    '<button type="button" class="opp-add-btn" onclick="oppAddItem(\''+section+'\', this)">+ Add Opportunity</button></td>';
 }
 
 function fmtNum(n) {
@@ -1476,13 +866,10 @@ function filterEnterprise() {
   const s = STATE.enterprise;
   const q = s.search.toLowerCase();
   return DATA.enterprise.filter(e => {
-    const _c = fldDisplay('enterprise', e.customer, 'cust') || '';
-    const _i = fldDisplay('enterprise', e.customer, 'ind')  || '';
-    const _a = fldDisplay('enterprise', e.customer, 'atu')  || '';
-    if (s.ind && _i !== s.ind) return false;
-    if (s.atu && _a !== s.atu) return false;
-    if (s.redboard && !rbDisplay('enterprise', e.customer)) return false;
-    if (q && !(_c.toLowerCase().includes(q) || _a.toLowerCase().includes(q) || _i.toLowerCase().includes(q) || (oppDisplay('enterprise', e.customer)||'').toLowerCase().includes(q))) return false;
+    if (s.ind && e.industry !== s.ind) return false;
+    if (s.atu && e.atu !== s.atu) return false;
+    if (s.redboard && !e.redboard) return false;
+    if (q && !(e.customer.toLowerCase().includes(q) || e.atu.toLowerCase().includes(q) || e.industry.toLowerCase().includes(q) || (oppDisplay('enterprise', e.customer)||'').toLowerCase().includes(q))) return false;
     return true;
   });
 }
@@ -1490,12 +877,9 @@ function filterNewAccts() {
   const s = STATE.newaccts;
   const q = s.search.toLowerCase();
   return DATA.newAccts.filter(e => {
-    const _c = fldDisplay('newaccts', e.customer, 'cust') || '';
-    const _i = fldDisplay('newaccts', e.customer, 'ind')  || '';
-    const _a = fldDisplay('newaccts', e.customer, 'atu')  || '';
-    if (s.ind && _i !== s.ind) return false;
-    if (s.atu && _a !== s.atu) return false;
-    if (q && !(_c.toLowerCase().includes(q) || _a.toLowerCase().includes(q) || _i.toLowerCase().includes(q) || (oppDisplay('newaccts', e.customer)||'').toLowerCase().includes(q))) return false;
+    if (s.ind && e.industry !== s.ind) return false;
+    if (s.atu && e.atu !== s.atu) return false;
+    if (q && !(e.customer.toLowerCase().includes(q) || e.atu.toLowerCase().includes(q) || e.industry.toLowerCase().includes(q) || (oppDisplay('newaccts', e.customer)||'').toLowerCase().includes(q))) return false;
     return true;
   });
 }
@@ -1579,21 +963,28 @@ function renderEnterprise() {
   const total = rows.length;
   document.getElementById('count-enterprise').textContent = `Showing ${total.toLocaleString()} of ${DATA.enterprise.length.toLocaleString()}`;
 
-  renderEnterpriseKpis(rows, total);
+  const redboard = rows.filter(r => r.redboard).length;
+  const inds = new Set(rows.map(r => r.industry).filter(Boolean)).size;
+  const aes = new Set(rows.map(r => r.atu).filter(Boolean)).size;
+  document.getElementById('enterprise-kpis').innerHTML = `
+    <div class="kpi"><div class="label">Customers</div><div class="value">${fmtNum(total)}</div></div>
+    <div class="kpi alt"><div class="label">Redboard 2026</div><div class="value">${fmtNum(redboard)}</div></div>
+    <div class="kpi green"><div class="label">Industries</div><div class="value">${fmtNum(inds)}</div></div>
+    <div class="kpi amber"><div class="label">ATU AEs</div><div class="value">${fmtNum(aes)}</div></div>
+  `;
 
   const start = (s.page-1)*s.perPage;
   const page = rows.slice(start, start + s.perPage);
   const tbody = document.querySelector('#tbl-enterprise tbody');
   tbody.innerHTML = page.length ? page.map(e => `
     <tr>
-      ${fldCellHtml('enterprise', e.customer, 'cust')}
-      ${fldCellHtml('enterprise', e.customer, 'ind')}
-      ${fldCellHtml('enterprise', e.customer, 'atu')}
-      ${rbCellHtml('enterprise', e.customer)}
+      <td><strong>${escHtml(e.customer)}</strong></td>
+      <td>${e.industry ? `<span class="badge-ind">${escHtml(e.industry)}</span>` : '<span class="muted">—</span>'}</td>
+      <td>${plain(e.atu)}</td>
+      <td>${e.redboard ? '<span class="badge-yes">Yes</span>' : '<span class="badge-no">No</span>'}</td>
       ${oppCellHtml('enterprise', e.customer)}
     </tr>`).join('') : '<tr><td colspan="5" class="empty">No customers match the current filters.</td></tr>';
 
-  rbSyncHeader();
   updateSortIndicators('tbl-enterprise', s.sortCol, s.sortDir);
   renderPager('pager-enterprise', total, s.perPage, s.page, p => { STATE.enterprise.page=p; renderEnterprise(); });
   document.getElementById('badge-enterprise').textContent = total.toLocaleString();
@@ -1613,7 +1004,7 @@ function renderNewAccts() {
     <div class="kpi"><div class="label">Prospects</div><div class="value">${fmtNum(total)}</div></div>
     <div class="kpi green"><div class="label">With opportunities</div><div class="value">${fmtNum(withOpps)}</div></div>
     <div class="kpi"><div class="label">Industries</div><div class="value">${fmtNum(inds)}</div></div>
-    <div class="kpi amber"><div class="label">Individuals</div><div class="value">${fmtNum(aes)}</div></div>
+    <div class="kpi amber"><div class="label">ATU AEs</div><div class="value">${fmtNum(aes)}</div></div>
   `;
 
   const start = (s.page-1)*s.perPage;
@@ -1621,9 +1012,9 @@ function renderNewAccts() {
   const tbody = document.querySelector('#tbl-newaccts tbody');
   tbody.innerHTML = page.length ? page.map(e => `
     <tr>
-      ${fldCellHtml('newaccts', e.customer, 'cust')}
-      ${fldCellHtml('newaccts', e.customer, 'ind')}
-      ${fldCellHtml('newaccts', e.customer, 'atu')}
+      <td><strong>${escHtml(e.customer)}</strong></td>
+      <td>${e.industry ? `<span class="badge-ind">${escHtml(e.industry)}</span>` : '<span class="muted">—</span>'}</td>
+      <td>${plain(e.atu)}</td>
       ${oppCellHtml('newaccts', e.customer)}
     </tr>`).join('') : '<tr><td colspan="4" class="empty">No prospects match the current filters.</td></tr>';
 
@@ -1744,26 +1135,22 @@ function exportCSV(tab) {
     filename = 'master-contacts.csv';
   } else if (tab === 'enterprise') {
     rows = sortRows(filterEnterprise(), STATE.enterprise.sortCol, STATE.enterprise.sortDir);
-    headers = ['Customer','Industry','Individual','Redboard ' + RB_YEAR,'Opportunities','Target Dates','Attachments'];
+    headers = ['Customer','Industry','ATU AE','Redboard 2026','Opportunities','Target Dates'];
     rows = rows.map(e => {
       const items = oppGetItems('enterprise', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      const att = attGet('enterprise', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
-      return [fldDisplay('enterprise', e.customer, 'cust'), fldDisplay('enterprise', e.customer, 'ind'),
-              fldDisplay('enterprise', e.customer, 'atu'), rbDisplay('enterprise', e.customer)?'Yes':'No', txt, dts, att];
+      return [e.customer, e.industry, e.atu, e.redboard?'Yes':'No', txt, dts];
     });
     filename = 'enterprise-customers.csv';
   } else if (tab === 'newaccts') {
     rows = sortRows(filterNewAccts(), STATE.newaccts.sortCol, STATE.newaccts.sortDir);
-    headers = ['Customer','Industry','Individual','Opportunities','Target Dates','Attachments'];
+    headers = ['Customer','Industry','ATU AE','Opportunities','Target Dates'];
     rows = rows.map(e => {
       const items = oppGetItems('newaccts', e.customer);
       const txt = items.map(it => it.text || '').filter(Boolean).join(' | ');
       const dts = items.filter(it => !!it.date).map(it => it.date + ': ' + (it.text || '(no description)')).join(' | ');
-      const att = attGet('newaccts', e.customer).map(a => a.k==='link' ? (a.n+' <'+a.u+'>') : (a.n+' (file)')).join(' | ');
-      return [fldDisplay('newaccts', e.customer, 'cust'), fldDisplay('newaccts', e.customer, 'ind'),
-              fldDisplay('newaccts', e.customer, 'atu'), txt, dts, att];
+      return [e.customer, e.industry, e.atu, txt, dts];
     });
     filename = 'new-accounts.csv';
   } else if (tab === 'revenue') {
@@ -1787,199 +1174,29 @@ function exportCSV(tab) {
 }
 
 // ----- Overview KPIs + charts -----
-// ═══════════════ REVENUE FY26 TAB ═══════════════
-const FY26_RAW = [["Zimbabwe Platinum Mines (Private) Limited",91144643,16809176],["Sage South Africa (Pty) Ltd (ALF)",46092758,19671661],["4Sight OT Optimisation (Pty) Ltd",44589896,14203098],["4Sight Africa - Tharisa Minerals (Pty) Ltd",44225902,9945240],["Anglo Corporate Services SA (Pty) Ltd",39878029,7351094],["Impala Platinum Limited",38636481,15572608],["Porcupine Union (Pty) Ltd",37282223,14097670],["Vulcan Mosambique, S.A.",35972446,13071169],["Waco Africa (Pty) Ltd",32419998,24728328],["Glencore Operations SA (Pty) Ltd",30378726,13225150],["Kipushi Corporation SA",24884536,998015],["Debswana Jwaneng Mine",24656944,2086742],["Tharisa Minerals (Pty) Ltd",19260082,2540653],["4Sight Africa - WBHO Construction (Pty) Ltd",18867183,3524071],["4Sight Africa - Glencore Operations South Africa",18723023,5030537],["Societe Congolaise pour le Traitement du Terril de Lubumbashi SASU",18212817,522622],["Irvines International (Pty) Ltd",17618753,5266827],["Pinnacle Micro (Pty) Ltd",17463963,7033016],["4Sight OT Automation (Pty) Ltd",17440813,3051791],["Kibali Gold Mines SA",16532990,5637994],["Bisha Mining Share Company",16522031,11679033],["Bearings International a div of Hudaco Trading (Pty) Ltd",16215279,5562587],["Capital Legacy Solution (Pty) Ltd",16099980,4922693],["Hammond Pole Incorporated",15869486,5818702],["Soc d'Expl des Mines d'Or de Sadiola",15533812,14649498],["4Sight Africa - Servest (Pty) Ltd",14233696,6861224],["The Independent Institute of Education (IIE) Schools",14232538,892444],["North Mara Gold Mine Limited",14140641,2919132],["Coca-Cola SABCO (Pty) Ltd",14057073,3467292],["4Sight Africa (Pty) Ltd",13556130,2752399],["CBZ Bank Limited",13396076,4177048],["4Sight Systems (Pty) Ltd",13115232,2553665],["Microsoft Ireland Operations Limited - Incentives/Rebates",13034674,7688339],["Kenmare Moma Processing (Mauritius) Limited",12842119,5913905],["4Sight Africa - Astron Energy (Pty) Ltd",12172402,9815135],["Osino Gold Exploration & Mining (Pty) Ltd",11870836,11678084],["4Sight Africa - Home of Living Brands",11753756,3514339],["4Sight Africa - Telkom SA SOC Ltd",11409028,5938378],["Tasiast Mauritanie Limited S.A",11349083,5433321],["Dynatec Madagascar SA",11170410,5750810],["4Sight Africa - Bidvest Prestige",11150465,4056240],["Law Society of South Africa",10795157,2712076],["South African Pork Producer's Organisation",10669229,3778935],["Cox Energy South-Africa (Pty) Ltd",10482891,-740681],["4Sight Africa - Bidvest Steiner",10387343,2822099],["Petra Diamonds Southern Africa (Pty) Ltd",10125244,2369789],["Foursight ICT Namibia (Pty) Ltd",9759641,3382587],["Lenmed Health Management (Pty) Ltd",9532233,2714118],["Waltons Stationery Co Namibia",8915806,6968166],["Sibanye Stilwater Western Platinum Mines",8877809,1852107],["Bidvest Advisory Services (Pty) Ltd",8619233,2774119],["Bidvest Waltons, a division of Bidvest Office (Pty) Ltd",8472277,3085003],["Millionaire Agent Properties (Pty) Ltd",8462565,2058061],["Bluespec",8427568,3083881],["Allterrain Services Incorporated",8361513,3709822],["Net@Work",8199497,570539],["Langpan Mining Company (Pty) Ltd",8151517,null],["Ultimate Sports Nutrition Global (Pty) Ltd (USN Global)",8031473,3544206],["ArcelorMittal South Africa Limited",7947682,2567848],["Sibanye Rustenburg Platinum Mines (Pty) Ltd",7814177,4521837],["Santam Limited",7807991,2978814],["Telkom SA SOC Ltd",7805322,5938378],["SKG Technologies (Pty) Ltd",7722781,2413347],["Schneider Electric South Africa (Pty) Ltd",7648684,279785],["Tsogo Sun Casino Management Company (Pty) Ltd",7140770,2192483],["4Sight Africa - African Bank Limited",7122031,1774969],["Sasol Group Services a div of Sasol SA LTD",7048620,4044517],["Bridgestone SA (Pty) Ltd",6900903,1189746],["Financial Sector Conduct Authority",6889801,1811047],["Tongon SA",6804772,3181945],["Debswana Diamond Company (Pty) Ltd",6733566,4387810],["Fintegrate (Pty) Ltd",6697029,2584801],["Jvchantete Earthworks Limited",6664954,2971483],["TCL Supply Chain International Ltd",6570307,1098528],["National Regulator for Compulsory Specifications (NRCS)",6447195,1392312],["Uganda National Oil Company Limited",6387428,2444274],["Seacom Shared Services",6295100,2446169],["Sage South Africa (Pty) Ltd (SAGE VIP REBATES)",6256420,2205291],["ANB Treasury (Pty) Ltd",6134208,1781294],["Mepsi SA",6014884,null],["4Sight Africa - Microsoft",5883580,5540800],["Samancor Chrome Limited",5754928,1873657],["Saint Gobain Construction Products (Pty) Ltd",5754662,4587513],["Vishnu South Africa (Pty) Ltd",5660438,5554738],["BPL Electrical Support Pty Ltd.",5575889,1090920],["Kwikot (Haier) SA Pty Ltd",5569911,2100920],["The Central Bank of Lesotho",5547214,1629242],["Paradigm France S.A.",5509435,5325290],["Debswana Orapa Mine",5346194,528606],["Sage South Africa (Pty) Ltd (EVO)",5328278,1619316],["Eswatini Revenue Service",5245550,2389766],["Centre for Infectious Disease Research in Zambia (CIDRZ)",5163799,1902922],["4Sight Africa - Toyota South Africa Motors (Pty) Ltd",4738239,13018],["Hulamin Operations Pty Ltd",4724365,1249162],["CAPM Tau Mine (Pty) Ltd",4694395,1661261],["CTrack SA (Pty) Ltd",4606057,1680012],["Foursight Namibia (Pty) Ltd",4547875,5283303],["4Sight Africa - Automation Control Solutions",4463875,1555250],["Namdeb Diamond Corporation (Pty) Ltd",4407712,176242],["GS1 South Africa",4351630,1212194],["National Empowerment Fund",4268443,4014743],["Moolmans South Africa Pty Ltd",4241942,1815487],["Manganese Metal Company (Pty) Ltd",4205608,953206],["InPharma Consult Pty Ltd",4164764,3872522],["Aztomix (Pty) Ltd",4105565,1281018],["Microsoft SA (Pty) Ltd",4086516,1122943],["De Beers Consolidated Mines (Pty) Ltd",3979926,826975],["Midvaal Water Company",3846740,1319072],["Omnia Fertilizer a Division of Omnia Group (Pty) Ltd",3812009,1163068],["The Public Servants Association",3777308,1526080],["Zenith Car Rental (Pty) Ltd T/A Avis Car Rental and Avis Car",3703361,1327438],["Samancor Manganese (Pty) Ltd",3702916,28000],["Three Six One Africa Limited",3695285,3695285],["Netsurit (Pty) Ltd",3681627,942123],["Atterbury Management Company (Pty) Ltd",3665130,94035],["4Sight Africa - South African Reserve Bank",3643617,3643617],["Zutari (Pty) Ltd",3619640,1515237],["Dickinson Furnace Services (Pty) Ltd",3614590,1520866],["Coca-Cola Beverages Malawi Limited",3580173,3580173],["Lougot Property Investments (Pty) Ltd",3555295,2161732],["Afgri Group Holdings",3528762,1869887],["4Sight Africa - Eduvos",3514260,2973624],["Randfontein Estates",3475773,1963010],["Miro a Division of Hudaco Trading (Pty) Ltd",3450917,23742],["Seriti Power (Pty) Ltd",3427049,494134],["African Mining Solutions Limited",3420017,1466229],["Anglo American Technical & Sustainability Services Ltd",3417600,3259500],["Bluu Car Rental (Pty) Ltd",3362019,939620],["Columbus Stainless (Pty) Ltd",3360978,1089429],["Maxtec Convergence (Pty) Ltd",3312773,1096070],["Triangle Limited",3271010,null],["4Sight Africa - Zeda Car Leasing TA Avis Fleet",3263897,3183915],["The Independent Institute of Education (IIE)",3203224,586235],["Erasda Beleggings (Edms) Ltd",3130595,605889],["Ekapa Minerals (Pty) Ltd",3130463,758033],["Sukari Gold Mines",3117684,null],["Natref",3116655,1702426],["Liberty Coal (Pty) Ltd",3048288,2497715],["Pan Mixers South Africa (Pty) Ltd",3021848,1737170],["King Price Insurance Company Ltd - (FSP43862)",2990535,723318],["Universal Paper & Plastics (BOP) (Pty) Ltd",2984936,1998140],["Storm Procurement Limited",2968783,1178096],["Sishen Iron Ore Company (Pty) Ltd Head Quarters",2949140,570390],["Anglo Corporate Services (Pty) Ltd",2934416,907458],["Lucchini South Africa (Pty) Ltd",2911356,1026331],["Sage South Africa (Pty) Ltd",2906337,366858],["Rand Mutual Admin Services (Pty) Ltd",2827459,438775],["Tronox KZN Sands",2798204,932413],["AMC Mining Consultants South Africa (Pty) Ltd",2765015,2442265],["Process Automation (Pty) Ltd",2742600,1525734],["Mount Isa Mines Ltd",2729935,null],["Heaven Sent Gold Management Services (Pty) Ltd",2695768,836008],["4RACING PROPRIETARY LIMITED",2661413,770781],["MeterMo (Pty) Ltd",2607523,643491],["JMG SA I (Pty) Ltd",2588443,null],["National Gambling Board",2556005,2308866],["K2018239548 SA (Pty) Ltd t/a Proconics",2540537,null],["Lesaka Technologies (Pty) Ltd",2537727,null],["AECI Mining Limited",2509160,null],["South African Pharmacy Council",2473305,972012],["Helpmekaar Studiefonds",2467664,695440],["Froots Meat & Chicken (Pty) Ltd T/A FMC Cold Store Lanseria",2461077,null],["Minas de  Benga Limitada",2459197,258863],["iMas Finance Co-operative (Ltd)",2417721,null],["South African Council for Educators (SACE)",2408563,null],["Harmony Gold Mining Company",2391315,2203162],["Trinity Nyakabingo Mine Ltd",2389517,null],["Springs Car Wholesalers (Pty) Ltd t/a No Finance Cars",2381985,null],["Sakura Ferroalloys Sdn Bhd",2363066,1099897],["JCI Mining",2355289,591511],["Eswatini Electricity Company",2261699,887592],["4Sight Africa - Accenture",2215133,null],["Sishen Iron Ore Company (Pty) Ltd, Kolomela Mine",2195500,null],["Letseng Diamonds Pty Ltd",2189451,null],["Kansanshi Mining Plc",2182177,null],["IPP Mining and Materials Handling (Pty) Ltd",2149845,null],["Rustenburg Platinum Mines Limited",2118047,null],["Northam Platinum Ltd",2110861,null],["The Synthetic Latex Company (Pty) Ltd",2094378,null],["Tronox Mineral Sands (Pty) Ltd",2075261,null],["ATS - Allterrain Services Inc (BVI)",2072116,null],["AMT Placement Services",2071009,357629],["Nas Global (Pty) Ltd",2064084,null],["Gilbarco AFS (Pty) Ltd",2053990,null],["4Sight OT Simulation (Pty) Ltd",2043210,null],["Innovative Water Care SA Holding (Pty) Ltd",2033560,null],["Department of Public Works",2010015,null],["Armscor (Armaments Corporation of SA Soc Ltd)",1981017,null],["4Sight Africa - Afrox Oxygen",1976964,null],["Astec Industries South Africa (Pty) Ltd",1961503,null],["Alnet Technologies (Pty) Ltd",1928966,null],["Tendele Mining (Pty) Ltd",1919694,null],["4Sight Africa - Kees Beyers Chocolates CC",1916642,null],["Mozal SA",1902370,null],["Companies and Intellectual Property Commission",1900967,827046],["Kwikspace Modular Buildings (Pty) Ltd",1899164,null],["MRBSecure",1875552,20000],["Sandton Plant Hire (Pty) Ltd",1873150,null],["4Sight Africa - Freedom Park Trust",1869607,null],["Isabella Garcia International (Pty) Ltd",1869569,null],["Road Agency Limpopo (SOC) Ltd",1866697,null],["4Sight Africa - TiAuto Investments (Pty) Ltd",1853705,null],["Cashbuild South Africa (Pty) Ltd",1825502,null],["MMG Kinsevere SPRL",1793585,10963],["4Sight Africa- IQ Business Pty Ltd",1790837,null],["Tshukudu Metals Botswana (Pty) Ltd",1781377,null],["4Sight Africa - Nokeng Fluorspar Mine (RF) (Pty) Ltd",1754446,null],["ITM Holding",1739212,1676789],["Water Research Commission",1737830,478310],["EverSeed FerroAlloys (Pty) Ltd",1717173,null],["The Project Company - Mining and Infrastructure",1712747,908980],["Imperium Opes Group Ltd",1683892,null],["Citadel Investment Services (Pty) Ltd",1672720,null],["Q and A ERP (Pty) Ltd",1671112,null],["Central Energy Fund (Pty) Ltd",1669979,null],["K&S Electrical Automation (Pty) Ltd",1656920,null],["American International School of Johannesburg",1634057,554448],["Foursight Namibia - (Pty) Ltd - Bytes Technology Group Namibia",1633466,null],["Intercare Corporate Services (Pty) Ltd",1620463,null],["4Sight Africa - Omnia Group (Pty) Ltd",1607767,null],["Travel Services Seychelles Limited",1606722,null],["Liberty Group Limited",1598402,null],["South Deep Gold Mine",1586180,null],["Optinet Systems (Pty) Ltd",1586169,null],["Resolution Circle (Pty) Ltd",1580719,null],["Buks Haulage Pty Ltd",1577872,null],["GRAIN SA",1569353,1771],["Bidvest Paperplus (Pty) Ltd",1549312,null],["Alphamin Bisie Mining SA",1547597,null],["Micawber Hotel (Pty) Ltd",1530905,null],["FARMOVS (Pty) Ltd",1525956,569265],["AMC Consultans (UK) Limited",1510351,1475651],["MegChem Pty Ltd",1507798,746883],["Stage Zero (Pty) Ltd",1500594,741697],["Beumer Group South Africa (Pty) Ltd",1499091,808384],["The Naked Scientists",1486808,null],["Home of Living Brands (Pty) Ltd",1485172,null],["ANGLO AMERICAN MINERIO DE FERRO BRASIL S/A",1462647,null],["4Sight Africa - PriceWaterhouse Coopers",1445869,null],["DBCM (PTY) LTD",1443625,null],["Sabinet Online Ltd",1439194,null],["Peresoft (Pty) Ltd",1428764,null],["Sethewo (Pty) Ltd",1428623,null],["Nicolor (Pty) Ltd",1419434,null],["ADRS Diversified Services (Pty) Ltd",1367834,null],["4Sight Africa - New Media Lab Services (Pty) Ltd",1365956,null],["Mware Consulting (Pty) Ltd",1360922,null],["ED Reporting Services (Pty) Ltd",1337718,null],["Bissa Gold SA",1336991,335386],["Coengineer Pty Ltd",1336749,null],["Societe Ivorienne de Raffinage - SIR",1334235,null],["Mng Orko Madencilik Anonim Sirketi",1288234,null],["Indwe Risk Services (Pty) Ltd",1287464,null],["Williamson Diamonds Limited",1270687,null],["Betting World (Pty) Ltd",1270129,null],["UAV and Drone Solutions (Pty) Ltd",1266403,null],["REMOTEAPPS W.L.L",1258621,null],["MultiNET Home Loans (Pty) Ltd",1255329,null],["Fluor South Africa (Pty) Limited",1250726,null],["Triz Engineering",1250423,124220],["Lowveld Nut Processing (Pty) Ltd",1242975,null],["Bulyanhulu Gold Mine Limited. (Dar es Salaam)",1232606,null],["Sumitomo Corporation Africa (Pty)  Ltd",1231894,null],["Societe Africaine De Raffinage -SAR",1228175,null],["Resolution Copper Mining",1217028,null],["South African National Aids Council Trust (SANAC)",1210020,null],["Godrich Flour Mills (Pty) Ltd",1207086,null],["Exxaro Resources Limited",1206892,null],["Minor Hotel Group South Africa (Pty) Ltd",1195698,null],["Syngenta SA (Pty) Ltd",1195577,null],["SiVEST International (Pty) Ltd",1189128,null],["Impala Platinum - Marula Platinum (Pty) Ltd",1177337,null],["Bayport Financial Services 2010 (Pty) Ltd",1176553,null],["Aspen Technology Inc. ( UNITED STATES )",1164299,570877],["Odex Chemicals LTD",1152103,368259],["Sun International South Africa Ltd",1151156,70857],["M7 Investments (Pty) Ltd t/a East Point Rentals",1142806,426710],["CTU Training Solutions (Pty) Ltd",1141396,null],["Shave & Gibson Packaging (Pty) Ltd",1139848,null],["KPMG Services Proprietary Limited",1120283,null],["Bayport Management Limited",1114447,null],["4Sight Africa - Mohato Projects (Pty) Ltd",1094778,null],["AfLife Financial Services (Z) Limited - USD",1083417,null],["Vtech Pty Ltd",1074597,null],["Dimensions Engineering Solutions",1071564,226215],["MICT SETA",1070952,null],["JAC Motors SA (Pty) Ltd",1044388,null],["Ukwazi Transactional Advisory (Pty) Ltd",1043000,null],["Fast Food City Trading (Pty) Ltd",1033471,null],["The National Nuclear Regulator",1022918,306477],["DRA Shared Services SA (Pty) Ltd",1021466,null],["Xuba Compounders (Pty) Ltd",1021117,null],["Computer Business Solutions",1019758,336361],["M-Stores",1015043,302868],["Magnitech (Pty) Ltd",1013689,null],["Ruvuma Coal Ltd",1012798,null],["Scibotron Corporation (Pty) Ltd",1003871,null],["Credit Guarantee  Ltd",989367,null],["Glencore Alloys",961060,null],["Agricol (Pty) Ltd",954444,null],["Pan African Resources Management Services Company(Pty) Ltd",947925,null],["Eminos SAS",932836,338647],["4Sight Africa - Process Automation",923988,null],["TechExpress (Pty) Ltd",917291,null],["One Channel Botswana",895555,null],["Dube Tradeport Corporation",893006,null],["Hatch LTD",888803,null],["Small Enterprise Development Agency (SEDA)",885482,null],["Partisan Trading Company",884866,267411],["Department of Rural Development and Land Reform",882875,null],["Pioneer Drill and Blast (Pty) Ltd",882657,null],["4Sight Africa - South African National Petroleum Company",868278,null],["NOA sh.a",860439,null],["Société des Mines de Loulo SA (Loulo)",859742,null],["Dandadzi Engineering",857863,null],["Katanga Contracting Services SAS",854361,191006],["Minerals Operations Executive Pty Ltd",850366,850366],["4Sight Africa - Liberty Coal (Pty) Ltd",842335,45935],["Maputo Intermodal Container Depot",837928,252814],["SES Zambia (Pty) Ltd",831345,264360],["4Sight Africa - Central Energy Fund (Pty) Ltd",829338,593603],["4Sight Africa - Pilanesberg Platinum Mines",828438,null],["SimMineAB",825949,74280],["Isizwe-Components Pty Ltd",819112,null],["Kafiwa Tlhokomelo Supply and Projects",817114,748154],["Freegold (Harmony) (Pty) Ltd",806718,806718],["Eminos (Pty) Ltd",803193,null],["Thakadu Battery Materials (Pty) Ltd",796827,null],["AME Telecommunications (Pty) Ltd",796208,null],["4Sight Africa - Instratin Properties",796176,null],["Curro Holdings Ltd",790388,695138],["OZ Minerals (Pty) Ltd",763671,null],["Strategic Fuel Fund Association",759428,172037],["Light Fibre Infrastructure",758286,287479],["Rustenburg Platinum Mine-Amandelbult Section",750450,null],["African Society for Laboratory Medicine",748714,146054],["Zutari Engineering International (Pty) Ltd.",748600,null],["Zutari Engineering Consultancy",742658,null],["4Sight Africa - Gautrain Management Agency",737038,null],["Trudon (Pty) Ltd",736088,null],["Safripol (Pty) Ltd",730692,null],["Prysm Worx (Pty) Ltd",725688,null],["Lisolami Multiholdings Pty Ltd",721199,null],["Acctech Systems Internal Billings",712701,null],["NUMSA (National Union of Metal Workers of SA)",709619,null],["DRA Projects (Pty) Ltd",709550,null],["A&B Global Mining (Pty) Ltd",706200,null],["Biotrace Trading 338 (Pty) Ltd",691501,null],["Weg Automation Africa",689451,null],["Cresco Project Finance (Pty) Ltd",686696,null],["Unki Mines (Pvt) Limited",683955,null],["Innovative Idea Solutions (Pty) Ltd",681344,null],["Small Enterprise Finance Agency (SEFA)",681220,null],["Trinity Metals Limited",679752,1016113],["KUWEZA C.C.",679597,null],["Abmincon Consulting (Pty) Ltd",679124,null],["Sishen Iron Ore Company (Pty) Ltd, Sishen Mine",678100,null],["LVG Plants (Pty) Ltd",673461,null],["Safarmex (Pty) Ltd",672776,null],["4Sight Africa - Onderstepoort Biological Products",669550,374543],["The Tourist Company of Nigeria PLC",664668,216245],["Ingrain (Pty) Ltd",652611,24958],["Rugged Africa (Pty) Ltd",651424,226868],["Afrilog South Africa Pty Ltd",648380,255659],["BMW Financial Services (SA) (Pty) Ltd - Commercial Finance",647428,54674],["Eeden Energy CC",645530,565230],["Irvines Zimbabwe PVT Ltd",641691,6750],["Dango & Dienenthal SA (Pty) Ltd",629908,273500],["South African Tourism",601386,null],["Clover Alloys",600478,316015],["Hulamin Containers, A division of Hulamin Operations (Pty) Ltd",600225,-260290],["CE-Africa (Pty) Ltd",592072,null],["Microlog Consulting SARL",588183,71919],["Flow Fund (Pty) Ltd",580073,443778],["Steelcor (Pty) Ltd",579079,579079],["Heerschop Pienaar",579029,223737],["Crystal Electrical and Industrial Supplies (Pty) Ltd",575917,null],["S & F Management Services (Pty) Ltd",575659,234274],["Spectrum Valuations and Asset Solutions",575572,190777],["Geosearch (Pty) Ltd",574835,219156],["DGC South Africa (Pty) Ltd",562044,501194],["Ipogi Consultation and Engineering",560476,538817],["4Sight Africa - Bidvest International Logistics",559283,486294],["The Wholesale and Retail Sector Education and Training Authority",558981,null],["Central Technical Supplies (Pty) Ltd",554619,19226],["RFG Eswatini (Pty) Ltd",553907,49977],["Lumax Energy (Pty) Ltd",552677,null],["Oricred (Pty) Ltd",552539,552539],["Stantec Consulting Services Inc",550185,null],["DRA South Africa Projects (Pty) Ltd",543625,null],["ERG Management South Africa (Pty) Limited",540840,70561],["Value Logistics (Pty) Ltd",540308,129779],["Interstat Stationery (Pty) Ltd",537910,null],["Manupont 124 (Pty) Ltd",536181,526889],["Radio-Active Botswana (Pty) Ltd",531550,85473],["Digicore Electronics (Pty) Ltd",529846,190005],["Saville Row (Pty) Ltd",528991,493922],["Maxim Trading Enterprises (Pty) ltd",528788,null],["Cliff Green Consulting CC",520609,128649],["Ngwana-Lesedi Trading and Projects",516101,null],["DRA South Africa Projects Pty Ltd",513503,null],["4Sight Africa - Fais Ombud",510093,203273],["Metallurgical Reductant Products & Services (Pty)  Ltd",509191,356966],["Rovos Rail Tours (Pty) Ltd",508279,498083],["Pan South African Language Board (PanSALB)",507001,32877],["ZEHRP (USD)",505617,122622],["RB Pharmaceuticals (Pty) Ltd",503921,127325],["CT-NET Proprietary Limited",500590,null],["Ivanhoe  Mines SA",491204,-139680],["Agreenco Enviromental Projects (Pty) Ltd",483647,151028],["Edge Field Marketing (Pty) Ltd",483153,null],["Bone SA (Pty) Ltd",482529,246685],["Mahela Boerdery (Edms) Bpk",476324,240020],["4Sight Africa - African Rainbow Minerals",475192,815],["United Steel Industrial Company (KSCC)",470904,null],["Crayon Africa SA (Pty) Ltd",470880,170730],["United Manganese of Kalahari",469952,132394],["Kingsley Heath (Pty) Ltd",468653,277179],["Ultimate Sports Nutrition (USN)",467418,null],["Bearing Man Group (Pty) Ltd",466218,74133],["Donnat (Pty) Ltd T/A Malelane Superspar",464746,115703],["Compulynx",461538,184509],["McKinsey and Company Inc",459669,null],["Senta Square (Pty) Ltd",458939,null],["Leoka Engineering (Pty) Ltd",457719,384302],["Ukwazi Site Services (Pty) Ltd",451973,null],["Premier Rainwater Goods",448625,170978],["Fraser McGill (Pty) Ltd",438200,438200],["Ensemble Holdings (Pty) Ltd",430008,278400],["4Sight Africa - Technology Innovation Agency",427323,427323],["Blue Label Distribution (Pty) Ltd",426996,293005],["4Sight Africa - Human Sciences Research Council (HSRC)",426498,58424],["AccTech Mpumalanga",423417,414070],["RMD Kwikform SA (Pty) Ltd",420612,21173],["Copperline SAS",419028,null],["4Sight Africa - Western TVET College",417879,391696],["Status Capital Building Society",415417,97376],["Aveng Corporate (Pty) Ltd",413473,41599],["The Freedom Park Trust",413180,82098],["Mutual Induction Pty Ltd",410030,410030],["Luro Technology Comercio e serviços lda",410000,null],["4Sight Africa - UAV and Drone Solutions (Pty) Ltd",409863,61813],["Nexio (Pty) Ltd",407931,67480],["4Sight Africa - Sun Slots Shared (Pty) Ltd",405671,273840],["BEE123 (Pty) Ltd",402500,402500],["CBZ Life Limited",400362,61559],["AIH Econogistics (Pty) Ltd",393300,null],["Government Pensions Administration Agency (GPAA)",384249,69832],["Cash Customer account",380406,52187],["Small Enterprise Development and Finance Agency (SEDFA)",378575,373219],["Shimadzu South Africa (Pty) Ltd",377677,111554],["Doha College",377442,24269],["Craft Link (Pty) Ltd",376357,364072],["Euroguard Insurance Company PCC Limited",374740,1845],["Pieterse High Voltage Engineering CC",367114,null],["SMS Mining (PTY) LTD",364955,276996],["Turning Point Investments",362300,null],["Mombasa Port SACCO Society Limited",362078,183726],["Radio Transmission Services cc",361413,null],["United Concrete products (SEY) Limited",361372,12458],["Sheq Safety CC",359854,null],["Kathu Solar Services (Pty) Ltd",346230,84433],["Rotolabel Cape Town a division of Bidvest Paperplus (Pty) Ltd",341451,476874],["Assmang (Pty) Ltd - Khumani Iron Ore",340424,207308],["Banque De Financement Et D'Investissement",340232,306165],["Talec CC",339238,188602],["Omniconnet CC",338967,13927],["Glencore Merafe Venture Lion Smelter",337365,null],["De Beers Canada Inc, Gahcho Kué Mine",334380,null],["Opportunity Int. Savings & Loans Limited",331665,108865],["Henley Business School Limited (Incorporated in the United Kingdom)",330255,240555],["Ukwazi Mining Studies Pty Ltd",329900,null],["Khwelamet (Pty) Ltd",329421,329421],["The CRM Team",328662,3435],["Citrus Research International (Pty) Limited",328593,1230],["Newcrest Services (Pty) Ltd",326901,null],["Chartered Wealth Solutions",323311,45175],["Metal Industries Benefit Fund Administrators",322105,230488],["Mventech (Pty) Ltd",320610,320610],["Lonspeare SA (Pty) Ltd",315993,57120],["Lycopodium Marine & Modular (Pty) Ltd",315919,315919],["Oratech Projects (Pty) Ltd",313955,null],["CZ Electronics Manaufacturing (Pty) Ltd",313723,105521],["Likusasa Leftu Trading & Projects (Pty)Ltd",312404,null],["80 Westcliff (Pty) Ltd",308490,83890],["Mining Consultancy Company Limited",305338,null],["Palabora Foundation",304371,110977],["ZF Services South Africa (Pty) Ltd",303167,245351],["Breytenbachs Immigration and Property Consultants (Pty) Ltd",302224,95670],["Oriental Business Group Ltd",295757,null],["Microsoft Ireland Operations Limited - ECIF Projects",295466,245908],["Dansei Engineering (PTY) Ltd",293977,null],["Maysene Logistics",291568,52550],["Rio Tinto",291091,null],["Stratafin (Pty) Ltd",288081,76843],["Schweitzer Engineering Laboratories (Pty) Ltd",284699,null],["Royale Energy (Pty) Ltd",283220,103820],["Africa Business News (Pty)  Ltd",283067,119419],["Kiaka SA",280625,280625],["Minxcon (Pty) Ltd",278300,71700],["PriceWaterhouse Cooper Botswana",277973,220633],["Sedgeley Operations (Pty) Ltd",276300,166050],["Steinmuller Africa (Pty) Ltd",275768,205136],["Buzz Trading Hundred and Four CC",272584,50025],["TransAfrica Management Services (Pty) Ltd",272211,83804],["Century Electrical Wholesalers Pty Ltd Evander",267900,null],["Masthead (Pty) Ltd",266541,5270],["Auction Holdings Limited",256648,null],["Tetratech Engineering (PTY) LTD",254230,null],["Caxton Printers a Division of C.T.P. Limited",254059,null],["Simio LLC",253956,null],["Saint Gobain Construction Products (Pty) Ltd (Projects)",253580,null],["Inteli Holdings t/a Intelipack",252555,null],["Engineering Council of South Africa",248160,85800],["VATit Group Limited",247796,null],["Car Hire Brokers (Pty)  Ltd",246611,null],["SA Lithium (Pty) Ltd",246580,null],["Cavalier Group (Pty) Ltd",245147,null],["Visionfund DRC SA",244984,128988],["Schneider Automation (Pty) Ltd",237351,null],["Nexsol Solutions (Pty) Ltd",237150,46350],["ABB South Africa (Pty) Limited",236654,null],["Bidvest International Logistics",236197,-428696],["Plus Ten Hardware Distribution(Pty) Ltd",235693,null],["EEC Consultores, Lda.",233022,null],["Zimasco",231991,-86681],["WMA Minmet Processing (Pty) Ltd",231680,1867],["Aug Behrens (Edms) Bpk",230252,99924],["Simah Risk Advisors (Pty) Ltd",228502,null],["VSS Security",222085,1052],["Celere Servlcos Socieoade Unipessoal. Loa LOA",220465,null],["Calcamite Water & Sanitation Services Pty Ltd",219819,154006],["Kelvin Progressive Supplies t/a Hot Tools",219302,null],["Beagles Holdings",217617,null],["Diageo South Africa (Pty) Ltd T/A  Diageo South Africa",217170,217170],["Datatec Limited",213749,206289],["4SIght Africa - Companies and Intellectual Property Commission",213375,null],["Era Stene (Pty)  Ltd",212920,null],["CTP Gravure Durban",206196,null],["Powerpack Engineering SARL",205185,null],["Bidvest Corporate Services (Pty) Ltd",204975,null],["Terramec SARL",204147,40932],["Nut and Dry Fruit Exchange (Pty) Ltd",202545,null],["Romor Electrical Wholesalers cc",200467,null],["Welgevonden Game Reserve NPC",197843,null],["Caxton Thuthuka packaging",197486,411470],["CTP Printers Parow",196283,null],["Kairos Control Systems",194948,17439],["CSG Holding Ltd",193693,null],["CTP Cartons and labels Industria",191415,null],["CTP Cartons & Labels A division of CTP Ltd",189496,null],["First Assist Management",189273,9870],["Tourvest Retail Services",188868,null],["Frey's Food Brands",188830,67500],["CSG Cleaning (Pty) Ltd",186952,null],["DeltaBec (Delta Built Environment Consultants)",186830,162104],["Solgenics Limited",186224,21972],["Cementation Canada Inc",186166,186166],["Kubili Recyclers (Pty) Ltd",185729,null],["Freda Rebecca Gold Mine Limited",185383,null],["Blu Dot ERP Solutions (pty) Ltd",183845,null],["AFLAME Enterprise NPC",182708,null],["MYBUCKS Bank Mozambique",182037,53834],["LWO Werkgewers Organisasie",181117,6297],["Ivory Tree Game Lodge (Pty) Ltd",177754,null],["Wholesale Fencing SA (Pty) Ltd",176807,null],["Roadway Trade and Invest (Pty)Ltd t/a CTP Printers Johannesburg",175471,null],["Barcode Company for Valuation",171645,null],["R F Gevers (Pty) Ltd",170900,97650],["CMT Financial Services (Pty) Ltd",169672,null],["Lesedi Nuclear Services (Pty) Ltd",166320,null],["Zigaro International",165860,null],["Nkusi-IT Specialized Services (Pty) Ltd",161499,null],["S’celo Engineering cc",161304,null],["First Group",161143,null],["4Sight Africa - National Student Financial Aid Scheme",161113,null],["Trans-Caledon Tunnel Authority",160678,3300],["Capisol Software (Pty) Ltd",159000,null],["Gekko Systems (Pty) Ltd",157150,null],["Hope Business Technical SARL",156522,null],["Anotium Automation Technologies",156231,null],["Wekreate Industries (Pty) Ltd",155720,null],["Air Products South Africa (Pty) Ltd",155200,null],["Tradecore International South Africa (Pty) Ltd",151680,null],["Wasabirelate (Pty) Ltd",150875,139910],["Araf Distributors CC",148919,null],["Springbok Emulsion Polymers (Pty) Ltd",148834,null],["BBS Bank Limited",148374,null],["Foursight Namibia (Pty) Limited - B2Gold Namibia (Pty) Ltd",147375,147375],["Rainbo Suppliers And Services SA (Pty) Ltd",147299,null],["Sasol Germany GmbH",147044,null],["A2C Distributors (Pty) Ltd",146383,null],["Neptek (Pty) Ltd.",146030,146030],["Knowres (Pty) Ltd",145814,null],["ABGM Pty Ltd",145060,null],["Life Green Group (Pty) Ltd",144357,null],["Epiroc Zambia Limited",143862,null],["Systeco (Pty) Ltd",142136,null],["2 Cor 3 (Pty) Ltd",142118,99745],["Destiny Changers Education Group",141344,27779],["Metal And Engineering Industries Bargaining Council",140721,86448],["Southern Sun Hotel Interests (Pty) Ltd",140495,62305],["4Sight Africa - Council on Higher Education",139897,139897],["Tradeport Logistics (Pty) Ltd",136616,2071],["Scibotron Distribution (Pty) Ltd",135657,135657],["MT Palomar Pty Ltd",134746,null],["Du Toit Burger Incorporated",133531,null],["St Dominic's College",133263,43717],["EC Blaauw Transport (Pty) Ltd",133029,null],["Foursight Namibia (Pty) Limited - Fekola Mali",132825,null],["Metering Wirelesscoms and Programming Pro",132613,70202],["Indgro Outsourcing (Pty) Ltd T/A Indgro Multi Service Group",131733,null],["Pontis (Pty) Ltd",131062,null],["Foursight Namibia (Pty) Limited - Meatco",130000,null],["Kalahari Associates",129469,null],["LAPP Southern Africa",129358,null],["Agricultural Levy Services",128200,20000],["4Sight Africa - National Lotteries Commission",127751,null],["MelkProdusente Organisasie",126688,6107],["CNH Industrial AG & CE (PTY) Ltd",126104,42050],["Micawber Hotel (Pty) Ltd Sage 300 People",125660,null],["SIRAGHELA PHAMBILI TRADING 002 CC",124872,null],["Deltamune (Pty) Ltd",124849,null],["Alliance Conveying Systems (Pty) Ltd",124500,124500],["Gerotek Test Facilities, a div of Armscor SOC",123636,null],["Advent Solutions Limited",123200,null],["Quest Cost Consultants (Pty) Ltd",123176,null],["BORWA Financial Services",122946,null],["Omnia Specialities (Australia) Pty Ltd",122780,null],["Sasol Shared Services Division of Sasol SA Ltd",122287,null],["TM Engineering (PTY) Ltd",121353,null],["XCA Mining",119609,119609],["Sytechnologies (Pty) Ltd",119310,null],["King Price Life Insurance Limited",118557,30025],["Giyani Metals South Africa (Pty) Ltd",117750,23500],["DTC Botswana (Pty) Ltd",117300,117300],["Wood Mining South Africa (Pty) Ltd",117100,null],["SixD Projects (Pty) Ltd",116843,null],["SGS South Africa (Pty) Ltd",116776,null],["Calderys South Africa (Pty) Ltd",116465,null],["Karo Platinum Pty Ltd",115325,null],["A2Z Automation",113728,null],["XFOUR - Cell C Limited",112815,null],["Makeean Polymers",112521,41193],["Mata IT Services (PTY) Ltd",112284,null],["Nampo (Pty) Ltd",112255,null],["The Renaissance Theatre (State Theatre)",108852,null],["Epiroc DRC",107617,null],["Microsoft SA (Pty) Ltd  Dirco HR & Finance",107333,null],["Water and Sewerage Company (Pty) Ltd - WASCO",107239,27091],["Hendler and Hart (Pty)  Ltd",107026,25420],["Control II Techs Pty Ltd",106348,64851],["Kopanang Gold Mining Co (Pty) Ltd  (Village Main Reef)",106313,50288],["FH Chamberlains Trading (Pty) Ltd",105882,23841],["CTP Caxton Works Incomer 1",105611,null],["Afrimat Industries South Africa Pty Ltd",105125,null],["4Sight Africa - Water Research Commission",104706,null],["Mines Rescue Services (Pty) Ltd",104598,null],["Bulx Group Pty Ltd",103682,null],["LB Engineering and Suppliers",103416,null],["North Target Lda",103392,null],["Manganese Sulphate Company (PTY) LTD",103320,null],["Masstores (Pty) Ltd T/A Massmart Services",102150,null],["Edwin Construction (Pty) Ltd",101291,null],["URWEGO Bank, PLC",101016,null],["Golden Shield Insurance Brokers (Pty) Ltd",100262,null],["United National Breweries (SA) (Pty) Limited",99061,null],["Utshalomali Cleaning and Hygiene Solutions (Pty) Ltd",98065,null],["Golden Energy (Pty) Ltd",97727,6750],["Appsolve Proprietary Limited",97663,null],["Sodastream SA (Pty) Ltd",97574,null],["Dellta Industrial Mining Suppliers Pty Ltd",96931,null],["FL Smidth South Africa (Pty) Ltd",96654,null],["Astore Keymak a Division of Hudaco (Pty) Ltd",96170,null],["FG Electrical",95128,1462],["E&P Global Business Supplies Sarl",95072,95072],["Tigris Wealth (Pty) Ltd",94276,null],["Furnmart (Pty) Ltd",93951,51120],["Advent One Construction (Pty) Ltd",93615,null],["Advanced Product Zambia Limited",93284,null],["Major Valves and Engineering Pty Ltd",92828,null],["Bara Consulting (Pty) Ltd",92515,null],["4Sight Africa - KIC SA",92223,null],["GIBB (Pty) Ltd",91850,null],["Afrimat Shared Services (Pty) Ltd",91212,null],["Route Management (PTY) Ltd",90636,null],["IQ Systems (Pty) Ltd",90085,null],["Eland Platinum (Pty) Ltd",90025,null],["ORN Electroferragem",89587,41395],["Bidvest Commercial Products (Pty) Ltd t/a G Fox",89325,null],["Erasda Beleggings (Pty) Ltd",89125,null],["Africa Tanks (Pty) Ltd",89012,null],["Sound Mining Solution (Pty) Ltd",88720,null],["First Technology National (Pty) Ltd",88671,null],["Michanic (Pty) Ltd",88264,null],["XFOUR - Mobile Telephone Networks (Pty) Ltd MTNSA",87775,null],["Directreefer (Pty) Ltd",86413,null],["Mastro Supplies",85224,null],["Ohm-MECH Engineering",85166,51978],["Vermont Sales",84788,null],["Eskom Holdings SOC Limited",83235,null],["Optimal Supplychain Services (Pty) Ltd",83039,2700],["Afritek (Pty) Ltd",82271,null],["Chaight Investments",81833,81833],["Prelec Mining Supplies CC",81501,null],["Auto Industrial Foundry",80841,3519],["Miesham Technical Services",80277,null],["Black Mountain Mining (Pty) Ltd",79415,null],["Anolox Holdings (PtyLtd",78811,null],["Mandela Institute for Development Studies",78431,32977],["Kit Systems CC",78089,null],["Elita Moçambique Lda",78025,null],["Akata Rdc Sarl",77403,null],["Amec GRD SA",77400,null],["Institute for Maritime Technology",77267,null],["Ndevini Technical Engineering Services",75885,75885],["CSIR",75726,null],["Tridat Projects (Pty) Ltd",74787,null],["Foursight Namibia (Pty) Limited - Nguvu Mining Ghana",74063,null],["Process Control and Integration Tech PTY LTD",73454,null],["Sakinofsky Associate (Pty) Ltd",73230,null],["BH Electromech Engineering",72914,null],["Profound Project Control Solutions (Pty) Ltd",72908,null],["Emer-G-Med (Pty) Ltd",72659,null],["First Point IT (Pty) Ltd",71301,null],["Ortho-Design (Pty) Ltd.",71167,26724],["Tshwane University of Technology",70000,70000],["Vicpro Services CC",69596,null],["Minova Africa (Pty) Ltd",69354,null],["MQOBI Holdings",69000,null],["Sorisa Trading (Pty) Ltd",68371,null],["All Out Group (Pty) Ltd",67841,null],["Enstra Paper",67275,null],["Minopex Lesotho (Pty) Ltd",67235,null],["Liquid Rock SARL",66190,null],["Tinashe LDA",65250,null],["Olam South Africa (Pty) Ltd",65043,null],["Impuma Group (Pty)  Ltd",64762,null],["Tourvest Inflight Retail a div. of Tourvest Holdings (Pty) Ltd",64191,null],["Multiknit (Pty) Ltd",64080,null],["Balwin Properties Limited",63727,null],["Keimolus construction and mining supplies Pty Ltd.",63432,null],["FPG Foods (Pty) Ltd",62533,null],["Rustenburg Platinum Mines Limited-Mogolakwena Section",62400,null],["ABRT Civils (Pty) Ltd",61771,null],["GMC Airconditioning CC",61628,null],["PanelTech Systems Limited",61621,null],["4Sight Africa - Engineering Council of South Africa",61240,59419],["First Technology (Pty) Ltd",61180,null],["Mur Shipping Rsa",61000,null],["Tokologo Technical Assignments CC",60412,null],["Mustek Ltd",60377,null],["Red Meat Industry Services Pty (Ltd)",60000,null],["Collaborative Packing Solutions (Pty) Ltd",59665,null],["Star Delta Electrix (Pty) Ltd",58350,null],["Solum Civils (Pty) Ltd",57727,null],["Sci-Bono Discovery Centre NPC",57626,null],["I.F.J.B NOA sh.a",57505,null],["Corhold Investments (Pty) Ltd",57443,null],["Combustion Technology (Pty) Ltd",57349,null],["Foursight Holdings (Pty) Ltd",57201,null],["Meverick Holdings (Pty) Ltd",56821,null],["TEESTON ENGINEERING PVT LTD",56704,null],["Aircycle Engineering cc",56394,null],["Hillary Construction (Pty) Ltd",56350,28750],["Multi Will Electrical And Supplies",56289,null],["Industrial Rackmount Solutions",56160,26325],["Council for Mecial Schemes",55763,null],["Newshelf 1167 (Pty) Ltd - Phelindaba",55511,null],["Flight Centre Travel Group Pty Ltd T/A Envoyage RSA",55350,55350],["4Sight Africa - Supplier Park Development Company SOC Ltd t/a AIDC",55157,6150],["Allpronix (Pty) Ltd",55149,null],["NAACAM",54955,3139],["Hibe Investments (Pty) Ltd",54850,null],["Don't Waste Shared Services (Pty) Ltd",54781,null],["Gunret Foods (Pty) Ltd/TA KFC",54600,null],["Ownland Suppliers ZIM/SA",54560,null],["CT Control Systems",54270,54270],["Sound Mining Projects (Pty) Ltd",53720,null],["Transvaal Gold Mining Estates Limited",53700,null],["Globalised Trading Ltd",53420,53420],["Sage South Africa (Pty) Ltd (VIP)",53407,null],["Red Ember Solutions (Pty) Ltd",53246,null],["Brilliant Link (Pty)Ltd",52733,null],["Imerys Refractory Minerals South Africa (Pty) Ltd",51910,null],["World Telecom and Data CC",51575,null],["Lyttelton Mining Supplies",51526,null],["Faila Projects and Industrial Supplies Pty Ltd.",51215,null],["Western TVET College",50966,null],["Severe Investments (Pty) Ltd",50505,null],["R and S Engineering and Transportation Services",50216,null],["4Sight Africa - Department of Public Works",49964,null],["Flotek PVC (Pty) Ltd",49584,null],["Armscor Research and Development, A Division of Armscor SOC",48762,null],["Geerlings (Pty) Ltd",48752,null],["Tailorblend (Pty) Ltd",48623,null],["Fan R Pan",48510,3396],["Brewtech Engineering a Division of Hudaco Trading (Pty) Ltd",48107,null],["Atlas Electro Hydraulic Systems (Pty) ltd",47864,null],["Cognadev (Pty) Ltd",47680,4600],["Xiboho Knowledge Engineers CC",47452,47452],["Minopex Technical Advisory (Pty) Ltd",46438,null],["Congo Service Techniques",46376,null],["JSPL Mozambique Minerals LDA",46288,null],["Affluence Health Services (Pty) Ltd",45788,null],["Industrial Technical Equipment",45612,14025],["Harambee Youth Employment Accelerator NPC",45580,null],["Immedia Studio (Pty) Ltd",45307,null],["Portniel Investment (Pvt) Ltd",44973,null],["B & W Instrumentation and Electrical Limited",44962,null],["Continental Biscuit Manufacturers (Pty) Ltd",44952,null],["Avani Gabarone Hotel & Casino",44286,null],["Joyglobal Africa (Pty) Ltd",44081,34331],["FSG Maintanance (Pty) Ltd",43968,null],["DS Gerber Maine (Pty) Ltd",43844,null],["IntelliBPO (Pty) Ltd",43762,36265],["Walt Landgoed (Pty) Ltd",43526,43526],["Titus Corporation (Pty) Ltd",42925,42925],["Open Doors International",42877,null],["SG Studio (Pty) Ltd",42854,null],["Fluid Systems Engineering",42834,null],["Import Export Procurement Services",42147,16319],["Midway Bedida Trading (Pty)  Ltd",42098,null],["American Bank of Investments",41234,null],["EcoTech Converge (Pty) Ltd",41138,null],["Icoseal (Pty) Ltd",41029,null],["DCB Drives & Automation",40885,null],["Future Indefinite Investments 180 (Pty) Ltd",40498,null],["SCM Ref Africa (Pty) Ltd",40410,null],["CSG Security (Pty) Ltd",39665,null],["Alexander Babich & Associates (Pty) Ltd",39426,null],["First Quantum Minerals South Africa (Pty) Ltd.",39278,null],["Pyroca 119 CC",39206,null],["Imaging Resources CC",39115,null],["Phoka Mining Group",39000,null],["Onix Equipamentos & Produtos",38950,4381],["Papini Trading",38440,null],["Martin Bulk Handeling Solutions (Pty) Ltd",38338,null],["Into-Africa Procurement",38199,null],["WISID SOURCING",37853,null],["Minigroove Enterprise (Pty) Ltd",37704,null],["Unisure Global Services (Pty) Ltd",37409,null],["EME Systems (Pty) Ltd",37077,null],["Bovua Holdings",36801,24201],["TruSeal (Pty) Ltd",36714,null],["Mammoth Technologies (Pty) Ltd",36580,null],["Forseas Electrical (Pty) Ltd",36364,36364],["NTSIKA ICT Holdings (Pty) Ltd",36010,8851],["Eliqhakazile Engineering and Supply",35915,null],["Dynamic Handling (Pty) Ltd",35694,null],["Tanzanite Resources Pty Ltd.",35616,null],["Mzilankala Development & Projects",35550,null],["Manica Group Namibia (Pty) Limited",35438,null],["A2X Markets (Pty) Ltd",35264,null],["NextGenix (Pty)",35151,null],["Exxaro Coal (Pty) Ltd, Grootegeluk",35000,null],["NTC Global Trade Fund",35000,35000],["National Horse Racing Authority SA",34773,8833],["Instrumentation Services (Pty) Ltd.",34614,null],["4Sight Africa - South African Nursing Council",34555,null],["Race Coast Western Cape (Pty) Ltd",34440,null],["Avani Lesotho Hotel & Casino And Avani Maseru Hotel",33966,null],["Setec Software (Pty) Ltd",33870,null],["Industrial & Mining",33590,null],["Kaon Capital (Pty) Ltd",33040,null],["Inclusive Engineering p/L",32622,null],["XFOUR - Kamoa Copper SA",32598,null],["StormDotCom PTY Ltd",32580,null],["Tradestream Logistics (Pty) Ltd",32345,null],["Qualitative Innovative Solutions (Pty) Ltd",32083,null],["Procontrol Instrumentation CC",32063,32063],["Euronip Handling Gauteng CC",31680,null],["Milmaster Engineering Pvt Ltd",31680,null],["COD USD",31491,null],["Lifestyle Garden Centre",31398,11273],["McCarthy (Pty) Ltd",31193,null],["United Resorts and Hotels Limited (MAIA)",31000,11250],["4Sight Africa - Cross-Border Road Transport Agency",30751,28904],["Rovuma Tech",30674,null],["Tank Gauging Modifications and Projects (Pty) Ltd",29591,null],["Softy Comp (Pty) Ltd",29567,null],["Bidvest Office (Pty) Ltd - Cecil Nurse a division of Bidvest Office",29230,null],["Treger Brands (Pty) Ltd",29075,null],["Minor Hotels Zambia Limited",29015,null],["Sopratech (Pty) Ltd",28800,null],["Mnzhelele Holdings",28765,null],["Tala Construction",28734,28734],["Hoops Importers & Exporters",28619,28619],["Silulumanzi (RF) (Pty) Ltd",28600,null],["RSPH (Pty) Ltd (RifleShot)",28328,null],["JoJo Tanks Pty (Ltd)",28000,null],["Differential Capital (Pty) Ltd",27690,null],["Zorgvliet Wines (Pty) Ltd",27600,null],["Viglietti Lifestyle Estate Pty Ltd",26800,null],["Raubex (Pty) Ltd",26510,null],["RDC Master Drilling SPRL",26467,null],["Sol Arch Services Pty Ltd",26439,null],["Wooshin Systems",26200,null],["Breitech (Pty) Ltd",26100,null],["Ntshovelo Pty LTD",26064,null],["Foursight Namibia - Gratomic Graphite (Pty) Ltd",26000,null],["Azania Pride Enterprises (Pty) Ltd",25729,null],["P A Becker Consulting",25685,7060],["4Sight Africa - Freitan Logistics (Pty) Ltd",25645,null],["Krytoff (Pvt) Ltd",25098,null],["Supplier Park Development Company SOC Ltd t/a AIDC",24950,null],["Corruption Watch (RF) NPC",24927,7351],["QUANTUM-LEAP CORP (PTY) LTD t/a BasaltX",24579,3759],["VIGA Flow S.A.",24474,null],["Flow & Process (Pty) Ltd",24426,null],["Steson Global Pty Ltd",24360,null],["The Twelve Apostles Church of Africa",24316,null],["Donaventa Holdings (Pty) Ltd",24237,null],["Marataba Conservation (Pty) Ltd",24193,null],["Sundie Enginieering (Pty) Ltd",24140,null],["Dark Fibre Africa (RF) (Pty) Ltd",23610,null],["Silcrafty Enterprises",23584,null],["Autoboys Holdings",23345,null],["4Sight Africa - Medical Supplies Depot (MSD)",22920,null],["Mmapaballo Thathalasi Trading cc",22755,null],["Golden Horse Casino",22710,11430],["Aerosud Aviation (Pty) Ltd",22644,null],["Dynatron Group (PTY) LTD",22610,null],["4Sight Africa - The Council on Higher Education",22544,null],["Troye Interactive Solutions (Pty) Ltd",22500,22500],["Emporium Legacy (Pty) Ltd",22456,null],["DNA Consulting Engineers & Project Managers",22240,null],["Tavish Exports CC",22080,22080],["Koogan Plastics (Pty) Ltd",21640,null],["4Sight Africa - South African Health Products Regulatory Authority (SAHPRA)",21347,null],["Kalahari Goldridge Mining Company Limited",21100,null],["Bartex CC",21050,null],["Limakwe Construction",21034,null],["Yellow Digital Retailers Ltd",21008,null],["BDO South Africa Services",20925,null],["Global Roofing Solutions (Pty) Ltd",20338,null],["Ingwesoft Business Solutions (PTY) Ltd",20309,8348],["Sumitomo Rubber South Africa Pty Ltd",20168,null],["Apostolides (Pty) Ltd",20024,null],["Smart Cut Manufacturers (Pty) Ltd",19963,null],["Litra Industrial",19763,null],["Core Auto Electrical (Pty) Ltd.",19687,null],["Mobax Telecoms International (Pty) Ltd",19680,null],["Rema Tip Top Holding South Africa Proprietary Limited",19680,null],["Nigel Metal Industries (Pty) Ltd",19253,null],["LOVELL INDUSTRIAL HOLDINGS (PTY) LTD",19200,null],["Minet Lesotho (Pty) Ltd",19157,null],["Stamcor Electrical And Instrumentation Supplier (Pvt) Ltd",19040,null],["Obhejane Trading (Pty) Ltd",18939,18939],["Pacific Software Technology",18851,null],["Sappi Southern Africa Ltd",18750,null],["Sucrotech(K) Limited",18738,null],["Atmei Construction (Pty) Ltd",18714,null],["Chlarne Pty Ltd",18707,null],["Amaqwabe Ajabulile Enterprises",18516,null],["Dusud (Pty) Ltd",18418,null],["Integrove (Pty) Ltd/Integrove",18367,null],["Core2Extreme IT Solution",18240,null],["4Sight Africa - Gauteng Partnership Fund",18173,null],["Sengel,consultoria E Serviços",18069,null],["Enviroil",17931,null],["Paymenow Group (Pty) Ltd",17835,null],["All Procurement & Logistics For Africa (Pty) Ltd",17812,null],["Zweni Properties",17516,null],["Anitas Group Distribution Centre",17505,null],["WELKOM INDUSTRIAL CONTROLS",17370,11632],["Khi CSP O&M Company (Pty) Ltd",17274,null],["Polyoak Business School (Pty) Ltd",16666,null],["HBF Group Consultants (Pty) LTd",16665,null],["XFOUR - Fraser Alexander",16500,null],["NOVO Energy (Pty) Ltd",16473,null],["Izintozamambatha (Pty) Ltd",16041,null],["Tetra4 (Pty) Ltd",15912,null],["Mpumalanga Economic Regulator",15691,null],["Selepe Projects (Pty) Ltd",15546,null],["Secure Ice (PTY) Ltd",15540,null],["Bio2Watt Energy Holdings (Pty) Ltd",15331,null],["Adpack limited",15315,null],["Swazi Marine (Pty) Ltd",15043,null],["Sargent Industries cc",14975,null],["Naia Technologies (Pty) Ltd",14900,null],["Bosal Afrika (PTY) Ltd",14834,null],["Famshir Electrical Wholesalers CC",14819,null],["Strauss de Waal Attorneys",14799,null],["Atlas Plastics (Pty) Ltd",14694,null],["Automation Concept CC",14670,null],["Savvysure Insurance Brokers (Pty) Ltd",14408,null],["Smar Technologies (Pty) Ltd",14096,null],["Electro Motor Force",14069,null],["Unique Dairy Products (Pty) Ltd",14025,null],["Rhino Valves (Pty) Ltd",14018,null],["Sebenza Industries Limited",14002,null],["Arion Energy Services Ltd",13881,null],["XFOUR - Ivanhoe Mines SA",13821,null],["Fais Ombud",13733,null],["HUBTEX Engineers Limited",13500,null],["Ukuvuma Solutions (Pty) Ltd",13500,null],["Tahila Engineering LTD",13068,null],["LAZAR (PTY) LTD",12915,null],["ALP Africa (Pty) Ltd",12838,null],["Eratron (Pty) Ltd",12825,null],["WC Ndlovu Pty Ltd",12375,null],["Avid Brands SA (Pty) Ltd",12304,null],["Mogwera Logistrics (Pty) Ltd",12260,null],["Cautin Pty (ltd)",12256,null],["Jakaranda Motors (Pty) Ltd",12240,null],["Design Biologix CC",12140,null],["Meat Mania cc",12065,null],["Consumer Finance SA",12015,4890],["Tradecorp Supply Chain International",11984,null],["Fair Price (Pty) Ltd",11920,null],["Link-Up Communications (Pty) Ltd",11920,null],["Lapesa Engineering (Pty) Ltd",11713,null],["xPac Technology (Pty) Ltd",11700,null],["Martin & Martin (Pty) Ltd t/a Bob Martin",11685,null],["Zola Corp (Pty) Ltd",11654,null],["RegimA Cape Town",11570,null],["Westgro Financial Services CC",11542,null],["JTB Industrial Solutions Pty Ltd",11435,null],["Electro Electronics Repairs Pty Ltd",11341,null],["Sustainable Energy Efficient Solutions",11304,null],["Crosswing Supplies CC",11299,null],["Kwan Trading (Pty) Ltd",11155,null],["Green Acres Trust",11115,11115],["Raiweb Electric Elements LTD",10964,null],["Atvance 360 (Pty) Ltd",10860,null],["Electric Systems t/a Essarl Management",10564,null],["Infinitus Construction",10549,null],["Trademodel Twelve (Pty) Ltd",10465,null],["Hamisa Engineering and Mining (Pty) Ltd",10161,null],["Phillips Global (Pty) Ltd",10124,null],["Cradle Technology Services (Pty) Ltd",10000,null],["Mariners Wharf (Pty) Ltd",10000,null],["Societe Miniere De La Lobo (Sml) Sa",9920,null],["Inflection Solutions (Pty) Ltd",9884,null],["Frontline Africa Advisory (Pty) Ltd",9821,null],["Lightcon Africa CC",9710,null],["Nova Papers CC",9703,null],["New Pneumatics Distributors and Exporters CC",9586,9586],["Marthinusen & Coutts a division of Actom Pty Ltd",9550,null],["Vertex Automation (Pty) Ltd",9468,null],["Drapes Digital Limited",9383,null],["PXD Plastics (Pty) Ltd",9335,null],["ME Elecmetal Prima Manufacturing (Pty) Ltd.",9140,null],["4Sight Africa - National Economic Development and Labour Council (Nedlac)",9062,null],["Jacaranda FM",9000,null],["Umoya Human Capital (Pty) Ltd",8966,null],["Billion Rows (Pty) Ltd",8925,null],["Apcan Security Group",8800,null],["Project Presentations (Pty) Ltd",8800,null],["Aldor Africa (Pty) Ltd",8706,null],["GL Events South Africa (Pty) Ltd",8692,null],["LH Marthinusen a division of Actom (Pty) Ltd",8663,null],["CTrack Fleet Management Fleet Solutions (Pty) Ltd",8600,null],["HC Heat Exchangers (Pty) Ltd",8583,null],["Terrotechnica Pty Ltd",8352,null],["Spetmic Investments",8350,null],["4Sight Africa - Film and Publication Board",8318,null],["Waterkloof Golf Estate Homeowner Association NPC",8285,null],["Blue Diamonds Mines (Pty) Ltd t/a Koffiefontein Diamond",8190,null],["PayedNow Africa",8042,null],["Foxolution Systems Engineering (Pty) Ltd",7992,null],["Ocean Basket Franchise Company (Pty) Ltd",7985,null],["Baseline ICT Services (Pty) Ltd",7968,null],["Ellies Electronics (Pty) Ltd",7962,null],["Big Game Links Pvt Ltd",7902,null],["Hydramotion SA",7791,null],["Prowalco Tatsuno (Pty) Ltd",7750,null],["Kgatshang Mosedi Trading & Services (Pty) Ltd",7747,null],["Taj Printers CC",7727,null],["XFOUR - Oza Capital & Services",7667,null],["XFOUR - Bearing Man Group (Pty) Ltd",7662,null],["Stuffworks Projects (PTY) Ltd",7631,null],["Dischem - Weltevreden Pharmacy",7610,null],["Trade Kings (SA) Pty Ltd.",7595,null],["Upright Engineering Pty Ltd",7470,null],["Carbon International Trading (Pty) Ltd",7370,null],["XFOUR - Moyo Business Advisory (Pty) Ltd",7325,null],["CBZ Risk Advisory (RA) Limited",7319,null],["X4 Solutions (Pty) Ltd",7280,null],["New Leaf Technologies (Pty) Ltd",7262,null],["Quickfin Nationwide Group",7125,null],["Era Stene (Pty) Ltd",7008,null],["Foursight Namibia (Pty) Limited -Trustco Group",7000,null],["XFOUR - Barberton Mines (Pty) Ltd",7000,null],["FortisCo PTY LTD",6960,null],["Romatex (Pty) Ltd",6917,null],["West Coast Personnel CC",6900,null],["Manganese Metal Company - AccPac",6765,null],["Shamus Rennie (Pty) Ltd",6750,null],["Practara Consulting",6600,null],["ETM Services CC",6482,null],["Strucmac Heavy Engineering (Pty) Ltd",6323,null],["Easi Eight Amusements (Pty) Ltd",6320,null],["Van De Venter Mojapelo Pty Ltd",6300,null],["Philelec CC",6268,null],["Electrical Maintenance Lusaka Limited",6237,null],["Amtec Techniquip Pty Ltd",6226,null],["Communicare",6220,null],["Mozambique Procurement Business Lda",6205,null],["Thabazimbi Air Compressors (Pty) LTD T/A Air-Gen Group",6190,null],["Frys Metals - A Division of Zimco Group (Pty) Ltd",6152,null],["Africa Cosmos Consulting and Training",6150,null],["National Economic Development and Labour Council t/a NEDLAC",6150,null],["Kevro Trading (Pty) Ltd",6115,null],["Feathered Quill Proprietary Limited",6065,null],["Watch Tower Bible and Tract Society of SA (NPC)",5952,null],["Cornwall Hill College",5931,null],["IBI Personnel Services (Pty) Ltd",5924,null],["HK Power & Transmission (Pty) Ltd",5686,null],["St Stithians College Endowment Fund Trust",5585,null],["Bektek Automation",5580,null],["Pure Manganese (Pty) Ltd",5500,null],["Catkom Rebuild Centre (Pty) Ltd",5452,null],["Promovate",5388,null],["ATD Alliance (Pty) Ltd",5340,null],["Rotary Opencast Services cc",5337,null],["XFOUR - Lubombo Spatial Development Initiative",5305,null],["Enslins Bethlehem Inc",5250,null],["Ahadi Engineering and Training Enterprise (Pty) Ltd",5219,null],["Uphando Electrical Distribution (Pty) Ltd",5173,null],["Coupon Clearing Bureau (Pty) Ltd",5140,null],["Down Town Electrical And Construction (Pty) LtdOWN ELECTRICAL AND CONSTRUCTION (PTY) LTD",5096,null],["Tinemar Enterprises Limited",5052,null],["In Person Training: Kickstart your Power BI Journey",5022,null],["Genesis Analytics (Pty) Ltd",4912,null],["Exponant (Pty) Ltd",4900,null],["XFOUR - Springsweg Nigel Eiendomme (Pty) Ltd",4881,null],["Tablegear cc",4762,null],["Cornerstone Institute 9RF NPC",4750,null],["United Exports South Africa (Pty) Ltd",4748,null],["Energy Unite (Pty)",4727,null],["Everest Equipment And Control cc",4660,null],["SSD Controls Pty Ltd",4625,null],["SA Professional Consulting (Pty) Ltd",4619,null],["PLI Aluminium Technology (Pty)Ltd TA / Solve",4600,null],["Copalcor (Pty) Ltd",4476,null],["Nbchcbsi",4458,null],["KC Equipment (Pty) Ltd",4447,null],["Westvaal Motor Group (Pty) Ltd",4430,null],["Bright Idea Projects",4405,null],["Engineered Automation Intelligence",4395,null],["Buscor (Pty) Ltd",4326,null],["Doula Retial and Convention Center / TA Douala Grand Mall",4323,null],["Dhoda Plastics Pty Ltd",4294,null],["AA Clothing Retailers CC",4275,null],["4D Solutions (Pty) Ltd",4200,null],["Dynamic Plastic Packaging (Pty) Ltd",4200,null],["More Family Collection",4200,null],["Airlink (Pty) Ltd",4125,null],["National First Aid Academy Western Cape (Pty) Ltd",4092,null],["Tsantsabane Recycling Waste Management and Civils",4084,null],["Aurum Risk and Investments",4068,null],["Gridlec Power Projects cc",4059,null],["October Wind Trading 45 Pty Ltd / Trading as Debonairs Bracken City",4058,null],["Ship Shop Logistics Pty Ltd",4013,null],["Aztec Components (Pty) Ltd",3955,null],["Nology",3850,null],["JR Compressors & Industrial Supplies (pty) Ltd",3811,null],["Barberton Primary School",3800,null],["Applied Controls Technology",3791,null],["Brinell Engineering Pvt Ltd",3697,null],["Hyundai Automative South Africa (Pty) Ltd",3696,null],["Midrand Electrical Services CC",3690,null],["Southern Sun Ridgeway",3690,null],["Tri-Star Construction",3600,null],["Karabo Parking Management (Pty) Ltd",3575,null],["SADPA",3564,null],["Demolition and Drilling Equipment (Pty) Ltd",3495,null],["S A Tube and Honing (Pty) Ltd",3450,null],["TP Hentiq 6347 (Pty) Ltd t/a Levity Crop Science",3450,null],["Property Sector Charter Council",3379,null],["Chemlink SA (Pty) Ltd",3258,null],["Global Valves & Automation (Pty) Ltd",3250,null],["Moneyline 207 (Pty) Ltd",3223,null],["Attacq Management Services (Pty) Ltd",3125,null],["Systruct Solutions PTY (LTD)",3094,null],["Gearhouse Splitbeam Pty Ltd",3082,null],["4Sight Africa - Commercial Cold Holdings",3075,null],["Rolyn Engineering (Pty) Ltd",3075,null],["Southern Sun Ikoyi",2919,1230],["Sun Slots Shared Services (Pty) Ltd",2918,1568],["Hitachi Construction Machinery Africa (Pty) Ltd",2900,null],["Tyme Bank",2900,null],["Harntech (Pty) Ltd",2843,null],["Avanade Deutschland GmbH",2792,null],["Bakery Fix",2764,null],["XFOUR - Bryte Insurance Company Ltd",2750,null],["Valley Electrical Contractors Pty Ltd",2720,null],["Advtech Resourcing (Pty) Ltd",2700,null],["Rand Refinery(Pty) Ltd",2672,null],["South African Nursing Council (SANC)",2660,null],["Divine Wealth Solutions",2580,null],["AccTech Africa - Nokeng Fluorspar Mine (RF) (Pty) Ltd",2538,null],["Uthembekile Industrial Services (Pty) Ltd",2535,null],["St Stithians College",2500,null],["GP Consult (Pty) Ltd",2475,null],["Genesis Capital (Pty) Ltd",2460,null],["Summit Property Company (Pty) Ltd",2460,null],["Casewise South Africa (Pty) Ltd/TA Casewise SA",2435,null],["Polokeho Lifting and Testing Services",2413,null],["Manica DRC SPRL",2378,null],["Ore & Metal Company Limited t/a Ore and Metal Services",2358,null],["Lonix (RF) (Pty)  Ltd",2340,null],["R&F Tissue Mills (Pty) Ltd.",2325,null],["A1 Rigging and Engineering Services CC",2312,null],["Mullin Finansiele Dienste (Pty) Ltd",2300,null],["Virtually HR (Pty) Ltd t/a CA Financial Appointments",2280,null],["DRM Auditors Inc",2185,null],["ACDC Dynamics",2175,null],["XFOUR - Caledonia Mining South Africa",2169,null],["VMLYR (Pty) Ltd",2100,null],["Friedlaender,  Burger and Volkmann",2063,null],["Silvasons Hardware",2003,null],["MESA Africa",2000,null],["Metraclark (Pty) Ltd t/a Beijer Ref Africa (Pty) Ltd:",1950,null],["Avon Packaging Convertors (Pty) Ltd",1913,null],["Gill Primary School",1900,null],["Star Schools (Pty) Ltd",1900,null],["Aeroklas Duys (Pty) Ltd",1860,null],["XFOUR - Universal Labels and Packaging",1800,null],["Hoërskool Standerton",1765,null],["Avani Windhoek Hotel & Casino",1725,null],["Kelsey Construction (Pty) Ltd",1670,null],["Eastern Cape Gambling Board",1663,null],["ERGOFLEX 57 CC",1627,null],["4Sight Africa - Bokamoso Investment Fund (Pty) Ltd",1523,null],["CNH Industrial AG&CE Pty Ltd",1457,null],["Drumgoolan Investments (Pty) Ltd t/a Leadwood Financial Services",1400,null],["Ratu Mining",1390,null],["XFOUR - Zolula (Pty) Ltd",1375,null],["Silverstar Casino (Pty) Ltd",1350,null],["Tony Beverley Agencies (Pty) Ltd",1350,null],["Nomthoko Techs Pty Ltd",1331,null],["Dischem - Pure Pharmacy Retail (Pty) Ltd Trading as Medicare Grosvenor Pharmacy",1295,null],["Optimi Central Services (Pty) Ltd",1230,null],["South African National Petroleum Company",1230,null],["Galdon Data Computer Services (Pty) Ltd",1100,null],["Avis Rent a Car SA a division of Barloworld SA (Pty) Ltd",1060,null],["Richflex Pty Ltd",1052,null],["Nanotech Water Solutions CC",1047,null],["Grainvest Group (Pty) Ltd",1031,null],["Finsch Diamonds Mine  (Pty) Ltd",987,null],["KS Energy (Mauritius) Limited",980,null],["OEM Support Solutions (Pty) Ltd",975,null],["Rutherford Johannesburg Division Vivian",967,null],["Girlock SA (Pty) Ltd",962,null],["Progressive Payrolls",950,null],["Winkelshoek HR Solutions (Pty) Ltd",850,null],["Enviroblue (Pty) Ltd",792,null],["XFOUR - Construction Industry Development Board (CIDB)",741,null],["Premium Brand Distributors (Pty) Ltd",735,null],["Khumalo Bongani Mining (Pty) Ltd",725,null],["XFOUR - GP Consult (Pty) Ltd",725,null],["PEG Group",713,null],["XFOUR - George Group Management Services (Pty) Ltd",640,null],["Lionshare Management Services (Pty) Ltd",633,null],["Tovani Trading 322 CC",631,null],["Anchor Capital (Pty) Ltd",630,null],["Atlas Copco Industrial Zambia Limited",615,null],["National Lotteries Commission",615,null],["Solid Fibre (Pty) Ltd",615,null],["City Property Administration (Pty) Ltd",600,null],["Bio 2 Watt (Pty) Ltd",595,null],["Gernic Products CC",520,null],["Zolula (Pty) Ltd",500,null],["Minerals Technologies South Africa (MTSA)",477,null],["Kgalalelo Education (Pty) Ltd",475,null],["WBHO Construction (Pty) Ltd",456,null],["Bootlegger Coffee Pty Ltd",434,null],["La Concorde t/a Milexi Food Industries",417,null],["Pierelloyd Project Solutions (Pty) Ltd",358,null],["Terbodore Coffee Roasters (Pty) Ltd",340,null],["Imaging Resources",308,null],["Ackermans Holdings",300,null],["Nyakaza Ndoda",300,null],["Conquers Brands",278,null],["Fuelco Holdings (Pty) Ltd",270,null],["Eastern Cape Rural Development Agency (ECRDA)",242,null],["Pro Patria Museum NPC",213,null],["The Automation Shop (PTY) Ltd",149,null],["Technology For Results (Pty) Ltd",90,null],["Cornerstone Performance Solutions (Pty) Ltd",1,null],["Xneelo (Pty) Ltd",1,null],["Mines Rescue Services Trust",-1,-1],["ProProcess Engineering (Pty) Ltd",-3,null],["Adeysleek (Pty) Ltd",-100,null],["Africa Property Development Managers Limited",-200,null],["Foundation for Human Rights in South Africa",-210,null],["Mobi Payments Solutions (Pty) Ltd",-791,null],["Fincor a Division of Primedia (Pty) Ltd",-1050,null],["Acctech Systems Internal Enterprise Fixed Assets",-1238,null],["Orah Lighting Energy and Automation",-1895,null],["Braeston Corporate Consulting Services (Pty) Ltd",-2200,null],["Master Drilling Mali",-2430,null],["CTP Printers Ndabeni",-2896,null],["Human Sciences Research Council (HSRC)",-3359,null],["AIAC Air Conditioning S.A (Pty)  Ltd",-3690,null],["Foursight Namibia - African Building Supplies CC",-3981,null],["Tourvest Holdings Trading as aha Hotels and Lodges",-4200,null],["Eurotrade International Limited",-4693,null],["Sun International",-4920,null],["Minwatech SA Pty Ltd",-6091,null],["F&B Electrical Contracting & Engineering",-7512,null],["Huhtamaki South Africa (Pty) Ltd",-8010,null],["4Sight Africa - Fincor Leasing",-8608,null],["Grayston Pharmacy",-8851,null],["Maputo Intermodal Container Depot - USD",-14755,null],["Denys Engineering & Contractors",-15039,null],["Optech Industries",-17601,null],["CTP Caxton Works Incomer Nexgen",-19377,null],["Tel-Screw Products (Pty) Ltd",-19717,null],["Is Technology Samrec",-24600,null],["Consulting and New Business Development",-27274,null],["IME SA (Pty) Ltd",-34800,null],["Sorted 4 Me (Pty) Ltd",-42558,null],["Clover Clayville",-48064,null],["Maputo Intermodal Container Depot, SA",-50309,null],["Proconics (Pty) Ltd",-50780,-11612],["Cullinan Diamond Mine (Pty) Ltd",-52075,-32242],["Center for Infectious Disease Research in Zambia (CIDRZ)",-57631,-4297],["Letseng Diamonds",-71033,null],["Barrick Bulyanhulu",-209769,null],["Central Energy Fund (Pty)  Ltd",-227211,12600],["Transit Services CC T/A Massyn Vervoer CC",-304090,null],["African Bank Limited - HO",-631286,2020],["4Sight Africa- Pilanesberg Platinum Mines",-672046,null],["MDE Managed Service Account",-1095436,365100],["4Sight House (Pty) Ltd",-1610000,null],["Dynamics Africa Services (Pty) Ltd",-12407000,3232792]];
-const FY26_ISINT = n => /\b(4sight|foursight|acctech)\b/i.test(n);
-const FY26_ROWS = FY26_RAW.map(([c,tot,fy]) => {
-  const f = (fy === null ? null : fy);
-  const active = f !== null && f > 0;
-  const credit = f !== null && f < 0;
-  const pc = (tot && tot > 0 && f !== null) ? f / tot * 100 : null;
-  let seg;
-  if (credit) seg = 'credit';
-  else if (!active) seg = 'dormant';
-  else if (pc !== null && pc > 80) seg = 'new';
-  else seg = 'active';
-  return { c, tot: tot || 0, fy: f, pc, seg, internal: FY26_ISINT(c), active, credit };
-});
-const FYR  = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
-const FYRm = n => Math.abs(n) >= 1e6 ? 'R ' + (n/1e6).toFixed(1) + 'm'
-               : Math.abs(n) >= 1e3 ? 'R ' + (n/1e3).toFixed(0) + 'k' : FYR(n);
-const FY26_FYTOTAL   = FY26_ROWS.reduce((s,r) => s + (r.fy || 0), 0);
-const FY26_LIFETOTAL = FY26_ROWS.reduce((s,r) => s + r.tot, 0);
-const FY26_ACTIVE    = FY26_ROWS.filter(r => r.active);
-const FY26_DORMANT   = FY26_ROWS.filter(r => r.seg === 'dormant' && r.tot > 0);
-const FY26_NEWC      = FY26_ROWS.filter(r => r.seg === 'new');
-const FY26_INTERNAL  = FY26_ROWS.filter(r => r.internal && r.active);
-const FY26_CREDITS   = FY26_ROWS.filter(r => r.credit);
-const FY26_MAXFY     = Math.max(...FY26_ROWS.map(r => r.fy || 0));
-const FY26_TAG = { new:['new','New'], active:['act','Active'], dormant:['dorm','Dormant'], credit:['cred','Credit'] };
-let fy26SortK = 'fy', fy26SortD = 'desc', fy26Page = 1;
-const FY26_PER = 50;
-
-function fy26ApplyIns(seg){
-  document.getElementById('f-fy26-seg').value = seg;
-  document.getElementById('f-fy26-q').value = '';
-  document.getElementById('f-fy26-band').value = '';
-  document.getElementById('f-fy26-top').checked = false;
-  fy26Page = 1; renderFy26();
-  document.getElementById('tbl-fy26').scrollIntoView({behavior:'smooth',block:'center'});
-}
-function resetFy26(){
-  document.getElementById('f-fy26-q').value = '';
-  document.getElementById('f-fy26-band').value = '';
-  document.getElementById('f-fy26-seg').value = '';
-  document.getElementById('f-fy26-top').checked = false;
-  fy26SortK = 'fy'; fy26SortD = 'desc'; fy26Page = 1; renderFy26();
-}
-function fy26Filtered(){
-  const q = document.getElementById('f-fy26-q').value.toLowerCase().trim();
-  const band = +document.getElementById('f-fy26-band').value || 0;
-  const seg = document.getElementById('f-fy26-seg').value;
-  let rows = FY26_ROWS.filter(r => {
-    if (q && !r.c.toLowerCase().includes(q)) return false;
-    if (band && (r.fy === null || r.fy < band)) return false;
-    if (seg === 'internal') { if (!r.internal) return false; }
-    else if (seg === 'external') { if (r.internal) return false; }
-    else if (seg) { if (r.seg !== seg) return false; }
-    return true;
-  });
-  rows.sort((a,b) => {
-    let av = a[fy26SortK], bv = b[fy26SortK];
-    if (fy26SortK === 'c' || fy26SortK === 'seg'){
-      av = (av||'').toLowerCase(); bv = (bv||'').toLowerCase();
-      return fy26SortD === 'asc' ? (av<bv?-1:av>bv?1:0) : (av>bv?-1:av<bv?1:0);
-    }
-    av = av === null ? -Infinity : av; bv = bv === null ? -Infinity : bv;
-    return fy26SortD === 'asc' ? av-bv : bv-av;
-  });
-  if (document.getElementById('f-fy26-top').checked) rows = rows.slice(0,50);
-  return rows;
-}
-function exportFy26(){
-  const rows = fy26Filtered();
-  const head = ['Customer','Lifetime revenue','FY26 revenue','FY26 % of lifetime','Segment','Internal'];
-  const body = rows.map(r => [r.c, r.tot, (r.fy===null?'':r.fy), (r.pc===null?'':r.pc.toFixed(0)+'%'), FY26_TAG[r.seg][1], r.internal?'Yes':'No']);
-  const csv = [head, ...body].map(row => row.map(cell => {
-    const v = cell===null||cell===undefined ? '' : String(cell);
-    return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v;
-  }).join(',')).join('\n');
-  const blob = new Blob([csv], {type:'text/csv'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'revenue-fy26.csv';
-  document.body.appendChild(a); a.click(); document.body.removeChild(a);
-}
-function renderFy26(){
-  document.getElementById('badge-fy26').textContent = FY26_ROWS.length.toLocaleString('en-ZA');
-  // KPIs
-  document.getElementById('fy26-kpis').innerHTML =
-      '<div class="kpi green"><div class="label">FY26 revenue</div><div class="value">'+FYRm(FY26_FYTOTAL)+'</div>'
-    + '<div class="delta"><b>'+(FY26_FYTOTAL/FY26_LIFETOTAL*100).toFixed(1)+'%</b> of lifetime revenue</div></div>'
-    + '<div class="kpi"><div class="label">Customers billing</div><div class="value">'+FY26_ACTIVE.length.toLocaleString('en-ZA')+'</div>'
-    + '<div class="delta">of <b>'+FY26_ROWS.length.toLocaleString('en-ZA')+'</b> in the ledger</div></div>'
-    + '<div class="kpi amber"><div class="label">Average per active</div><div class="value">'+FYRm(FY26_FYTOTAL/FY26_ACTIVE.length)+'</div>'
-    + '<div class="delta">FY26 &divide; billing customers</div></div>'
-    + '<div class="kpi alt"><div class="label">Dormant in FY26</div><div class="value">'+FY26_DORMANT.length.toLocaleString('en-ZA')+'</div>'
-    + '<div class="delta">had revenue before, none this year</div></div>';
-  // insights
-  document.getElementById('fy26-insights').innerHTML =
-      '<div class="fy26-ins green" onclick="fy26ApplyIns(\'new\')"><div class="t">&#127793; New &amp; emerging customers</div>'
-    + '<div class="v">'+FY26_NEWC.length+' &middot; '+FYRm(FY26_NEWC.reduce((s,r)=>s+r.fy,0))+'</div>'
-    + '<div class="s">FY26 makes up more than 80% of their lifetime revenue &mdash; effectively won this year.</div><span class="go">Filter to these &rarr;</span></div>'
-    + '<div class="fy26-ins alt" onclick="fy26ApplyIns(\'dormant\')"><div class="t">&#128564; Dormant accounts</div>'
-    + '<div class="v">'+FY26_DORMANT.length+' &middot; '+FYRm(FY26_DORMANT.reduce((s,r)=>s+r.tot,0))+' lifetime</div>'
-    + '<div class="s">Billed historically but nothing in FY26. Reactivation or cleanup candidates.</div><span class="go">Filter to these &rarr;</span></div>'
-    + '<div class="fy26-ins amber" onclick="fy26ApplyIns(\'internal\')"><div class="t">&#127970; 4Sight internal entities</div>'
-    + '<div class="v">'+FY26_INTERNAL.length+' &middot; '+FYRm(FY26_INTERNAL.reduce((s,r)=>s+r.fy,0))+'</div>'
-    + '<div class="s">Group entities inside the customer ledger. Likely intercompany &mdash; worth excluding from &ldquo;customer revenue&rdquo; in board reporting.</div><span class="go">Filter to these &rarr;</span></div>'
-    + '<div class="fy26-ins" onclick="fy26ApplyIns(\'credit\')"><div class="t">&#8617;&#65039; Credits &amp; reversals</div>'
-    + '<div class="v">'+FY26_CREDITS.length+' &middot; '+FYRm(FY26_CREDITS.reduce((s,r)=>s+r.fy,0))+'</div>'
-    + '<div class="s">Negative FY26 lines. FY26 revenue is stated <b>net</b> of these.</div><span class="go">Filter to these &rarr;</span></div>';
-  // concentration warning
-  const bySize = [...FY26_ACTIVE].sort((a,b)=>b.fy-a.fy);
-  const share = n => bySize.slice(0,n).reduce((s,r)=>s+r.fy,0)/FY26_FYTOTAL*100;
-  const intVal = FY26_INTERNAL.reduce((s,r)=>s+r.fy,0);
-  document.getElementById('fy26-conc').innerHTML =
-      '&#9888;&#65039; <b>Two things to check before this goes to a board.</b> '
-    + '<b>(1)</b> <b>'+(intVal/FY26_FYTOTAL*100).toFixed(1)+'%</b> of FY26 revenue ('+FYRm(intVal)
-    + ') comes from <b>'+FY26_INTERNAL.length+' 4Sight / Foursight / AccTech entities</b> inside the customer ledger. '
-    + 'If those are intercompany they overstate external customer revenue &mdash; external only would be <b>'+FYRm(FY26_FYTOTAL-intVal)+'</b>. '
-    + '<b>(2)</b> Only <b>'+FY26_ACTIVE.length+' of '+FY26_ROWS.length.toLocaleString('en-ZA')+'</b> customers billed in FY26 &mdash; '
-    + '<b>'+FY26_DORMANT.length+'</b> are dormant, carrying '+FYRm(FY26_DORMANT.reduce((s,r)=>s+r.tot,0))+' of lifetime revenue.';
-  document.getElementById('fy26-legend').innerHTML =
-      '&#128161; <b>Segments</b> are derived automatically &mdash; '
-    + '<span class="fy-tag new">New</span> FY26 &gt; 80% of lifetime &middot; '
-    + '<span class="fy-tag act">Active</span> billing in FY26 &middot; '
-    + '<span class="fy-tag dorm">Dormant</span> nothing this year &middot; '
-    + '<span class="fy-tag int">Internal</span> a 4Sight / Foursight / AccTech entity &middot; '
-    + '<span class="fy-tag cred">Credit</span> negative FY26 line.';
-  document.getElementById('fy26-note').innerHTML =
-      '&#128202; <b>Concentration is healthy.</b> Top 5 = <b>'+share(5).toFixed(1)+'%</b> of FY26 &middot; '
-    + 'top 10 = <b>'+share(10).toFixed(1)+'%</b> &middot; top 20 = <b>'+share(20).toFixed(1)+'%</b>. '
-    + 'No single-customer dependency. Largest FY26 customer is <b>'+escHtml(bySize[0].c)+'</b> at '
-    + FYRm(bySize[0].fy)+' ('+(bySize[0].fy/FY26_FYTOTAL*100).toFixed(1)+'%).';
-
-  const rows = fy26Filtered();
-  const fySum = rows.reduce((s,r)=>s+(r.fy||0),0);
-  const lifeSum = rows.reduce((s,r)=>s+r.tot,0);
-  document.getElementById('count-fy26').textContent =
-    'Showing ' + rows.length.toLocaleString('en-ZA') + ' of ' + FY26_ROWS.length.toLocaleString('en-ZA') + '  \u00B7  ' + FYRm(fySum) + ' FY26';
-
-  document.querySelectorAll('#tbl-fy26 th').forEach(th=>{
-    const on = th.dataset.fk === fy26SortK;
-    const si = th.querySelector('.sort-ind');
-    if (si) si.textContent = on ? (fy26SortD==='asc'?'\u25B2':'\u25BC') : '\u2195';
-  });
-
-  const pages = Math.max(1, Math.ceil(rows.length/FY26_PER));
-  if (fy26Page > pages) fy26Page = pages;
-  const slice = rows.slice((fy26Page-1)*FY26_PER, fy26Page*FY26_PER);
-  const tbody = document.querySelector('#tbl-fy26 tbody');
-  tbody.innerHTML = slice.length ? slice.map(r => {
-    const cls = FY26_TAG[r.seg][0], lbl = FY26_TAG[r.seg][1];
-    const w = r.fy && r.fy > 0 ? (r.fy/FY26_MAXFY*100) : 0;
-    return '<tr>'
-      + '<td>' + escHtml(r.c) + (r.internal ? ' <span class="fy-tag int">Internal</span>' : '') + '</td>'
-      + '<td class="fy-num">' + (r.tot ? FYR(r.tot) : '<span class="muted">\u2014</span>') + '</td>'
-      + '<td class="fy-num bar-cell">'
-        + (w>0 ? '<span class="mini-bar" style="width:'+w+'%"></span>' : '')
-        + '<span>' + (r.fy === null ? '<span class="muted">\u2014</span>' : FYR(r.fy)) + '</span></td>'
-      + '<td class="fy-num">' + (r.pc === null ? '<span class="muted">\u2014</span>' : r.pc.toFixed(0)+'%') + '</td>'
-      + '<td><span class="fy-tag '+cls+'">'+lbl+'</span></td>'
-      + '</tr>';
-  }).join('') : '<tr><td colspan="5" class="empty">No customers match the current filters.</td></tr>';
-
-  document.getElementById('fy26-foot').innerHTML =
-      '<td>TOTAL &mdash; ' + rows.length.toLocaleString('en-ZA') + ' customers</td>'
-    + '<td class="fy-num">' + FYR(lifeSum) + '</td>'
-    + '<td class="fy-num">' + FYR(fySum) + '</td>'
-    + '<td class="fy-num">' + (lifeSum ? (fySum/lifeSum*100).toFixed(0)+'%' : '\u2014') + '</td><td></td>';
-
-  const from = rows.length ? (fy26Page-1)*FY26_PER+1 : 0, to = Math.min(fy26Page*FY26_PER, rows.length);
-  renderPager('pager-fy26', rows.length, FY26_PER, fy26Page, p => { fy26Page=p; renderFy26(); });
-}
-// header click sort (bound once)
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('#tbl-fy26 th').forEach(th => th.addEventListener('click', () => {
-    const k = th.dataset.fk;
-    if (fy26SortK === k) fy26SortD = fy26SortD === 'asc' ? 'desc' : 'asc';
-    else { fy26SortK = k; fy26SortD = (k === 'c' || k === 'seg') ? 'asc' : 'desc'; }
-    fy26Page = 1; renderFy26();
-  }));
-});
-
-// ═══════════════ AFRICA TAB (Sheet1) ═══════════════
-const AFRICA_RAW = [["Tharisa Minerals (Pty) Ltd",22781345.58],["Glencore Operations SA (Pty) Ltd",10751370.8],["Astron Energy (Pty) Ltd",9167402.0],["Telkom SA SOC Ltd",9079878.81],["Servest (Pty) Ltd",7419325.82],["WBHO Construction (Pty) Ltd",6932385.54],["Afrox Oxygen Limited",6563965.15],["Bidvest Prestige",5980621.85],["Microsoft SA (Pty) Ltd",5936699.0],["4Sight Systems (Pty) Ltd",5079528.17],["South African Reserve Bank",5048524.79],["Home of Living Brands (Pty) Ltd",4341162.25],["Onderstepoort Biological Products",4214473.59],["Bidvest Steiner",4010729.35],["Zeda Car Leasing",3314051.0],["Just Dynamics Software Solutions (Pty) Ltd",3183858.92],["Eduvos (Pty)Ltd/TA Eduvos",2436565.95],["African Bank Limited - HO",2278300.55],["New Media Lab Services (Pty) Ltd",2148812.1],["Automation Control Solution (Pty) Ltd",1939020.5],["The Freedom Park Trust",1763658.13],["Central Energy Fund (Pty) Ltd",1552291.78],["PriceWaterhouse Coopers",1538957.77],["First Garment Rental (Pty) Ltd",1492463.67],["South African National Petroleum Company",1400006.37],["IQbusiness",1259323.5],["Foursight Holdings (Pty) Ltd",1004391.99],["Human Sciences Research Council (HSRC)",939441.66],["Companies and Intellectual Property Commission",926041.09],["Cross-Border Road Transport Agency",885895.0],["Compendium Insurance Brokers (Pty) Ltd",860909.69],["Nokeng Fluorspar Mine (RF) (Pty) Ltd",801690.82],["National Student Financial Aid Scheme",725283.17],["Sage South Africa (Pty) Ltd (SAGE VIP REBATES)",689491.01],["Western TVET College",624170.75],["Technology Innovation Agency",484217.5],["South African Health Products Regulatory Authority (SAHPRA)",419804.7],["Mohato Projects (Pty) Ltd",347325.0],["KIC SA",286402.72],["Council on Higher Education",283568.77],["Gautrain Management Agency",220132.0],["Sun Slots Shared Services (Pty) Ltd",216141.44],["TiAuto Investments (Pty) Ltd",212571.52],["Bidvest - Bidair Cargo",210879.15],["Fais Ombud",205486.68],["Gauteng Partnership Fund",130021.0],["South African Weather Service",121592.45],["KwaZulu-Natal Tourism and Film Authority",98066.0],["Department of Public Works",94595.95],["Bidvest Services (Pty) Ltd ta Corporate Office SA",75529.5],["UAV and Drone Solutions (Pty) Ltd",66870.0],["Liberty Coal (Pty) Ltd",45935.0],["Engineering Council of South Africa",43837.2],["Bidvest Services (Pty) Ltd",27144.61],["National Economic Development and Labour Council t/a NEDLAC",24641.4],["Bidvest International Logistics",19800.0],["Process Automation (Pty) Ltd",9674.25],["Freitan Logistics (Pty) Ltd",9450.0],["Peresoft (Pty) Ltd",8633.88],["Film and Publication Board",8445.0],["Supplier Park Development Company SOC Ltd t/a AIDC",6250.0],["4Sight OT Optimisation (Pty) Ltd",2000.0],["4Sight OT Simulation (Pty) Ltd",2000.0],["Bokamoso Investment Fund (Pty) Ltd",1522.55],["Citadel Investment Services (Pty) Ltd",0.0],["Freda Rebecca Gold Mine Limited",0.0],["Financial Sector Conduct Authority",0.0],["Two Rivers Platinum (Pty) Ltd",0.0],["RTNP Technologies Pty Ltd",0.0],["Manupont 124 (Pty) Ltd",0.0],["Fast Food City Trading (Pty) Ltd",0.0],["Liquid Rock SARL",0.0],["Masthead (Pty) Ltd",0.0],["Mahela Boerdery (Edms) Bpk",0.0],["Eminos (Pty) Ltd",0.0],["Council for Medical Schemes",0.0],["Innovative Idea Solutions (Pty) Ltd",0.0],["Lenmed Health Management (Pty) Ltd",0.0],["Epiroc Zambia Limited",0.0],["Intercare Corporate Services (Pty) Ltd",0.0],["Hendler and Hart (Pty)  Ltd",0.0],["Law Society of South Africa",0.0],["Hammond Pole Incorporated",0.0],["Chartered Wealth Solutions",0.0],["Central Energy Fund (Pty)  Ltd",-16158.33]];
+// ═══════════════ AFRICA TAB (editable) ═══════════════
+const AFRICA_SEED = [["Tharisa Minerals (Pty) Ltd",22781346],["Glencore Operations SA (Pty) Ltd",10751371],["Astron Energy (Pty) Ltd",9167402],["Telkom SA SOC Ltd",9079879],["Servest (Pty) Ltd",7419326],["WBHO Construction (Pty) Ltd",6932386],["Afrox Oxygen Limited",6563965],["Bidvest Prestige",5980622],["Microsoft SA (Pty) Ltd",5936699],["4Sight Systems (Pty) Ltd",5079528],["South African Reserve Bank",5048525],["Home of Living Brands (Pty) Ltd",4341162],["Onderstepoort Biological Products",4214474],["Bidvest Steiner",4010729],["Zeda Car Leasing",3314051],["Just Dynamics Software Solutions (Pty) Ltd",3183859],["Eduvos (Pty)Ltd/TA Eduvos",2436566],["African Bank Limited - HO",2278301],["New Media Lab Services (Pty) Ltd",2148812],["Automation Control Solution (Pty) Ltd",1939020],["The Freedom Park Trust",1763658],["Central Energy Fund (Pty) Ltd",1552292],["PriceWaterhouse Coopers",1538958],["First Garment Rental (Pty) Ltd",1492464],["South African National Petroleum Company",1400006],["IQbusiness",1259324],["Foursight Holdings (Pty) Ltd",1004392],["Human Sciences Research Council (HSRC)",939442],["Companies and Intellectual Property Commission",926041],["Cross-Border Road Transport Agency",885895],["Compendium Insurance Brokers (Pty) Ltd",860910],["Nokeng Fluorspar Mine (RF) (Pty) Ltd",801691],["National Student Financial Aid Scheme",725283],["Sage South Africa (Pty) Ltd (SAGE VIP REBATES)",689491],["Western TVET College",624171],["Technology Innovation Agency",484218],["South African Health Products Regulatory Authority (SAHPRA)",419805],["Mohato Projects (Pty) Ltd",347325],["KIC SA",286403],["Council on Higher Education",283569],["Gautrain Management Agency",220132],["Sun Slots Shared Services (Pty) Ltd",216141],["TiAuto Investments (Pty) Ltd",212572],["Bidvest - Bidair Cargo",210879],["Fais Ombud",205487],["Gauteng Partnership Fund",130021],["South African Weather Service",121592],["KwaZulu-Natal Tourism and Film Authority",98066],["Department of Public Works",94596],["Bidvest Services (Pty) Ltd ta Corporate Office SA",75530],["UAV and Drone Solutions (Pty) Ltd",66870],["Liberty Coal (Pty) Ltd",45935],["Engineering Council of South Africa",43837],["Bidvest Services (Pty) Ltd",27145],["National Economic Development and Labour Council t/a NEDLAC",24641],["Bidvest International Logistics",19800],["Process Automation (Pty) Ltd",9674],["Freitan Logistics (Pty) Ltd",9450],["Peresoft (Pty) Ltd",8634],["Film and Publication Board",8445],["Supplier Park Development Company SOC Ltd t/a AIDC",6250],["4Sight OT Optimisation (Pty) Ltd",2000],["4Sight OT Simulation (Pty) Ltd",2000],["Bokamoso Investment Fund (Pty) Ltd",1523],["Citadel Investment Services (Pty) Ltd",0],["Freda Rebecca Gold Mine Limited",0],["Financial Sector Conduct Authority",0],["Two Rivers Platinum (Pty) Ltd",0],["RTNP Technologies Pty Ltd",0],["Manupont 124 (Pty) Ltd",0],["Fast Food City Trading (Pty) Ltd",0],["Liquid Rock SARL",0],["Masthead (Pty) Ltd",0],["Mahela Boerdery (Edms) Bpk",0],["Eminos (Pty) Ltd",0],["Council for Medical Schemes",0],["Innovative Idea Solutions (Pty) Ltd",0],["Lenmed Health Management (Pty) Ltd",0],["Epiroc Zambia Limited",0],["Intercare Corporate Services (Pty) Ltd",0],["Hendler and Hart (Pty)  Ltd",0],["Law Society of South Africa",0],["Hammond Pole Incorporated",0],["Chartered Wealth Solutions",0],["Central Energy Fund (Pty)  Ltd",-16158]];
 const AF_ISINT = n => /\b(4sight|foursight|acctech)\b/i.test(n);
-const AFRICA_ROWS = AFRICA_RAW.map(([c, v]) => ({ c, v: v || 0, internal: AF_ISINT(c) }));
-const AFRICA_TOTAL = AFRICA_ROWS.reduce((s, r) => s + r.v, 0);
-const AFRICA_MAX   = Math.max(...AFRICA_ROWS.map(r => r.v));
-const AFRICA_INT   = AFRICA_ROWS.filter(r => r.internal);
+// working copy lives in OPP_STORE._africa (synced); falls back to seed
+function afLoad() {
+  const s = oppLoad();
+  if (s._africa && Array.isArray(s._africa)) return s._africa;
+  return AFRICA_SEED.map(([c,v]) => [c, v]);
+}
+function afSave(rows) {
+  const s = oppLoad();
+  s._africa = rows;
+  oppSave(s);
+}
+function afRows() {
+  return afLoad().map(([c,v]) => ({ c, v: v || 0, internal: AF_ISINT(c) }));
+}
 const AFR  = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
 const AFRm = n => Math.abs(n) >= 1e6 ? 'R ' + (n/1e6).toFixed(1) + 'm'
                : Math.abs(n) >= 1e3 ? 'R ' + (n/1e3).toFixed(0) + 'k' : AFR(n);
 let africaSortK = 'v', africaSortD = 'desc', africaPage = 1;
 const AFRICA_PER = 50;
+const AF_EDIT = {};   // { index-in-full-array : true }
 
 function resetAfrica(){
   document.getElementById('f-africa-q').value = '';
@@ -1992,7 +1209,8 @@ function africaFiltered(){
   const q = document.getElementById('f-africa-q').value.toLowerCase().trim();
   const band = +document.getElementById('f-africa-band').value || 0;
   const nz = document.getElementById('f-africa-nonzero').checked;
-  let rows = AFRICA_ROWS.filter(r => {
+  let rows = afRows().map((r,i) => ({ ...r, idx:i }));
+  rows = rows.filter(r => {
     if (nz && r.v === 0) return false;
     if (q && !r.c.toLowerCase().includes(q)) return false;
     if (band && r.v < band) return false;
@@ -2008,83 +1226,119 @@ function africaFiltered(){
   if (document.getElementById('f-africa-top').checked) rows = rows.slice(0,20);
   return rows;
 }
+function afEdit(idx){ AF_EDIT[idx] = true; renderAfrica();
+  setTimeout(()=>{ const el=document.querySelector('#tbl-africa .af-input[data-idx="'+idx+'"]'); if(el){el.focus();el.select();} },0); }
+function afCancel(idx){ delete AF_EDIT[idx]; renderAfrica(); }
+function afSaveRow(idx){
+  const el = document.querySelector('#tbl-africa .af-input[data-idx="'+idx+'"]');
+  if (!el) return;
+  const raw = el.value.replace(/[^0-9.-]/g,'');
+  const val = raw ? Math.round(parseFloat(raw)) : 0;
+  const rows = afLoad();
+  if (rows[idx]) rows[idx][1] = val;
+  afSave(rows);
+  delete AF_EDIT[idx];
+  renderAfrica();
+  oppFlash('Saved \u2713');
+}
+function afDelete(idx){
+  const rows = afLoad();
+  if (!rows[idx]) return;
+  if (!confirm('Delete "'+rows[idx][0]+'" from the Africa list?')) return;
+  rows.splice(idx,1);
+  afSave(rows);
+  delete AF_EDIT[idx];
+  renderAfrica();
+  oppFlash('Deleted');
+}
+function addAfricaRow(){
+  const name = prompt('New customer name:');
+  if (!name || !name.trim()) return;
+  const rows = afLoad();
+  rows.push([name.trim(), 0]);
+  afSave(rows);
+  document.getElementById('f-africa-nonzero').checked = false;
+  africaSortK='c'; africaSortD='asc';
+  renderAfrica();
+  oppFlash('Added \u2013 now set its revenue');
+}
+function afKey(ev, idx){ if(ev.key==='Enter'){ev.preventDefault();afSaveRow(idx);} else if(ev.key==='Escape'){ev.preventDefault();afCancel(idx);} }
 function exportAfrica(){
   const rows = africaFiltered();
+  const tot = afRows().reduce((s,r)=>s+r.v,0);
   const head = ['Customer','Revenue (R)','Share %','Internal'];
-  const body = rows.map(r => [r.c, r.v, (AFRICA_TOTAL? (r.v/AFRICA_TOTAL*100).toFixed(2)+'%':''), r.internal?'Yes':'No']);
-  const csv = [head, ...body].map(row => row.map(cell => {
-    const v = cell===null||cell===undefined ? '' : String(cell);
-    return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v;
-  }).join(',')).join('\n');
+  const body = rows.map(r => [r.c, r.v, (tot? (r.v/tot*100).toFixed(2)+'%':''), r.internal?'Yes':'No']);
+  const csv = [head,...body].map(row=>row.map(c=>{const v=c==null?'':String(c);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(',')).join('\n');
   const blob = new Blob([csv], {type:'text/csv'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob); a.download = 'africa-revenue.csv';
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='africa-revenue.csv';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 function renderAfrica(){
-  document.getElementById('badge-africa').textContent = AFRICA_ROWS.length.toLocaleString('en-ZA');
-  const active = AFRICA_ROWS.filter(r => r.v > 0);
+  const all = afRows();
+  const TOTAL = all.reduce((s,r)=>s+r.v,0);
+  const MAX = Math.max(1, ...all.map(r=>r.v));
+  const active = all.filter(r=>r.v>0);
+  document.getElementById('badge-africa').textContent = all.length.toLocaleString('en-ZA');
   const bySize = [...active].sort((a,b)=>b.v-a.v);
-  const share = n => bySize.slice(0,n).reduce((s,r)=>s+r.v,0)/AFRICA_TOTAL*100;
+  const share = n => bySize.slice(0,n).reduce((s,r)=>s+r.v,0)/TOTAL*100;
   document.getElementById('africa-kpis').innerHTML =
-      '<div class="kpi green"><div class="label">Africa revenue</div><div class="value">'+AFRm(AFRICA_TOTAL)+'</div>'
-    + '<div class="delta">across '+active.length+' billing customers</div></div>'
-    + '<div class="kpi"><div class="label">Customers</div><div class="value">'+AFRICA_ROWS.length+'</div>'
-    + '<div class="delta">'+(AFRICA_ROWS.length-active.length)+' at zero this period</div></div>'
-    + '<div class="kpi amber"><div class="label">Top customer</div><div class="value">'+AFRm(bySize[0].v)+'</div>'
-    + '<div class="delta">'+(bySize[0].v/AFRICA_TOTAL*100).toFixed(1)+'% of total</div></div>'
-    + '<div class="kpi alt"><div class="label">Top-10 concentration</div><div class="value">'+share(10).toFixed(0)+'%</div>'
-    + '<div class="delta">top 5 = '+share(5).toFixed(0)+'%</div></div>';
-
-  const intVal = AFRICA_INT.reduce((s,r)=>s+r.v,0);
+      '<div class="kpi green"><div class="label">Africa revenue</div><div class="value">'+AFRm(TOTAL)+'</div><div class="delta">across '+active.length+' billing customers</div></div>'
+    + '<div class="kpi"><div class="label">Customers</div><div class="value">'+all.length+'</div><div class="delta">'+(all.length-active.length)+' at zero</div></div>'
+    + '<div class="kpi amber"><div class="label">Top customer</div><div class="value">'+(bySize[0]?AFRm(bySize[0].v):'\u2014')+'</div><div class="delta">'+(bySize[0]?(bySize[0].v/TOTAL*100).toFixed(1)+'% of total':'')+'</div></div>'
+    + '<div class="kpi alt"><div class="label">Top-10 concentration</div><div class="value">'+(TOTAL?share(10).toFixed(0):'0')+'%</div><div class="delta">top 5 = '+(TOTAL?share(5).toFixed(0):'0')+'%</div></div>';
+  const intVal = all.filter(r=>r.internal).reduce((s,r)=>s+r.v,0);
+  const intN = all.filter(r=>r.internal).length;
   document.getElementById('africa-note').innerHTML =
-      '&#128202; <b>Africa portfolio.</b> '+AFRm(AFRICA_TOTAL)+' across '+active.length+' billing customers. '
-    + 'Largest is <b>'+escHtml(bySize[0].c)+'</b> at '+AFRm(bySize[0].v)+' ('+(bySize[0].v/AFRICA_TOTAL*100).toFixed(1)+'%). '
-    + 'Top 10 = <b>'+share(10).toFixed(1)+'%</b> &mdash; more concentrated than the direct book, so a handful of accounts drive most of it.'
-    + (AFRICA_INT.length ? ' &nbsp;&#9888;&#65039; '+AFRICA_INT.length+' 4Sight internal entities ('+AFRm(intVal)+') are included &mdash; exclude if reporting external revenue.' : '');
+      '\uD83D\uDCCA <b>Africa portfolio.</b> '+AFRm(TOTAL)+' across '+active.length+' billing customers. '
+    + (bySize[0] ? 'Largest is <b>'+escHtml(bySize[0].c)+'</b> at '+AFRm(bySize[0].v)+' ('+(bySize[0].v/TOTAL*100).toFixed(1)+'%). ' : '')
+    + (TOTAL ? 'Top 10 = <b>'+share(10).toFixed(1)+'%</b>. ' : '')
+    + (intN ? '&#9888;\uFE0F '+intN+' 4Sight internal entities ('+AFRm(intVal)+') included.' : '');
 
   const rows = africaFiltered();
   const sum = rows.reduce((s,r)=>s+r.v,0);
   document.getElementById('count-africa').textContent =
-    'Showing ' + rows.length.toLocaleString('en-ZA') + ' of ' + AFRICA_ROWS.length.toLocaleString('en-ZA') + '  \u00B7  ' + AFRm(sum);
-
+    'Showing ' + rows.length.toLocaleString('en-ZA') + ' of ' + all.length.toLocaleString('en-ZA') + '  \u00B7  ' + AFRm(sum);
   document.querySelectorAll('#tbl-africa th').forEach(th=>{
-    const on = th.dataset.ak === africaSortK;
-    const si = th.querySelector('.sort-ind');
+    const on = th.dataset.ak === africaSortK, si = th.querySelector('.sort-ind');
     if (si) si.textContent = on ? (africaSortD==='asc'?'\u25B2':'\u25BC') : '\u2195';
   });
-
   const pages = Math.max(1, Math.ceil(rows.length/AFRICA_PER));
   if (africaPage > pages) africaPage = pages;
   const slice = rows.slice((africaPage-1)*AFRICA_PER, africaPage*AFRICA_PER);
   const tbody = document.querySelector('#tbl-africa tbody');
   tbody.innerHTML = slice.length ? slice.map(r => {
-    const w = r.v > 0 ? (r.v/AFRICA_MAX*100) : 0;
+    const w = r.v>0 ? (r.v/MAX*100) : 0;
+    const editing = AF_EDIT[r.idx];
+    const valCell = editing
+      ? '<td class="af-num"><div class="af-editing"><span class="af-input" style="display:none"></span>'
+        + '<input class="af-input" data-idx="'+r.idx+'" value="'+r.v+'" onkeydown="afKey(event,'+r.idx+')">'
+        + '<button class="afb afb-save" onclick="afSaveRow('+r.idx+')">\uD83D\uDCBE</button>'
+        + '<button class="afb afb-cancel" onclick="afCancel('+r.idx+')">\u21A9</button></div></td>'
+      : '<td class="af-num bar-cell">' + (w>0?'<span class="mini-bar" style="width:'+w+'%"></span>':'')
+        + '<span class="af-val">'+AFR(r.v)+'</span></td>';
+    const actions = editing ? '<td></td>'
+      : '<td><div class="af-actions">'
+        + '<button class="afb" onclick="afEdit('+r.idx+')">\u270F Edit</button>'
+        + '<button class="afb afb-del" onclick="afDelete('+r.idx+')">\uD83D\uDDD1 Delete</button></div></td>';
     return '<tr>'
-      + '<td>' + escHtml(r.c) + (r.internal ? ' <span class="af-tag">Internal</span>' : '') + '</td>'
-      + '<td class="af-num bar-cell">'
-        + (w>0 ? '<span class="mini-bar" style="width:'+w+'%"></span>' : '')
-        + '<span>' + AFR(r.v) + '</span></td>'
-      + '<td class="af-num">' + (AFRICA_TOTAL ? (r.v/AFRICA_TOTAL*100).toFixed(1)+'%' : '\u2014') + '</td>'
-      + '</tr>';
-  }).join('') : '<tr><td colspan="3" class="empty">No customers match the current filters.</td></tr>';
-
+      + '<td>' + escHtml(r.c) + (r.internal?' <span class="af-tag">Internal</span>':'') + '</td>'
+      + valCell
+      + '<td class="af-num">' + (TOTAL ? (r.v/TOTAL*100).toFixed(1)+'%' : '\u2014') + '</td>'
+      + actions + '</tr>';
+  }).join('') : '<tr><td colspan="4" class="empty">No customers match the current filters.</td></tr>';
   document.getElementById('africa-foot').innerHTML =
       '<td>TOTAL &mdash; ' + rows.length.toLocaleString('en-ZA') + ' customers</td>'
     + '<td class="af-num">' + AFR(sum) + '</td>'
-    + '<td class="af-num">' + (AFRICA_TOTAL ? (sum/AFRICA_TOTAL*100).toFixed(0)+'%' : '\u2014') + '</td>';
-
+    + '<td class="af-num">' + (TOTAL ? (sum/TOTAL*100).toFixed(0)+'%' : '\u2014') + '</td><td></td>';
   renderPager('pager-africa', rows.length, AFRICA_PER, africaPage, p => { africaPage=p; renderAfrica(); });
 }
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('#tbl-africa th').forEach(th => th.addEventListener('click', () => {
+  document.querySelectorAll('#tbl-africa th[data-ak]').forEach(th => th.addEventListener('click', () => {
     const k = th.dataset.ak;
-    if (africaSortK === k) africaSortD = africaSortD==='asc' ? 'desc' : 'asc';
-    else { africaSortK = k; africaSortD = (k==='c') ? 'asc' : 'desc'; }
+    if (africaSortK === k) africaSortD = africaSortD==='asc'?'desc':'asc';
+    else { africaSortK = k; africaSortD = (k==='c')?'asc':'desc'; }
     africaPage = 1; renderAfrica();
   }));
-  const nz = document.getElementById('f-africa-nonzero');
-  if (nz) nz.addEventListener('change', () => { africaPage=1; renderAfrica(); });
 });
 
 function renderOverview() {
@@ -2155,7 +1409,6 @@ function switchTab(tab) {
   if (tab==='enterprise') renderEnterprise();
   if (tab==='newaccts') renderNewAccts();
   if (tab==='revenue') renderRevenue();
-  if (tab==='fy26') renderFy26();
   if (tab==='africa') renderAfrica();
 }
 
@@ -2225,8 +1478,6 @@ switchTab('overview');
 // ===== Live sync bootstrap =====
 // Pull on load, then poll every 30s so any changes made by other users appear here
 workerPull().then(() => {
-  buildAtuDatalist();
-  rbSyncHeader();
   // After initial pull, re-render the opp tabs so saved items show
   renderEnterprise();
   renderNewAccts();
@@ -2234,17 +1485,13 @@ workerPull().then(() => {
 // Periodically pull to pick up changes from other users (every 30s)
 _pollTimer = setInterval(() => {
   // Only auto-pull when no one is currently editing
-  const editing = Object.keys(OPP_EDIT).length > 0 || Object.keys(FIELD_EDIT).length > 0
-                  || Object.keys(RB_EDIT).length > 0
-                  || document.getElementById('att-modal').classList.contains('show');
+  const editing = Object.keys(OPP_EDIT).length > 0;
   if (!editing) workerPull();
 }, 30000);
 // Refresh when tab regains focus too
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") {
-    const editing = Object.keys(OPP_EDIT).length > 0 || Object.keys(FIELD_EDIT).length > 0
-                    || Object.keys(RB_EDIT).length > 0
-                    || document.getElementById('att-modal').classList.contains('show');
+    const editing = Object.keys(OPP_EDIT).length > 0;
     if (!editing) workerPull();
   }
 });
