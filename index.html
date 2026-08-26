@@ -363,14 +363,42 @@
   .fy-tag.cred { background:#fbeae9; color:var(--red-dark); }
   .fy-tag.int  { background:#fff4e0; color:#8a5a10; }
   .fy26-legend .fy-tag { margin:0 2px; }
-  #tbl-africa td.af-num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
-  #tbl-africa .bar-cell{position:relative}
-  #tbl-africa .mini-bar{position:absolute;left:0;top:50%;transform:translateY(-50%);height:16px;background:var(--cyan-pale);border-radius:3px;z-index:0}
-  #tbl-africa .bar-cell span{position:relative;z-index:1}
-  #tbl-africa tfoot td{background:#f8fafd;font-weight:800;border-top:2px solid var(--navy-darkest);color:var(--navy-darkest)}
-  .af-tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10.5px;font-weight:700;white-space:nowrap;background:#fff4e0;color:#8a5a10;margin-left:6px}
-  #tbl-africa .ed-edit-btn{opacity:.55}
-  #tbl-africa tr:hover .ed-edit-btn{opacity:1}
+  /* ===== Africa tab ===== */
+  #view-africa .note { background:#e8f7f1; border-left:4px solid var(--green); padding:12px 16px; border-radius:8px; font-size:12.5px; color:#0d6b4d; line-height:1.6; margin:14px 0; }
+  #tbl-africa td.af-num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
+  #tbl-africa tfoot td { background:#f8fafd; font-weight:800; border-top:2px solid var(--navy-darkest); color:var(--navy-darkest); }
+  .af-tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:10.5px; font-weight:700; white-space:nowrap; background:#fff4e0; color:#8a5a10; margin-left:6px; }
+  /* Editable Africa cells: inline expand, no floating/absolute positioning */
+  #tbl-africa .af-cell { position:relative; }
+  #tbl-africa .af-view { display:flex; align-items:center; gap:8px; }
+  #tbl-africa td.af-num .af-view { justify-content:flex-end; }
+  #tbl-africa .af-val { font-variant-numeric:tabular-nums; font-weight:700; color:var(--navy-darkest); }
+  #tbl-africa .af-val.edited { color:var(--green); }
+  #tbl-africa .af-edit-btn {
+    border:1px solid var(--border); background:#fff; color:var(--navy-dark);
+    padding:3px 9px; border-radius:4px; font-size:11px; font-weight:700; cursor:pointer;
+    font-family:inherit; white-space:nowrap; opacity:.55; transition:opacity .15s,background .15s,color .15s;
+  }
+  #tbl-africa tr:hover .af-edit-btn { opacity:1; }
+  #tbl-africa .af-edit-btn:hover { background:var(--navy-dark); color:#fff; border-color:var(--navy-dark); opacity:1; }
+  #tbl-africa .af-editing {
+    display:flex; flex-direction:column; gap:6px; background:#f3f9ff;
+    border:1px solid var(--cyan-bright); border-radius:6px; padding:8px;
+    box-shadow:0 0 0 2px rgba(0,191,255,.12);
+  }
+  #tbl-africa .af-input {
+    width:100%; padding:5px 7px; border:1px solid var(--border); border-radius:4px;
+    font:13px inherit; color:var(--navy-darkest); background:#fff; box-sizing:border-box;
+  }
+  #tbl-africa td.af-num .af-input { text-align:right; }
+  #tbl-africa .af-input:focus { outline:none; border-color:var(--cyan-bright); box-shadow:0 0 0 2px rgba(0,191,255,.18); }
+  #tbl-africa .af-btns { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+  .afb { border:1px solid var(--border); background:#fff; color:var(--navy-dark); padding:4px 9px; border-radius:4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; }
+  .afb:hover { background:var(--cyan-pale); border-color:var(--cyan-bright); }
+  .afb-save { background:var(--green); color:#fff; border-color:var(--green); }
+  .afb-save:hover { background:#157a5a; }
+  .afb-del:hover { background:var(--red); color:#fff; border-color:var(--red); }
+  .afb-cancel:hover { background:var(--amber); color:#fff; border-color:var(--amber); }
   /* Hidden */
   .hidden { display:none !important; }
 
@@ -672,37 +700,49 @@
   <div class="legend fy26-legend" id="fy26-legend"></div>
   <div class="note" id="fy26-note"></div>
 </section>
-
 <section class="view hidden" id="view-africa">
   <div class="page-head">
-    <div><h2>Africa</h2>
-      <div class="desc">Revenue by customer across the Africa portfolio (Sheet1 of the ARTran detail workbook, 21 Aug 2026). Click a column header to sort.</div></div>
+    <div>
+      <h2>Africa</h2>
+      <div class="desc">Revenue by customer across the Africa portfolio (Sheet1 of the ARTran detail workbook). Hover a revenue value to reveal <b>Edit</b>; changes save to the shared sync file. Click a column header to sort.</div>
+    </div>
     <div class="row-count" id="count-africa"></div>
   </div>
   <div class="kpis" id="africa-kpis"></div>
   <div class="filter-bar">
     <label>Search<input type="text" id="f-africa-q" placeholder="Customer name..." oninput="renderAfrica()"></label>
-    <label>Revenue band<select id="f-africa-band" onchange="renderAfrica()">
-      <option value="">Any value</option><option value="10000000">R10m +</option>
-      <option value="5000000">R5m +</option><option value="1000000">R1m +</option><option value="100000">R100k +</option></select></label>
+    <label>Revenue band
+      <select id="f-africa-band" onchange="renderAfrica()">
+        <option value="">Any value</option>
+        <option value="10000000">R10m +</option><option value="5000000">R5m +</option>
+        <option value="1000000">R1m +</option><option value="100000">R100k +</option>
+      </select>
+    </label>
     <div class="toggles">
-      <label class="toggle"><input type="checkbox" id="f-africa-nonzero" checked><span class="slider"></span>Hide zero-revenue</label>
+      <label class="toggle"><input type="checkbox" id="f-africa-nonzero" checked onchange="renderAfrica()"><span class="slider"></span>Hide zero-revenue</label>
       <label class="toggle"><input type="checkbox" id="f-africa-top" onchange="renderAfrica()"><span class="slider"></span>Top 20 only</label>
     </div>
     <button class="btn secondary" onclick="resetAfrica()">Reset</button>
     <button class="btn" onclick="exportAfrica()">Export CSV</button>
-    <button class="btn" style="background:var(--green)" onclick="afAddCustomer()">+ Add customer</button>
+    <button class="btn" style="background:var(--green)" onclick="addAfricaRow()">+ Add customer</button>
   </div>
-  <div class="legend" style="margin:0 0 10px">&#128161; Hover a row and click <b>Edit</b> on the Customer name or Revenue to change it &mdash; <b>Save</b>, <b>Cancel</b> or <b>Delete</b> appear once you're editing. Changes save to the shared sync file for everyone.</div>
-  <div class="table-wrap"><div class="table-scroll">
-    <table id="tbl-africa"><thead><tr>
-      <th data-ak="c" style="width:56%">Customer<span class="sort-ind">&#8597;</span></th>
-      <th data-ak="v" style="text-align:right">Revenue (R)<span class="sort-ind">&#9660;</span></th>
-      <th data-ak="pc" style="text-align:right">Share<span class="sort-ind">&#8597;</span></th>
-    </tr></thead><tbody></tbody><tfoot><tr id="africa-foot"></tr></tfoot></table>
-  </div><div class="pager" id="pager-africa"></div></div>
-  <div class="note" id="africa-note" style="background:#e8f7f1;border-left:4px solid var(--green);padding:12px 16px;border-radius:8px;font-size:12.5px;color:#0d6b4d;line-height:1.6;margin:14px 0"></div>
+  <div class="table-wrap">
+    <div class="table-scroll">
+      <table id="tbl-africa">
+        <thead><tr>
+          <th data-ak="c" style="width:52%">Customer<span class="sort-ind">&#8597;</span></th>
+          <th data-ak="v" style="text-align:right">Revenue (R)<span class="sort-ind">&#9660;</span></th>
+          <th data-ak="pc" style="text-align:right;width:90px">Share<span class="sort-ind">&#8597;</span></th>
+        </tr></thead>
+        <tbody></tbody>
+        <tfoot><tr id="africa-foot"></tr></tfoot>
+      </table>
+    </div>
+    <div class="pager" id="pager-africa"></div>
+  </div>
+  <div class="note" id="africa-note"></div>
 </section>
+
 
 </main>
 <!-- Live sync status badge -->
@@ -780,12 +820,10 @@ async function workerPull() {
     OPP_LOADED = true;
     if (typeof buildAtuDatalist === "function") buildAtuDatalist();
     if (typeof rbSyncHeader === "function") rbSyncHeader();
-    if (typeof africaRecalc === "function") africaRecalc();
     if (!isFirstLoad) {
       // Refresh tabs that show opp data
       renderEnterprise();
       renderNewAccts();
-      if (typeof renderAfrica === "function" && document.getElementById('view-africa') && !document.getElementById('view-africa').classList.contains('hidden')) renderAfrica();
     }
     setSyncStatus("live", "Live");
     return true;
@@ -1953,192 +1991,206 @@ document.addEventListener('DOMContentLoaded', () => {
   }));
 });
 
-// ===== AFRICA TAB =====
-const AFRICA_RAW = [["Tharisa Minerals (Pty) Ltd",22781345.58],["Glencore Operations SA (Pty) Ltd",10751370.8],["Astron Energy (Pty) Ltd",9167402.0],["Telkom SA SOC Ltd",9079878.81],["Servest (Pty) Ltd",7419325.82],["WBHO Construction (Pty) Ltd",6932385.54],["Afrox Oxygen Limited",6563965.15],["Bidvest Prestige",5980621.85],["Microsoft SA (Pty) Ltd",5936699.0],["4Sight Systems (Pty) Ltd",5079528.17],["South African Reserve Bank",5048524.79],["Home of Living Brands (Pty) Ltd",4341162.25],["Onderstepoort Biological Products",4214473.59],["Bidvest Steiner",4010729.35],["Zeda Car Leasing",3314051.0],["Just Dynamics Software Solutions (Pty) Ltd",3183858.92],["Eduvos (Pty)Ltd/TA Eduvos",2436565.95],["African Bank Limited - HO",2278300.55],["New Media Lab Services (Pty) Ltd",2148812.1],["Automation Control Solution (Pty) Ltd",1939020.5],["The Freedom Park Trust",1763658.13],["Central Energy Fund (Pty) Ltd",1552291.78],["PriceWaterhouse Coopers",1538957.77],["First Garment Rental (Pty) Ltd",1492463.67],["South African National Petroleum Company",1400006.37],["IQbusiness",1259323.5],["Foursight Holdings (Pty) Ltd",1004391.99],["Human Sciences Research Council (HSRC)",939441.66],["Companies and Intellectual Property Commission",926041.09],["Cross-Border Road Transport Agency",885895.0],["Compendium Insurance Brokers (Pty) Ltd",860909.69],["Nokeng Fluorspar Mine (RF) (Pty) Ltd",801690.82],["National Student Financial Aid Scheme",725283.17],["Sage South Africa (Pty) Ltd (SAGE VIP REBATES)",689491.01],["Western TVET College",624170.75],["Technology Innovation Agency",484217.5],["South African Health Products Regulatory Authority (SAHPRA)",419804.7],["Mohato Projects (Pty) Ltd",347325.0],["KIC SA",286402.72],["Council on Higher Education",283568.77],["Gautrain Management Agency",220132.0],["Sun Slots Shared Services (Pty) Ltd",216141.44],["TiAuto Investments (Pty) Ltd",212571.52],["Bidvest - Bidair Cargo",210879.15],["Fais Ombud",205486.68],["Gauteng Partnership Fund",130021.0],["South African Weather Service",121592.45],["KwaZulu-Natal Tourism and Film Authority",98066.0],["Department of Public Works",94595.95],["Bidvest Services (Pty) Ltd ta Corporate Office SA",75529.5],["UAV and Drone Solutions (Pty) Ltd",66870.0],["Liberty Coal (Pty) Ltd",45935.0],["Engineering Council of South Africa",43837.2],["Bidvest Services (Pty) Ltd",27144.61],["National Economic Development and Labour Council t/a NEDLAC",24641.4],["Bidvest International Logistics",19800.0],["Process Automation (Pty) Ltd",9674.25],["Freitan Logistics (Pty) Ltd",9450.0],["Peresoft (Pty) Ltd",8633.88],["Film and Publication Board",8445.0],["Supplier Park Development Company SOC Ltd t/a AIDC",6250.0],["4Sight OT Optimisation (Pty) Ltd",2000.0],["4Sight OT Simulation (Pty) Ltd",2000.0],["Bokamoso Investment Fund (Pty) Ltd",1522.55],["Citadel Investment Services (Pty) Ltd",0.0],["Freda Rebecca Gold Mine Limited",0.0],["Financial Sector Conduct Authority",0.0],["Two Rivers Platinum (Pty) Ltd",0.0],["RTNP Technologies Pty Ltd",0.0],["Manupont 124 (Pty) Ltd",0.0],["Fast Food City Trading (Pty) Ltd",0.0],["Liquid Rock SARL",0.0],["Masthead (Pty) Ltd",0.0],["Mahela Boerdery (Edms) Bpk",0.0],["Eminos (Pty) Ltd",0.0],["Council for Medical Schemes",0.0],["Innovative Idea Solutions (Pty) Ltd",0.0],["Lenmed Health Management (Pty) Ltd",0.0],["Epiroc Zambia Limited",0.0],["Intercare Corporate Services (Pty) Ltd",0.0],["Hendler and Hart (Pty)  Ltd",0.0],["Law Society of South Africa",0.0],["Hammond Pole Incorporated",0.0],["Chartered Wealth Solutions",0.0],["Central Energy Fund (Pty)  Ltd",-16158.33]];
+// ═══════════════ AFRICA TAB (single edit control, hover-revealed) ═══════════════
+const AFRICA_SEED = [["Tharisa Minerals (Pty) Ltd",22781346],["Glencore Operations SA (Pty) Ltd",10751371],["Astron Energy (Pty) Ltd",9167402],["Telkom SA SOC Ltd",9079879],["Servest (Pty) Ltd",7419326],["WBHO Construction (Pty) Ltd",6932386],["Afrox Oxygen Limited",6563965],["Bidvest Prestige",5980622],["Microsoft SA (Pty) Ltd",5936699],["4Sight Systems (Pty) Ltd",5079528],["South African Reserve Bank",5048525],["Home of Living Brands (Pty) Ltd",4341162],["Onderstepoort Biological Products",4214474],["Bidvest Steiner",4010729],["Zeda Car Leasing",3314051],["Just Dynamics Software Solutions (Pty) Ltd",3183859],["Eduvos (Pty)Ltd/TA Eduvos",2436566],["African Bank Limited - HO",2278301],["New Media Lab Services (Pty) Ltd",2148812],["Automation Control Solution (Pty) Ltd",1939020],["The Freedom Park Trust",1763658],["Central Energy Fund (Pty) Ltd",1552292],["PriceWaterhouse Coopers",1538958],["First Garment Rental (Pty) Ltd",1492464],["South African National Petroleum Company",1400006],["IQbusiness",1259324],["Foursight Holdings (Pty) Ltd",1004392],["Human Sciences Research Council (HSRC)",939442],["Companies and Intellectual Property Commission",926041],["Cross-Border Road Transport Agency",885895],["Compendium Insurance Brokers (Pty) Ltd",860910],["Nokeng Fluorspar Mine (RF) (Pty) Ltd",801691],["National Student Financial Aid Scheme",725283],["Sage South Africa (Pty) Ltd (SAGE VIP REBATES)",689491],["Western TVET College",624171],["Technology Innovation Agency",484218],["South African Health Products Regulatory Authority (SAHPRA)",419805],["Mohato Projects (Pty) Ltd",347325],["KIC SA",286403],["Council on Higher Education",283569],["Gautrain Management Agency",220132],["Sun Slots Shared Services (Pty) Ltd",216141],["TiAuto Investments (Pty) Ltd",212572],["Bidvest - Bidair Cargo",210879],["Fais Ombud",205487],["Gauteng Partnership Fund",130021],["South African Weather Service",121592],["KwaZulu-Natal Tourism and Film Authority",98066],["Department of Public Works",94596],["Bidvest Services (Pty) Ltd ta Corporate Office SA",75530],["UAV and Drone Solutions (Pty) Ltd",66870],["Liberty Coal (Pty) Ltd",45935],["Engineering Council of South Africa",43837],["Bidvest Services (Pty) Ltd",27145],["National Economic Development and Labour Council t/a NEDLAC",24641],["Bidvest International Logistics",19800],["Process Automation (Pty) Ltd",9674],["Freitan Logistics (Pty) Ltd",9450],["Peresoft (Pty) Ltd",8634],["Film and Publication Board",8445],["Supplier Park Development Company SOC Ltd t/a AIDC",6250],["4Sight OT Optimisation (Pty) Ltd",2000],["4Sight OT Simulation (Pty) Ltd",2000],["Bokamoso Investment Fund (Pty) Ltd",1523],["Citadel Investment Services (Pty) Ltd",0],["Freda Rebecca Gold Mine Limited",0],["Financial Sector Conduct Authority",0],["Two Rivers Platinum (Pty) Ltd",0],["RTNP Technologies Pty Ltd",0],["Manupont 124 (Pty) Ltd",0],["Fast Food City Trading (Pty) Ltd",0],["Liquid Rock SARL",0],["Masthead (Pty) Ltd",0],["Mahela Boerdery (Edms) Bpk",0],["Eminos (Pty) Ltd",0],["Council for Medical Schemes",0],["Innovative Idea Solutions (Pty) Ltd",0],["Lenmed Health Management (Pty) Ltd",0],["Epiroc Zambia Limited",0],["Intercare Corporate Services (Pty) Ltd",0],["Hendler and Hart (Pty)  Ltd",0],["Law Society of South Africa",0],["Hammond Pole Incorporated",0],["Chartered Wealth Solutions",0],["Central Energy Fund (Pty)  Ltd",-16158]];
 const AF_ISINT = n => /\b(4sight|foursight|acctech)\b/i.test(n);
-const AFRICA_BASE = AFRICA_RAW.map(([c,v],i)=>({id:'af'+i, c, v:v||0}));
-function africaStore(){ const s=oppLoad(); if(!s._africa) s._africa={edits:{},deleted:[],added:[]}; return s._africa; }
-function africaPersist(af){ const s=oppLoad(); s._africa=af; oppSave(s); }
-function africaLiveRows(){
-  const af=africaStore();
-  const base=AFRICA_BASE.filter(r=>!af.deleted.includes(r.id)).map(r=>{
-    const e=af.edits[r.id];
-    return e ? {id:r.id, c:(e.c!==undefined?e.c:r.c), v:(e.v!==undefined?e.v:r.v), edited:true} : {id:r.id, c:r.c, v:r.v, edited:false};
+function afLoad() {
+  const s = oppLoad();
+  if (s._africa && Array.isArray(s._africa)) return s._africa;
+  return AFRICA_SEED.map(([c,v]) => [c, v]);
+}
+function afSave(rows) { const s = oppLoad(); s._africa = rows; oppSave(s); }
+function afRows() { return afLoad().map(([c,v]) => ({ c, v: v||0, internal: AF_ISINT(c) })); }
+const AFR  = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
+const AFRm = n => Math.abs(n) >= 1e6 ? 'R ' + (n/1e6).toFixed(1) + 'm'
+               : Math.abs(n) >= 1e3 ? 'R ' + (n/1e3).toFixed(0) + 'k' : AFR(n);
+let africaSortK = 'v', africaSortD = 'desc', africaPage = 1;
+const AFRICA_PER = 50;
+const AF_EDITED = {};   // { idx: true }  -- purely visual "edited" flag
+
+function resetAfrica(){
+  document.getElementById('f-africa-q').value = '';
+  document.getElementById('f-africa-band').value = '';
+  document.getElementById('f-africa-nonzero').checked = true;
+  document.getElementById('f-africa-top').checked = false;
+  africaSortK = 'v'; africaSortD = 'desc'; africaPage = 1; renderAfrica();
+}
+function africaFiltered(){
+  const q = document.getElementById('f-africa-q').value.toLowerCase().trim();
+  const band = +document.getElementById('f-africa-band').value || 0;
+  const nz = document.getElementById('f-africa-nonzero').checked;
+  let rows = afRows().map((r,i) => ({ ...r, idx:i }));
+  rows = rows.filter(r => {
+    if (nz && r.v === 0) return false;
+    if (q && !r.c.toLowerCase().includes(q)) return false;
+    if (band && r.v < band) return false;
+    return true;
   });
-  const added=(af.added||[]).map(r=>({id:r.id, c:r.c, v:r.v||0, edited:false, isNew:true}));
-  return base.concat(added);
+  rows.sort((a,b) => {
+    if (africaSortK === 'c'){
+      const av=a.c.toLowerCase(), bv=b.c.toLowerCase();
+      return africaSortD==='asc' ? (av<bv?-1:av>bv?1:0) : (av>bv?-1:av<bv?1:0);
+    }
+    return africaSortD==='asc' ? a.v-b.v : b.v-a.v;
+  });
+  if (document.getElementById('f-africa-top').checked) rows = rows.slice(0,20);
+  return rows;
 }
-function africaRows(){ return africaLiveRows().map(r=>({...r, internal:AF_ISINT(r.c)})); }
-let AFRICA_ROWS = africaRows();
-let AFRICA_TOTAL = AFRICA_ROWS.reduce((s,r)=>s+r.v,0);
-let AFRICA_MAX = Math.max(1,...AFRICA_ROWS.map(r=>r.v));
-let AFRICA_INT = AFRICA_ROWS.filter(r=>r.internal);
-function africaRecalc(){
-  AFRICA_ROWS = africaRows();
-  AFRICA_TOTAL = AFRICA_ROWS.reduce((s,r)=>s+r.v,0);
-  AFRICA_MAX = Math.max(1,...AFRICA_ROWS.map(r=>r.v));
-  AFRICA_INT = AFRICA_ROWS.filter(r=>r.internal);
-}
-const AFR = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
-const AFRm = n => Math.abs(n)>=1e6?'R '+(n/1e6).toFixed(1)+'m':Math.abs(n)>=1e3?'R '+(n/1e3).toFixed(0)+'k':AFR(n);
-let africaSortK='v',africaSortD='desc',africaPage=1; const AFRICA_PER=50;
-const AFRICA_EDIT = {}; // { rowId::field : true }
-function afKey(id,f){ return id+'::'+f; }
-function afRefreshRow(id){
-  document.querySelectorAll('.ed-cell[data-arow="'+id+'"]').forEach(cell=>{
-    cell.innerHTML = afCellInner(id, cell.dataset.afield);
+const AF_EDIT_STATE = {}; // key: idx+'::'+field -> true while that cell is expanded
+function afEditKey(idx, field){ return idx + '::' + field; }
+function afRefreshRow(idx){
+  document.querySelectorAll('.af-cell[data-idx="'+idx+'"]').forEach(cell => {
+    cell.innerHTML = afCellInner(idx, cell.dataset.field);
   });
 }
-function afEditStart(btn, id, field){
-  AFRICA_EDIT[afKey(id,field)] = true;
-  afRefreshRow(id);
-  setTimeout(()=>{
-    document.querySelectorAll('.ed-cell[data-arow="'+id+'"][data-afield="'+field+'"] .ed-input').forEach(el=>{el.focus(); el.select();});
-  },0);
+function afEditStart(btn, idx, field){
+  AF_EDIT_STATE[afEditKey(idx, field)] = true;
+  afRefreshRow(idx);
+  setTimeout(() => {
+    document.querySelectorAll('.af-cell[data-idx="'+idx+'"][data-field="'+field+'"] .af-input').forEach(el => { el.focus(); el.select(); });
+  }, 0);
 }
-function afEditCancel(btn, id, field){
-  const isNewBlank = id.startsWith('afnew_') && !AFRICA_BASE.some(r=>r.id===id);
-  delete AFRICA_EDIT[afKey(id,field)];
-  const af=africaStore();
-  const stillNew = (af.added||[]).find(r=>r.id===id);
-  if (stillNew && !stillNew.c && !stillNew.v){
-    af.added = af.added.filter(r=>r.id!==id);
-    africaPersist(af); africaRecalc(); renderAfrica(); return;
-  }
-  afRefreshRow(id);
+function afEditCancel(btn, idx, field){
+  delete AF_EDIT_STATE[afEditKey(idx, field)];
+  afRefreshRow(idx);
 }
-function afEditSave(btn, id, field){
-  const cell = btn.closest('.ed-cell'); if(!cell) return;
-  const el = cell.querySelector('.ed-input'); if(!el) return;
-  const raw = el.value;
-  const af = africaStore();
-  const isAdded = (af.added||[]).some(r=>r.id===id);
-  if (isAdded){
-    const row = af.added.find(r=>r.id===id);
-    if (field==='c') row.c = raw.trim();
-    else row.v = Number(String(raw).replace(/[^0-9.\-]/g,''))||0;
+function afEditSave(btn, idx, field){
+  const cell = btn.closest('.af-cell'); if (!cell) return;
+  const el = cell.querySelector('.af-input'); if (!el) return;
+  const rows = afLoad();
+  if (!rows[idx]) return;
+  if (field === 'c') {
+    rows[idx][0] = el.value.trim();
   } else {
-    if (!af.edits[id]) af.edits[id] = {};
-    if (field==='c') af.edits[id].c = raw.trim();
-    else af.edits[id].v = Number(String(raw).replace(/[^0-9.\-]/g,''))||0;
-    const base = AFRICA_BASE.find(r=>r.id===id);
-    if (base && af.edits[id].c===undefined) af.edits[id].c = base.c;
+    const v = Number(String(el.value).replace(/[^0-9.\-]/g, '')) || 0;
+    rows[idx][1] = v;
   }
-  africaPersist(af);
-  delete AFRICA_EDIT[afKey(id,field)];
-  africaRecalc();
+  afSave(rows);
+  AF_EDITED[idx] = true;
+  delete AF_EDIT_STATE[afEditKey(idx, field)];
   renderAfrica();
   oppFlash('Saved \u2713');
 }
-function afDeleteRow(btn, id){
-  const row = AFRICA_ROWS.find(r=>r.id===id); if(!row) return;
-  if (!confirm('Delete "'+row.c+'" from the Africa tab?\n\nThis removes it from the shared dashboard for everyone.')) return;
-  const af = africaStore();
-  if (AFRICA_BASE.some(r=>r.id===id)){
-    if (!af.deleted.includes(id)) af.deleted.push(id);
-    delete af.edits[id];
-  } else {
-    af.added = (af.added||[]).filter(r=>r.id!==id);
-  }
-  africaPersist(af);
-  africaRecalc();
-  renderAfrica();
-  oppFlash('Deleted');
+function afKeydown(ev, btn, idx, field){
+  if (ev.key === 'Enter') { ev.preventDefault(); afEditSave(btn, idx, field); }
+  else if (ev.key === 'Escape') { ev.preventDefault(); afEditCancel(btn, idx, field); }
 }
-function afAddCustomer(){
-  const af = africaStore();
-  const id = 'afnew_' + Date.now();
-  af.added = af.added || [];
-  af.added.push({id, c:'', v:0});
-  africaPersist(af);
-  AFRICA_EDIT[afKey(id,'c')] = true;
-  africaRecalc();
-  renderAfrica();
-  setTimeout(()=>{
-    document.querySelectorAll('.ed-cell[data-arow="'+id+'"][data-afield="c"] .ed-input').forEach(el=>el.focus());
-  },50);
-}
-function afKeydown(ev, btn, id, field){
-  if (ev.key==='Enter'){ ev.preventDefault(); afEditSave(btn, id, field); }
-  else if (ev.key==='Escape'){ ev.preventDefault(); afEditCancel(btn, id, field); }
-}
-function afCellInner(id, field){
-  const row = AFRICA_ROWS.find(r=>r.id===id) || {id, c:'', v:0, edited:false};
-  const editing = AFRICA_EDIT[afKey(id,field)];
+function afCellInner(idx, field){
+  const rows = afLoad();
+  const row = rows[idx] || ['', 0];
+  const editing = AF_EDIT_STATE[afEditKey(idx, field)];
+  const edited = !!AF_EDITED[idx];
   if (editing){
-    const raw = field==='c' ? row.c : row.v;
-    const ph = field==='c' ? 'Customer name\u2026' : '0';
-    return '<div class="ed-editing">'
-      + '<input class="ed-input" style="text-align:'+(field==='v'?'right':'left')+'" value="'+escHtml(String(raw))+'" placeholder="'+ph+'"'
-      +   ' onkeydown="afKeydown(event,this,\''+id+'\',\''+field+'\')">'
-      + '<div class="ed-btns">'
-      +   '<button type="button" class="b b-save" onclick="afEditSave(this,\''+id+'\',\''+field+'\')">\uD83D\uDCBE Save</button>'
-      +   '<button type="button" class="b b-cancel" onclick="afEditCancel(this,\''+id+'\',\''+field+'\')">\u21A9 Cancel</button>'
-      +   '<button type="button" class="b b-del" onclick="afDeleteRow(this,\''+id+'\')">\uD83D\uDDD1 Delete</button>'
+    const raw = field === 'c' ? row[0] : row[1];
+    const ph = field === 'c' ? 'Customer name\u2026' : '0';
+    return '<div class="af-editing">'
+      + '<input type="text" class="af-input" value="' + escHtml(String(raw)) + '" placeholder="' + ph + '"'
+      +   ' onkeydown="afKeydown(event,this,' + idx + ',\'' + field + '\')">'
+      + '<div class="af-btns">'
+      +   '<button type="button" class="afb afb-save" onclick="afEditSave(this,' + idx + ',\'' + field + '\')">\uD83D\uDCBE Save</button>'
+      +   '<button type="button" class="afb afb-cancel" onclick="afEditCancel(this,' + idx + ',\'' + field + '\')">\u21A9 Cancel</button>'
+      +   '<button type="button" class="afb afb-del" onclick="afDelete(' + idx + ')">\uD83D\uDDD1 Delete</button>'
       + '</div></div>';
   }
   let shown;
-  if (field==='c'){
-    shown = '<span class="ed-val '+(row.edited?'edited':'')+'">'+(escHtml(row.c)||'<span class="muted">\u2014</span>')+(row.internal?' <span class="af-tag">Internal</span>':'')+'</span>';
+  if (field === 'c'){
+    const internal = AF_ISINT(row[0]);
+    shown = '<span class="af-val' + (edited ? ' edited' : '') + '">' + (escHtml(row[0]) || '<span class="muted">\u2014</span>') + '</span>' + (internal ? ' <span class="af-tag">Internal</span>' : '');
   } else {
-    shown = '<span class="ed-val '+(row.edited?'edited':'')+'">'+AFR(row.v)+'</span>';
+    shown = '<span class="af-val' + (edited ? ' edited' : '') + '">' + AFR(row[1] || 0) + '</span>';
   }
-  return '<div class="ed-view" style="justify-content:'+(field==='v'?'flex-end':'space-between')+'">' + shown
-    + '<button type="button" class="ed-edit-btn" title="Edit" onclick="afEditStart(this,\''+id+'\',\''+field+'\')">\u270F Edit</button>'
+  return '<div class="af-view">' + shown
+    + '<button type="button" class="af-edit-btn" title="Edit" onclick="afEditStart(this,' + idx + ',\'' + field + '\')">\u270F Edit</button>'
     + '</div>';
 }
-
-function resetAfrica(){document.getElementById('f-africa-q').value='';document.getElementById('f-africa-band').value='';document.getElementById('f-africa-nonzero').checked=true;document.getElementById('f-africa-top').checked=false;africaSortK='v';africaSortD='desc';africaPage=1;renderAfrica();}
-function africaFiltered(){
-  const q=document.getElementById('f-africa-q').value.toLowerCase().trim();
-  const band=+document.getElementById('f-africa-band').value||0;
-  const nz=document.getElementById('f-africa-nonzero').checked;
-  let rows=AFRICA_ROWS.filter(r=>{if(nz&&r.v===0)return false;if(q&&!r.c.toLowerCase().includes(q))return false;if(band&&r.v<band)return false;return true;});
-  rows.sort((a,b)=>{if(africaSortK==='c'){const av=a.c.toLowerCase(),bv=b.c.toLowerCase();return africaSortD==='asc'?(av<bv?-1:av>bv?1:0):(av>bv?-1:av<bv?1:0);}return africaSortD==='asc'?a.v-b.v:b.v-a.v;});
-  if(document.getElementById('f-africa-top').checked)rows=rows.slice(0,20);
-  return rows;
+function afDelete(idx){
+  const rows = afLoad(); if (!rows[idx]) return;
+  if (!confirm('Delete "'+rows[idx][0]+'" from the Africa list?')) return;
+  rows.splice(idx,1);
+  afSave(rows);
+  // indices shift after a splice — clear all transient edit/highlight state to avoid stale references
+  Object.keys(AF_EDIT_STATE).forEach(k => delete AF_EDIT_STATE[k]);
+  Object.keys(AF_EDITED).forEach(k => delete AF_EDITED[k]);
+  renderAfrica();
+  oppFlash('Deleted');
+}
+function addAfricaRow(){
+  const rows = afLoad();
+  rows.push(['', 0]);
+  const newIdx = rows.length - 1;
+  afSave(rows);
+  document.getElementById('f-africa-nonzero').checked = false;
+  africaSortK = 'c'; africaSortD = 'asc'; africaPage = 1;
+  AF_EDIT_STATE[afEditKey(newIdx, 'c')] = true;
+  renderAfrica();
+  setTimeout(() => {
+    document.querySelectorAll('.af-cell[data-idx="'+newIdx+'"][data-field="c"] .af-input').forEach(el => el.focus());
+  }, 50);
+  oppFlash('Row added \u2013 type a name and Save');
 }
 function exportAfrica(){
-  const rows=africaFiltered();const head=['Customer','Revenue (R)','Share %','Internal'];
-  const body=rows.map(r=>[r.c,r.v,(AFRICA_TOTAL?(r.v/AFRICA_TOTAL*100).toFixed(2)+'%':''),r.internal?'Yes':'No']);
-  const csv=[head,...body].map(row=>row.map(c=>{const v=c==null?'':String(c);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(',')).join('\n');
-  const b=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='africa-revenue.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);
+  const rows = africaFiltered();
+  const tot = afRows().reduce((s,r)=>s+r.v,0);
+  const head = ['Customer','Revenue (R)','Share %','Internal'];
+  const body = rows.map(r => [r.c, r.v, (tot? (r.v/tot*100).toFixed(2)+'%':''), r.internal?'Yes':'No']);
+  const csv = [head,...body].map(row=>row.map(c=>{const v=c==null?'':String(c);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;}).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='africa-revenue.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 function renderAfrica(){
-  africaRecalc();
-  document.getElementById('badge-africa').textContent=AFRICA_ROWS.length.toLocaleString('en-ZA');
-  const active=AFRICA_ROWS.filter(r=>r.v>0);const bySize=[...active].sort((a,b)=>b.v-a.v);
-  const share=n=>AFRICA_TOTAL?bySize.slice(0,n).reduce((s,r)=>s+r.v,0)/AFRICA_TOTAL*100:0;
-  document.getElementById('africa-kpis').innerHTML=
-    '<div class="kpi green"><div class="label">Africa revenue</div><div class="value">'+AFRm(AFRICA_TOTAL)+'</div><div class="delta">across '+active.length+' billing customers</div></div>'
-   +'<div class="kpi"><div class="label">Customers</div><div class="value">'+AFRICA_ROWS.length+'</div><div class="delta">'+(AFRICA_ROWS.length-active.length)+' at zero this period</div></div>'
-   +'<div class="kpi amber"><div class="label">Top customer</div><div class="value">'+(bySize[0]?AFRm(bySize[0].v):'\u2014')+'</div><div class="delta">'+(bySize[0]&&AFRICA_TOTAL?(bySize[0].v/AFRICA_TOTAL*100).toFixed(1)+'% of total':'no data')+'</div></div>'
-   +'<div class="kpi alt"><div class="label">Top-10 concentration</div><div class="value">'+share(10).toFixed(0)+'%</div><div class="delta">top 5 = '+share(5).toFixed(0)+'%</div></div>';
-  const iv=AFRICA_INT.reduce((s,r)=>s+r.v,0);
-  document.getElementById('africa-note').innerHTML= bySize[0]
-    ? ('&#128202; <b>Africa portfolio.</b> '+AFRm(AFRICA_TOTAL)+' across '+active.length+' billing customers. Largest is <b>'+escHtml(bySize[0].c)+'</b> at '+AFRm(bySize[0].v)+' ('+(bySize[0].v/AFRICA_TOTAL*100).toFixed(1)+'%). Top 10 = <b>'+share(10).toFixed(1)+'%</b>.'+(AFRICA_INT.length?' &#9888;&#65039; '+AFRICA_INT.length+' 4Sight internal entities ('+AFRm(iv)+') included.':''))
-    : '&#128202; No customers yet &mdash; click <b>+ Add customer</b> to start.';
-  const rows=africaFiltered();const sum=rows.reduce((s,r)=>s+r.v,0);
-  document.getElementById('count-africa').textContent='Showing '+rows.length.toLocaleString('en-ZA')+' of '+AFRICA_ROWS.length.toLocaleString('en-ZA')+'  \u00B7  '+AFRm(sum);
-  document.querySelectorAll('#tbl-africa th').forEach(th=>{const on=th.dataset.ak===africaSortK;const si=th.querySelector('.sort-ind');if(si)si.textContent=on?(africaSortD==='asc'?'\u25B2':'\u25BC'):'\u2195';});
-  const pages=Math.max(1,Math.ceil(rows.length/AFRICA_PER));if(africaPage>pages)africaPage=pages;
-  const slice=rows.slice((africaPage-1)*AFRICA_PER,africaPage*AFRICA_PER);
-  document.querySelector('#tbl-africa tbody').innerHTML=slice.length?slice.map(r=>{
-    const w=r.v>0?(r.v/AFRICA_MAX*100):0;
+  const all = afRows();
+  const TOTAL = all.reduce((s,r)=>s+r.v,0);
+  const MAX = Math.max(1, ...all.map(r=>r.v));
+  const active = all.filter(r=>r.v>0);
+  document.getElementById('badge-africa').textContent = all.length.toLocaleString('en-ZA');
+  const bySize = [...active].sort((a,b)=>b.v-a.v);
+  const share = n => bySize.slice(0,n).reduce((s,r)=>s+r.v,0)/TOTAL*100;
+  document.getElementById('africa-kpis').innerHTML =
+      '<div class="kpi green"><div class="label">Africa revenue</div><div class="value">'+AFRm(TOTAL)+'</div><div class="delta">across '+active.length+' billing customers</div></div>'
+    + '<div class="kpi"><div class="label">Customers</div><div class="value">'+all.length+'</div><div class="delta">'+(all.length-active.length)+' at zero</div></div>'
+    + '<div class="kpi amber"><div class="label">Top customer</div><div class="value">'+(bySize[0]?AFRm(bySize[0].v):'\u2014')+'</div><div class="delta">'+(bySize[0]?(bySize[0].v/TOTAL*100).toFixed(1)+'% of total':'')+'</div></div>'
+    + '<div class="kpi alt"><div class="label">Top-10 concentration</div><div class="value">'+(TOTAL?share(10).toFixed(0):'0')+'%</div><div class="delta">top 5 = '+(TOTAL?share(5).toFixed(0):'0')+'%</div></div>';
+  const intVal = all.filter(r=>r.internal).reduce((s,r)=>s+r.v,0);
+  const intN = all.filter(r=>r.internal).length;
+  document.getElementById('africa-note').innerHTML =
+      '\uD83D\uDCCA <b>Africa portfolio.</b> '+AFRm(TOTAL)+' across '+active.length+' billing customers. '
+    + (bySize[0] ? 'Largest is <b>'+escHtml(bySize[0].c)+'</b> at '+AFRm(bySize[0].v)+' ('+(bySize[0].v/TOTAL*100).toFixed(1)+'%). ' : '')
+    + (TOTAL ? 'Top 10 = <b>'+share(10).toFixed(1)+'%</b>. ' : '')
+    + (intN ? '&#9888;\uFE0F '+intN+' 4Sight internal entities ('+AFRm(intVal)+') included.' : '');
+
+  const rows = africaFiltered();
+  const sum = rows.reduce((s,r)=>s+r.v,0);
+  document.getElementById('count-africa').textContent =
+    'Showing ' + rows.length.toLocaleString('en-ZA') + ' of ' + all.length.toLocaleString('en-ZA') + '  \u00B7  ' + AFRm(sum);
+  document.querySelectorAll('#tbl-africa th').forEach(th=>{
+    const on = th.dataset.ak === africaSortK, si = th.querySelector('.sort-ind');
+    if (si) si.textContent = on ? (africaSortD==='asc'?'\u25B2':'\u25BC') : '\u2195';
+  });
+  const pages = Math.max(1, Math.ceil(rows.length/AFRICA_PER));
+  if (africaPage > pages) africaPage = pages;
+  const slice = rows.slice((africaPage-1)*AFRICA_PER, africaPage*AFRICA_PER);
+  const tbody = document.querySelector('#tbl-africa tbody');
+  tbody.innerHTML = slice.length ? slice.map(r => {
     return '<tr>'
-      + '<td class="ed-cell" data-arow="'+r.id+'" data-afield="c">' + afCellInner(r.id,'c') + '</td>'
-      + '<td class="af-num bar-cell ed-cell" data-arow="'+r.id+'" data-afield="v">'
-        + (w>0?'<span class="mini-bar" style="width:'+w+'%"></span>':'')
-        + afCellInner(r.id,'v') + '</td>'
-      + '<td class="af-num">'+(AFRICA_TOTAL?(r.v/AFRICA_TOTAL*100).toFixed(1)+'%':'\u2014')+'</td>'
+      + '<td class="af-cell" data-idx="'+r.idx+'" data-field="c">' + afCellInner(r.idx, 'c') + '</td>'
+      + '<td class="af-num af-cell" data-idx="'+r.idx+'" data-field="v">' + afCellInner(r.idx, 'v') + '</td>'
+      + '<td class="af-num">' + (TOTAL ? (r.v/TOTAL*100).toFixed(1)+'%' : '\u2014') + '</td>'
       + '</tr>';
-  }).join(''):'<tr><td colspan="3" class="empty">No customers match the current filters.</td></tr>';
-  document.getElementById('africa-foot').innerHTML='<td>TOTAL &mdash; '+rows.length.toLocaleString('en-ZA')+' customers</td><td class="af-num">'+AFR(sum)+'</td><td class="af-num">'+(AFRICA_TOTAL?(sum/AFRICA_TOTAL*100).toFixed(0)+'%':'\u2014')+'</td>';
-  renderPager('pager-africa',rows.length,AFRICA_PER,africaPage,p=>{africaPage=p;renderAfrica();});
+  }).join('') : '<tr><td colspan="3" class="empty">No customers match the current filters.</td></tr>';
+  document.getElementById('africa-foot').innerHTML =
+      '<td>TOTAL &mdash; ' + rows.length.toLocaleString('en-ZA') + ' customers</td>'
+    + '<td class="af-num">' + AFR(sum) + '</td>'
+    + '<td class="af-num">' + (TOTAL ? (sum/TOTAL*100).toFixed(0)+'%' : '\u2014') + '</td>';
+  renderPager('pager-africa', rows.length, AFRICA_PER, africaPage, p => { africaPage=p; renderAfrica(); });
 }
-document.addEventListener('DOMContentLoaded',()=>{
-  document.querySelectorAll('#tbl-africa th').forEach(th=>th.addEventListener('click',()=>{const k=th.dataset.ak;if(africaSortK===k)africaSortD=africaSortD==='asc'?'desc':'asc';else{africaSortK=k;africaSortD=(k==='c')?'asc':'desc';}africaPage=1;renderAfrica();}));
-  const nz=document.getElementById('f-africa-nonzero');if(nz)nz.addEventListener('change',()=>{africaPage=1;renderAfrica();});
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#tbl-africa th[data-ak]').forEach(th => th.addEventListener('click', () => {
+    const k = th.dataset.ak;
+    if (africaSortK === k) africaSortD = africaSortD==='asc'?'desc':'asc';
+    else { africaSortK = k; africaSortD = (k==='c')?'asc':'desc'; }
+    africaPage = 1; renderAfrica();
+  }));
 });
 
 function renderOverview() {
